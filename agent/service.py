@@ -162,6 +162,7 @@ class GenUIAgentService:
                 "title": "compound_interest_demo",
                 "width": 780,
                 "height": 520,
+                "loading_messages": self._default_loading_messages(user_text),
             }
             for partial in self._progressive_widget_payloads(widget_code):
                 yield {"type": "toolcall_delta", "tool_call_id": tool_call_id, "widget_code": partial}
@@ -178,6 +179,7 @@ class GenUIAgentService:
         visual_request = self._should_stream_widget(user_text)
         visual_flow_started = False
         show_widget_emitted = False
+        has_loaded_guidelines = False
         provider = GeminiProvider(
             api_key=api_key,
             default_model=os.getenv("GEMINI_MODEL", "gemini-3.1-pro-preview"),
@@ -187,6 +189,7 @@ class GenUIAgentService:
         assistant_text_chunks: list[str] = []
 
         for _ in range(5):
+            tool_choice = "required" if (visual_request and not show_widget_emitted) else "auto"
             response = asyncio.run(
                 provider.chat(
                     messages=messages,
@@ -194,7 +197,7 @@ class GenUIAgentService:
                     model=os.getenv("GEMINI_MODEL", "gemini-3.1-pro-preview"),
                     temperature=0.3,
                     max_tokens=4096,
-                    tool_choice="required" if visual_request else "auto",
+                    tool_choice=tool_choice,
                 )
             )
             logger.warning(
@@ -251,16 +254,67 @@ class GenUIAgentService:
                 logger.warning("tool call name=%s id=%s", tool_call.name, tool_call.id)
                 if tool_call.name == "visualize_read_me":
                     visual_flow_started = True
-                if tool_call.name == "show_widget":
-                    show_widget_emitted = True
+                    has_loaded_guidelines = True
+                if tool_call.name == "show_widget" and not has_loaded_guidelines:
+                    logger.error("show_widget blocked: visualize_read_me not called yet")
+                    messages.append(
+                        {
+                            "role": "tool",
+                            "name": "show_widget",
+                            "content": "READ_ME_REQUIRED",
+                        }
+                    )
+                    messages.append(
+                        {
+                            "role": "user",
+                            "content": "Before show_widget, call visualize_read_me with relevant modules, then retry show_widget with i_have_seen_read_me=true.",
+                        }
+                    )
+                    continue
+                if tool_call.name == "show_widget" and show_widget_emitted:
+                    logger.warning("duplicate show_widget skipped after first successful render")
+                    messages.append(
+                        {
+                            "role": "tool",
+                            "name": "show_widget",
+                            "content": "SHOW_WIDGET_ALREADY_EMITTED",
+                        }
+                    )
+                    messages.append(
+                        {
+                            "role": "user",
+                            "content": "Do not call show_widget again in this turn. Continue with plain assistant text only.",
+                        }
+                    )
+                    continue
                 tool_call_id = tool_call.id or str(uuid.uuid4())
-                execution = self.tools.execute(tool_call.name, tool_call.arguments, tool_call_id)
+                tool_arguments = dict(tool_call.arguments)
+                if tool_call.name == "show_widget":
+                    tool_arguments.setdefault("i_have_seen_read_me", has_loaded_guidelines)
+                    tool_arguments.setdefault("loading_messages", self._default_loading_messages(user_text))
+                execution = self.tools.execute(tool_call.name, tool_arguments, tool_call_id)
                 logger.warning(
                     "tool execution name=%s events=%s content_len=%s",
                     tool_call.name,
                     len(execution.events),
                     len(execution.content or ""),
                 )
+                if tool_call.name == "show_widget" and execution.content == "READ_ME_REQUIRED":
+                    logger.error("show_widget rejected: READ_ME_REQUIRED")
+                    messages.append(
+                        {
+                            "role": "tool",
+                            "name": tool_call.name,
+                            "content": "READ_ME_REQUIRED",
+                        }
+                    )
+                    messages.append(
+                        {
+                            "role": "user",
+                            "content": "Call visualize_read_me first and retry show_widget with i_have_seen_read_me=true.",
+                        }
+                    )
+                    continue
                 if tool_call.name == "show_widget" and execution.content == "INVALID_WIDGET_CODE":
                     logger.error("invalid widget code detected, requesting regeneration")
                     messages.append(
@@ -277,6 +331,8 @@ class GenUIAgentService:
                         }
                     )
                     continue
+                if tool_call.name == "show_widget" and execution.events:
+                    show_widget_emitted = True
                 for event in execution.events:
                     yield event
                 messages.append(
@@ -431,6 +487,18 @@ class GenUIAgentService:
         for token in reply:
             yield token
             time.sleep(0.01)
+
+    def _default_loading_messages(self, user_text: str) -> list[str]:
+        widget_type = self._infer_widget_type(user_text)
+        if widget_type == "chart":
+            return ["Preparing chart structure", "Binding chart data", "Rendering chart interactions"]
+        if widget_type == "diagram":
+            return ["Preparing diagram layout", "Routing connectors", "Rendering final diagram"]
+        if widget_type == "mockup":
+            return ["Preparing mockup layout", "Applying component styles", "Rendering UI interactions"]
+        if widget_type == "art":
+            return ["Preparing art composition", "Applying visual layers", "Rendering final illustration"]
+        return ["Preparing interactive layout", "Binding controls", "Rendering interactive widget"]
 
     def _build_widget_html(self) -> str:
         return """

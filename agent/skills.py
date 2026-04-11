@@ -23,8 +23,12 @@ class SkillsManager:
                     name="generative_ui",
                     description="Route visualization requests to read_me and show_widget tools.",
                     guidance=(
-                        "For visual requests, call visualize_read_me first, then show_widget. "
-                        "Use English tool labels and one widget_type from interactive/chart/mockup/art/diagram."
+                        "For visual requests, call visualize_read_me first with the minimum relevant modules, "
+                        "then call show_widget with i_have_seen_read_me=true. "
+                        "Use one widget_type from interactive/chart/mockup/art/diagram. "
+                        "Keep widget_code as a fragment only, avoid doctype/html/body wrappers. "
+                        "Structure widget_code for streaming: short style first, content HTML next, script last. "
+                        "Keep explanatory prose in assistant text, not inside widget_code."
                     ),
                     always=True,
                 )
@@ -48,6 +52,7 @@ class SkillsManager:
             "You are a visualization-focused assistant. "
             "Use tools only when the user explicitly asks for visual output, charts, diagrams, mockups, art, widgets, or simulations. "
             "For normal Q&A, respond with plain text and do not call tools. "
+            "For visual output, follow strict tool order: visualize_read_me before show_widget. "
             "Follow the skill rules below.\n"
             f"{self.summary_xml()}"
         )
