@@ -1,0 +1,36 @@
+2026-04-11 13:30:16 | INFO     | genui.api | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | chat request received len=31
+2026-04-11 13:30:16 | INFO     | werkzeug | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | 127.0.0.1 - - [11/Apr/2026 13:30:16] "POST /chat/stream HTTP/1.1" 200 -
+2026-04-11 13:30:16 | WARNING  | genui.agent | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | stream_reply start session_id=e82edf54-e4aa-4059-8ef8-ea9218469efa key_source=GEMINI_API_KEY key_present=True user_text=帮我实现一个快速排序算法的interactive visual
+2026-04-11 13:30:16 | WARNING  | genui.agent | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | provider mode active model=gemini-3.1-pro-preview
+2026-04-11 13:30:19 | INFO     | httpx | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-pro-preview:generateContent "HTTP/1.1 200 OK"
+2026-04-11 13:30:19 | WARNING  | genui.gemini | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | candidate parts_count=1
+2026-04-11 13:30:19 | WARNING  | genui.gemini | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | function_call keys=args,id,name,partial_args,will_continue
+2026-04-11 13:30:19 | WARNING  | genui.gemini | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | parsed tool_call name=visualize_read_me has_signature=False
+2026-04-11 13:30:19 | WARNING  | genui.agent | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | provider response finish_reason=stop has_tool_calls=True content_len=0
+2026-04-11 13:30:19 | WARNING  | genui.agent | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | tool call name=visualize_read_me id=546d6048-6524-43c5-836d-25a6152e4654
+2026-04-11 13:30:19 | WARNING  | genui.agent | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | tool execution name=visualize_read_me events=0 content_len=19097
+2026-04-11 13:31:24 | INFO     | httpx | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-pro-preview:generateContent "HTTP/1.1 200 OK"
+2026-04-11 13:31:24 | WARNING  | genui.gemini | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | candidate parts_count=1
+2026-04-11 13:31:24 | WARNING  | genui.agent | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | provider response finish_reason=stop has_tool_calls=False content_len=283
+2026-04-11 13:31:24 | ERROR    | genui.agent | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | visual request received no tool calls, injecting corrective turn
+2026-04-11 13:31:53 | INFO     | httpx | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-pro-preview:generateContent "HTTP/1.1 200 OK"
+2026-04-11 13:31:53 | WARNING  | genui.gemini | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | candidate parts_count=1
+2026-04-11 13:31:53 | WARNING  | genui.gemini | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | function_call keys=args,id,name,partial_args,will_continue
+2026-04-11 13:31:53 | WARNING  | genui.gemini | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | parsed tool_call name=visualize_read_me has_signature=False
+2026-04-11 13:31:53 | WARNING  | genui.agent | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | provider response finish_reason=stop has_tool_calls=True content_len=0
+2026-04-11 13:31:53 | WARNING  | genui.agent | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | tool call name=visualize_read_me id=4b845853-a328-4c3d-9064-fa01b621ade0
+2026-04-11 13:31:53 | WARNING  | genui.agent | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | tool execution name=visualize_read_me events=0 content_len=19097
+2026-04-11 13:32:40 | INFO     | httpx | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-pro-preview:generateContent "HTTP/1.1 200 OK"
+2026-04-11 13:32:40 | WARNING  | genui.gemini | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | candidate parts_count=2
+2026-04-11 13:32:40 | WARNING  | genui.gemini | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | function_call keys=args,id,name,partial_args,will_continue
+2026-04-11 13:32:40 | WARNING  | genui.gemini | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | parsed tool_call name=show_widget has_signature=False
+2026-04-11 13:32:40 | WARNING  | genui.agent | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | provider response finish_reason=stop has_tool_calls=True content_len=329
+2026-04-11 13:32:40 | WARNING  | genui.agent | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | tool call name=show_widget id=b6c0624b-2fc1-4841-9438-4898574f998c
+2026-04-11 13:32:40 | WARNING  | genui.agent | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | tool execution name=show_widget events=11 content_len=62
+2026-04-11 13:32:58 | INFO     | httpx | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-pro-preview:generateContent "HTTP/1.1 200 OK"
+2026-04-11 13:32:58 | WARNING  | genui.gemini | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | candidate parts_count=1
+2026-04-11 13:32:58 | WARNING  | genui.gemini | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | function_call keys=args,id,name,partial_args,will_continue
+2026-04-11 13:32:58 | WARNING  | genui.gemini | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | parsed tool_call name=show_widget has_signature=False
+2026-04-11 13:32:58 | WARNING  | genui.agent | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | provider response finish_reason=stop has_tool_calls=True content_len=0
+2026-04-11 13:32:58 | WARNING  | genui.agent | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | tool call name=show_widget id=2b136e2e-d927-4316-84aa-4b6cc750a7a7
+2026-04-11 13:32:58 | WARNING  | genui.agent | sid=e82edf54-e4aa-4059-8ef8-ea9218469efa | tool execution name=show_widget events=11 content_len=62

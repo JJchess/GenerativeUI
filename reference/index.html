@@ -1,0 +1,1174 @@
+<devsite-content>
+            
+              
+
+
+
+
+
+
+
+
+
+
+<article class="devsite-article">
+  
+  
+  
+    <div class="devsite-banner devsite-banner-announcement nocontent" data-nosnippet="" background="google-blue">
+      <div class="devsite-banner-message">
+        <div class="devsite-banner-message-text">
+          
+    不妨试用全新高速且经济实惠的 <a href="https://ai.google.dev/gemini-api/docs/models/veo-3.1-lite-generate-preview?hl=zh-cn" style="color: black;">Veo 3.1 Lite</a> 模型，大规模生成视频。
+
+  
+        </div>
+      </div>
+    </div>
+  
+  
+  
+
+  <div class="devsite-article-meta nocontent" role="navigation" data-nosnippet="">
+    
+    
+    <ul class="devsite-breadcrumb-list" aria-label="面包屑导航">
+  
+  <li class="devsite-breadcrumb-item
+             ">
+    
+    
+    
+      
+        
+  <a href="https://ai.google.dev/?hl=zh-cn" class="devsite-breadcrumb-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Breadcrumbs" data-value="1" track-type="globalNav" track-name="breadcrumb" track-metadata-position="1" track-metadata-eventdetail="">
+    
+          首页
+        
+  </a>
+  
+      
+    
+  </li>
+  
+  <li class="devsite-breadcrumb-item
+             ">
+    
+      
+      <div class="devsite-breadcrumb-guillemet material-icons" aria-hidden="true"></div>
+    
+    
+    
+      
+        
+  <a href="https://ai.google.dev/gemini-api?hl=zh-cn" class="devsite-breadcrumb-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Breadcrumbs" data-value="2" track-type="globalNav" track-name="breadcrumb" track-metadata-position="2" track-metadata-eventdetail="Gemini API">
+    
+          Gemini API
+        
+  </a>
+  
+      
+    
+  </li>
+  
+  <li class="devsite-breadcrumb-item
+             ">
+    
+      
+      <div class="devsite-breadcrumb-guillemet material-icons" aria-hidden="true"></div>
+    
+    
+    
+      
+        
+  <a href="https://ai.google.dev/gemini-api/docs?hl=zh-cn" class="devsite-breadcrumb-link gc-analytics-event" data-category="Site-Wide Custom Events" data-label="Breadcrumbs" data-value="3" track-type="globalNav" track-name="breadcrumb" track-metadata-position="3" track-metadata-eventdetail="">
+    
+          文档
+        
+  </a>
+  
+      
+    
+  </li>
+  
+</ul>
+    
+      
+    <devsite-thumb-rating position="header"><div class="devsite-thumb-rating" role="form" aria-labelledby="devsite-thumb-label-header"><div class="devsite-thumb-label" id="devsite-thumb-label-header">该内容对您有帮助吗？</div><div class="devsite-thumbs"><button class="devsite-thumb devsite-thumb-up" data-title="有帮助" aria-label="有帮助"><svg class="devsite-thumb-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21,7h-6.31l0.95-4.57l0.03-0.32c0-0.41-0.17-0.79-0.44-1.06L14.17,0c0,0-7.09,6.85-7.17,7H2v13h16 c0.83,0,1.54-0.5,1.84-1.22l3.02-7.05C22.95,11.5,23,11.26,23,11V9C23,7.9,22.1,7,21,7z M7,18H4V9h3V18z M21,11l-3,7H9V8l4.34-4.34 L12,9h9V11z"></path></svg></button><button class="devsite-thumb devsite-thumb-down" data-title="没有帮助" aria-label="没有帮助"><svg class="devsite-thumb-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3,17h6.31l-0.95,4.57l-0.03,0.32c0,0.41,0.17,0.79,0.44,1.06L9.83,24c0,0,7.09-6.85,7.17-7h5V4H6 C5.17,4,4.46,4.5,4.16,5.22l-3.02,7.05C1.05,12.5,1,12.74,1,13v2C1,16.1,1.9,17,3,17z M17,6h3v9h-3V6z M3,13l3-7h9v10l-4.34,4.34 L12,15H3V13z"></path></svg></button></div></div></devsite-thumb-rating>
+  
+    
+    <devsite-gemini-api-switcher class="nocontent" style="display: none;"></devsite-gemini-api-switcher>
+  </div>
+  
+    <devsite-feedback position="header" project-name="Gemini API" product-id="5292923" bucket="documentation" context="" version="t-devsite-webserver-20260407-r00-rc01.476664030472430875" data-label="Send Feedback Button" track-type="feedback" track-name="sendFeedbackLink" track-metadata-position="header" class="nocontent" data-nosnippet="" project-icon="https://www.gstatic.com/devrel-devsite/prod/va0c14339cfd6d9ab177114d5825fc3f29dc166d5e178822c1d1efe7d037760a4/googledevai/images/touchicon-180-new.png">
+
+  <button>
+  
+    
+    发送反馈
+  
+  </button>
+</devsite-feedback>
+  
+    <h1 class="devsite-page-title" tabindex="-1">
+      思路签名<devsite-actions data-nosnippet="">
+    <devsite-llm-tools><!---->
+      <div class="devsite-llm-tools-container" role="group" aria-label="LLM 工具">
+        <div class="devsite-llm-tools-button-container">
+          <button type="button" class="button button-white devsite-llm-tools-button" aria-label="将页面复制为 Markdown" data-title="将页面复制为 Markdown">
+            <span class="material-icons icon-copy" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="devsite-llm-tools-dropdown-container">
+          <devsite-dropdown-list open-dropdown-aria-label="更多 LLM 工具选项" close-dropdown-aria-label="关闭 LLM 工具选项菜单" rendered=""><template shadowrootmode="open"><!----> <button class="toggle-button button" aria-haspopup="menu" id="dropdown-list-0-toggle" aria-controls="dropdown-list-0-dropdown" aria-expanded="false" aria-label="更多 LLM 工具选项">
+        <slot name="toggle"></slot>
+      </button>
+      <!--?lit$458652251$--><!--?--></template>
+          </devsite-dropdown-list>
+        </div>
+      </div>
+    </devsite-llm-tools><!----></devsite-actions>
+  
+      
+    </h1>
+  <div class="devsite-page-title-meta"></div>
+  
+
+  <devsite-toc class="devsite-nav devsite-toc-embedded" depth="2" devsite-toc-embedded="" expandable="" visible=""><ul class="devsite-nav-list"><li class="devsite-nav-item devsite-nav-heading devsite-toc-toggle"><span class="devsite-nav-title" role="heading" aria-level="2"><span class="devsite-nav-text">本页内容</span></span><button type="button" title="展开/收起内容" class="devsite-nav-show-all button-transparent material-icons"></button></li><li class="devsite-nav-item" visible=""><a href="#how_it_works" class="devsite-nav-title gc-analytics-event" data-category="Site-Wide Custom Events" data-action="click" data-label="Embedded nav" data-value="0" track-type="navigation" track-name="embeddedNav" track-metadata-position="0" track-metadata-link-destination="#how_it_works"><span class="devsite-nav-text" tooltip="">运作方式</span></a></li><li class="devsite-nav-item" visible=""><a href="#function-calling" class="devsite-nav-title gc-analytics-event" data-category="Site-Wide Custom Events" data-action="click" data-label="Embedded nav" data-value="1" track-type="navigation" track-name="embeddedNav" track-metadata-position="1" track-metadata-link-destination="#function-calling"><span class="devsite-nav-text" tooltip="">函数调用部分中的签名</span></a><ul class="devsite-nav-list"><li class="devsite-nav-item" visible=""><a href="#sequential_function_calling_example" class="devsite-nav-title gc-analytics-event" data-category="Site-Wide Custom Events" data-action="click" data-label="Embedded nav" data-value="1.0" track-type="navigation" track-name="embeddedNav" track-metadata-position="1.0" track-metadata-link-destination="#sequential_function_calling_example"><span class="devsite-nav-text" tooltip="">顺序函数调用示例</span></a></li><li class="devsite-nav-item" visible=""><a href="#parallel_function_calling_example" class="devsite-nav-title gc-analytics-event" data-category="Site-Wide Custom Events" data-action="click" data-label="Embedded nav" data-value="1.1" track-type="navigation" track-name="embeddedNav" track-metadata-position="1.1" track-metadata-link-destination="#parallel_function_calling_example"><span class="devsite-nav-text" tooltip="">并行函数调用示例</span></a></li></ul></li><li class="devsite-nav-item" visible=""><a href="#non-function-call" class="devsite-nav-title gc-analytics-event" data-category="Site-Wide Custom Events" data-action="click" data-label="Embedded nav" data-value="2" track-type="navigation" track-name="embeddedNav" track-metadata-position="2" track-metadata-link-destination="#non-function-call"><span class="devsite-nav-text" tooltip="">非 functionCall 部分中的签名</span></a><ul class="devsite-nav-list"><li class="devsite-nav-item" visible=""><a href="#textin-context_reasoning_no_validation" class="devsite-nav-title gc-analytics-event" data-category="Site-Wide Custom Events" data-action="click" data-label="Embedded nav" data-value="2.0" track-type="navigation" track-name="embeddedNav" track-metadata-position="2.0" track-metadata-link-destination="#textin-context_reasoning_no_validation"><span class="devsite-nav-text" tooltip="">文本/上下文推理（无验证）</span></a></li></ul></li><li class="devsite-nav-item" visible=""><a href="#openai" class="devsite-nav-title gc-analytics-event" data-category="Site-Wide Custom Events" data-action="click" data-label="Embedded nav" data-value="3" track-type="navigation" track-name="embeddedNav" track-metadata-position="3" track-metadata-link-destination="#openai"><span class="devsite-nav-text" tooltip="">OpenAI 兼容性的签名</span></a><ul class="devsite-nav-list"><li class="devsite-nav-item" visible=""><a href="#sequential_function_calling_example_2" class="devsite-nav-title gc-analytics-event" data-category="Site-Wide Custom Events" data-action="click" data-label="Embedded nav" data-value="3.0" track-type="navigation" track-name="embeddedNav" track-metadata-position="3.0" track-metadata-link-destination="#sequential_function_calling_example_2"><span class="devsite-nav-text" tooltip="">顺序函数调用示例</span></a></li><li class="devsite-nav-item"><a href="#parallel_function_calling_example_2" class="devsite-nav-title gc-analytics-event" data-category="Site-Wide Custom Events" data-action="click" data-label="Embedded nav" data-value="3.1" track-type="navigation" track-name="embeddedNav" track-metadata-position="3.1" track-metadata-link-destination="#parallel_function_calling_example_2"><span class="devsite-nav-text" tooltip="">并行函数调用示例</span></a></li></ul></li><li class="devsite-nav-item"><a href="#faqs" class="devsite-nav-title gc-analytics-event" data-category="Site-Wide Custom Events" data-action="click" data-label="Embedded nav" data-value="4" track-type="navigation" track-name="embeddedNav" track-metadata-position="4" track-metadata-link-destination="#faqs"><span class="devsite-nav-text" tooltip="">常见问题解答</span></a></li><li class="devsite-nav-item"><a href="#model-behavior" class="devsite-nav-title gc-analytics-event" data-category="Site-Wide Custom Events" data-action="click" data-label="Embedded nav" data-value="5" track-type="navigation" track-name="embeddedNav" track-metadata-position="5" track-metadata-link-destination="#model-behavior"><span class="devsite-nav-text" tooltip="">不同模型的思考签名</span></a></li><li class="devsite-toc-toggle"><button type="button" class="button-flat devsite-nav-more-items material-icons" track-type="navigation" track-name="embeddedNavExpand" title="展开/收起内容"></button></li></ul></devsite-toc>
+  
+    
+  <div class="devsite-article-body clearfix
+  ">
+
+  
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>
+</p>
+
+
+<aside class="special"><strong>重要提示</strong>：<span> <strong>使用
+官方 <a href="https://ai.google.dev/gemini-api/docs/libraries?hl=zh-cn">Google Gen AI SDK</a> 并将完整的
+模型回答对象直接附加到历史记录时，系统会自动处理思考签名</strong>。<strong>只有在使用 REST API 时</strong>，或者在多轮对话中<em>手动提取和返回部分历史记录</em>时，您才需要直接处理思考签名。</span></aside><p>思考签名是模型内部思考过程的加密表示形式，用于在多步交互中保留推理上下文。
+使用思考模型（例如 Gemini 3 和 2.5 系列）时，API 可能会
+在回答的<a href="https://ai.google.dev/api/caching?hl=zh-cn#Part">内容部分</a>
+中返回 <code dir="ltr" translate="no">thoughtSignature</code> 字段（例如 <code dir="ltr" translate="no">text</code> 或 <code dir="ltr" translate="no">functionCall</code> 部分）。</p>
+
+<p>一般而言，如果您在模型回答中收到思考签名，则应在下一轮中发送对话历史记录时，完全按收到的原样将其传回。<strong>使用 Gemini 3 模型时，您必须在函数调用期间传回思考签名，否则会收到验证错误</strong> （4xx 状态代码）。这包括为 Gemini 3
+Flash 使用 <code dir="ltr" translate="no">minimal</code>
+<a href="https://ai.google.dev/gemini-api/docs/thinking?hl=zh-cn#thinking-levels">思考级别</a> 设置的情况。</p>
+
+<h2 data-text="运作方式" id="how_it_works" tabindex="-1" role="presentation"><span class="devsite-heading" role="heading" aria-level="2">运作方式</span><button type="button" class="devsite-heading-link button-flat material-icons" aria-label="复制指向此部分的链接：运作方式" data-title="复制指向此部分的链接：运作方式" data-id="how_it_works"></button></h2>
+
+<p>下图直观地展示了“轮次”和“步骤”在 Gemini API 中与
+<a href="https://ai.google.dev/gemini-api/docs/function-calling?hl=zh-cn">函数调用</a>相关的含义。“轮次”是用户与模型之间对话中的一次完整交流。“步骤”是模型执行的更精细的操作，通常是完成轮次的较大过程的一部分。</p>
+
+<p><img alt="函数调用轮次和步骤图" src="https://ai.google.dev/static/gemini-api/docs/images/fc-turns.png?hl=zh-cn"></p>
+
+<p><em>本文档重点介绍如何处理 Gemini 3 模型的函数调用。如需了解与 2.5 的差异，请参阅
+<a href="#model-behavior">模型行为</a>部分。</em></p>
+
+<p>Gemini 3 会为所有包含函数调用的模型回答（来自 API 的回答）返回思考签名。在以下情况下，系统会显示思考签名：</p>
+
+<ul>
+<li>如果存在<a href="https://ai.google.dev/gemini-api/docs/function-calling?hl=zh-cn#parallel_function_calling">并行函数</a>
+调用，模型回答返回的第一个函数调用部分将包含
+思考签名。</li>
+<li>如果存在顺序函数调用（多步），每个函数调用都将包含一个签名，并且您必须传回所有签名。</li>
+<li>不包含函数调用的模型回答会在模型返回的最后一部分中返回思考签名。</li>
+</ul>
+
+<p>下表直观地展示了多步函数调用，将轮次和步骤的定义与上述介绍的签名概念相结合：</p>
+
+<div class="devsite-table-wrapper"><table>
+  <tbody><tr>
+    <td><p><strong>轮次</strong></p></td>
+    <td><p><strong>步骤</strong></p></td>
+    <td><p><strong>用户请求</strong></p></td>
+    <td><p><strong>模型回答</strong></p></td>
+    <td><p><strong>FunctionResponse</strong></p></td>
+  </tr>
+  <tr>
+    <td><p>1</p></td>
+    <td><p>1</p></td>
+    <td><code dir="ltr" translate="no">request1 = user_<wbr>prompt</code></td>
+    <td><code dir="ltr" translate="no">FC1 + signature</code></td>
+    <td><code dir="ltr" translate="no">FR1</code></td>
+  </tr>
+  <tr>
+    <td><p>1</p></td>
+    <td><p>2</p></td>
+    <td><code dir="ltr" translate="no">request2 = request1 + (FC1 + signature) + FR1</code></td>
+    <td><code dir="ltr" translate="no">FC2 + signature</code></td>
+    <td><code dir="ltr" translate="no">FR2</code></td>
+  </tr>
+  <tr>
+    <td><p>1</p></td>
+    <td><p>3</p></td>
+    <td><code dir="ltr" translate="no">request3 = request2 + (FC2 + signature) + FR2</code></td>
+    <td><code dir="ltr" translate="no">text_<wbr>output<p></p></code><p><code dir="ltr" translate="no">(no FCs)</code></p></td>
+    <td><p>无</p></td>
+  </tr>
+</tbody></table></div>
+
+<h2 data-text="函数调用部分中的签名" id="function-calling" tabindex="-1" role="presentation"><span class="devsite-heading" role="heading" aria-level="2">函数调用部分中的签名</span><button type="button" class="devsite-heading-link button-flat material-icons" aria-label="复制指向此部分的链接：函数调用部分中的签名" data-title="复制指向此部分的链接：函数调用部分中的签名" data-id="function-calling"></button></h2>
+
+<p>当 Gemini 生成 <code dir="ltr" translate="no">functionCall</code> 时，它会依赖 <code dir="ltr" translate="no">thought_signature</code> 在下一轮中正确处理工具的输出。</p>
+
+<ul>
+<li><strong>行为</strong>：
+<ul>
+<li><strong>单个函数调用</strong>：<code dir="ltr" translate="no">functionCall</code> 部分将包含 <code dir="ltr" translate="no">thought_signature</code>。</li>
+<li><strong><strong>并行函数调用</strong>：如果模型在回答中生成并行函数调用
+，则 <code dir="ltr" translate="no">thought_signature</code> **仅附加到第一个**
+<code dir="ltr" translate="no">functionCall</code> 部分。</strong>同一回答中的后续 <code dir="ltr" translate="no">functionCall</code> 部分将<strong>不</strong> 包含签名。</li>
+</ul></li>
+<li><strong>要求</strong>：您<strong>必须</strong> 在传回对话历史记录时，在收到此签名的确切部分中返回此签名。</li>
+<li><strong>验证</strong>：系统会对当前轮次中的所有函数调用强制执行严格验证。（仅需要当前轮次；我们不会验证之前的轮次）
+<ul>
+<li>API 会在历史记录中（从最新到最旧）查找包含标准内容（例如 <code dir="ltr" translate="no">text</code>）（即当前轮次的开始）的最新<strong>用户</strong> 消息。这<strong>be</strong> 会是 <code dir="ltr" translate="no">functionResponse</code>。</li>
+<li><strong>所有</strong>模型 <code dir="ltr" translate="no">functionCall</code> 轮次在该特定使用
+消息之后发生，并被视为轮次的一部分。</li>
+<li>当前轮次<strong>每个步骤</strong> 中的<strong>第一个</strong> <code dir="ltr" translate="no">functionCall</code> 部分<strong>必须</strong> 包含其 <code dir="ltr" translate="no">thought_signature</code>。</li>
+<li>如果您在当前轮次任何步骤中省略第一个 <code dir="ltr" translate="no">functionCall</code> 部分的 <code dir="ltr" translate="no">thought_signature</code>，请求将失败并显示 400 错误。</li>
+</ul></li>
+<li><strong>如果未返回正确的签名，您将收到以下错误</strong>
+<ul>
+<li>Gemini 3 模型：如果未包含签名，将导致 400 错误。措辞将采用以下形式：
+<ul>
+<li>内容块 <code dir="ltr" translate="no">&lt;index of contents array&gt;</code> 中的函数调用 <code dir="ltr" translate="no">&lt;Function Call&gt;</code> 缺少 <code dir="ltr" translate="no">thought_signature</code>。例如，<em>函数
+调用 <code dir="ltr" translate="no">FC1</code> 在 <code dir="ltr" translate="no">1.</code> 内容块中缺少 <code dir="ltr" translate="no">thought_signature</code>。</em></li>
+</ul></li>
+</ul></li>
+</ul>
+
+<h3 data-text="顺序函数调用示例" id="sequential_function_calling_example" tabindex="-1" role="presentation"><span class="devsite-heading" role="heading" aria-level="3">顺序函数调用示例</span><button type="button" class="devsite-heading-link button-flat material-icons" aria-label="复制指向此部分的链接：顺序函数调用示例" data-title="复制指向此部分的链接：顺序函数调用示例" data-id="sequential_function_calling_example"></button></h3>
+
+<p>本部分展示了一个多函数调用示例，其中用户提出了一个需要执行多个任务的复杂问题。</p>
+
+<p>我们来了解一个多轮函数调用示例，其中用户提出了
+一个需要执行多个任务的复杂问题：<code dir="ltr" translate="no">"Check flight status for AA100 and
+book a taxi if delayed"</code>。</p>
+
+<div class="devsite-table-wrapper"><table>
+  <tbody><tr>
+    <td><p><strong>轮次</strong></p></td>
+    <td><p><strong>步骤</strong></p></td>
+    <td><p><strong>用户请求</strong></p></td>
+    <td><p><strong>模型回答</strong></p></td>
+    <td><p><strong>FunctionResponse</strong></p></td>
+  </tr>
+  <tr>
+    <td><p>1</p></td>
+    <td><p>1</p></td>
+    <td><code dir="ltr" translate="no">request1="Check flight status for AA100 and book a taxi 2 hours before if delayed.<wbr>"</code></td>
+    <td><code dir="ltr" translate="no">FC1 ("check_<wbr>flight") + signature</code></td>
+    <td><code dir="ltr" translate="no">FR1</code></td>
+  </tr>
+  <tr>
+    <td><p>1</p></td>
+    <td><p>2</p></td>
+    <td><code dir="ltr" translate="no">request2 <strong>=</strong> request1 <strong>+</strong> FC1 ("check_<wbr>flight") + signature + FR1</code></td>
+    <td><code dir="ltr" translate="no">FC2(<wbr>"book_<wbr>taxi") + signature</code></td>
+    <td><code dir="ltr" translate="no">FR2</code></td>
+  </tr>
+  <tr>
+    <td><p>1</p></td>
+    <td><p>3</p></td>
+    <td><code dir="ltr" translate="no">request3 <strong>=</strong> request2 <strong>+</strong> FC2 ("book_<wbr>taxi") + signature + FR2</code></td>
+    <td><code dir="ltr" translate="no">text_<wbr>output<p></p></code><p><code dir="ltr" translate="no">(no FCs)</code></p></td>
+    <td><code dir="ltr" translate="no">None</code></td>
+  </tr>
+</tbody></table></div>
+
+<p>以下代码说明了上表中的顺序。</p>
+
+<p><strong>第 1 轮，第 1 步（用户请求）</strong></p>
+<div></div><devsite-code data-copy-event-label=""><div class="devsite-code-buttons-container" role="group" aria-label="操作按钮"><button type="button" class="gc-analytics-event material-icons devsite-icon-code-dark devsite-toggle-dark" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" aria-label="深色代码主题背景" data-title="深色代码主题背景"></button><button type="button" class="gc-analytics-event material-icons devsite-icon-code-light devsite-toggle-light" data-category="Site-Wide Custom Events" data-label="Light Code Toggle" track-type="exampleCode" track-name="lightCodeToggle" aria-label="浅色代码主题背景" data-title="浅色代码主题背景"></button><button type="button" class="gc-analytics-event material-icons devsite-icon-copy" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" aria-label="复制代码示例" data-title="复制代码示例"></button></div><pre class="" translate="no" dir="ltr" is-upgraded="" syntax="JSON"><code translate="no" dir="ltr"><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-nt">"contents"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"user"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"parts"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"text"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"Check flight status for AA100 and book a taxi 2 hours before if delayed."</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-p">],</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-nt">"tools"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"functionDeclarations"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"check_flight"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"description"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"Gets the current status of a flight"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"parameters"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"type"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"object"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"properties"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"flight"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">                </span><span class="devsite-syntax-nt">"type"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"string"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">                </span><span class="devsite-syntax-nt">"description"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"The flight number to check"</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"required"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-s2">"flight"</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"book_taxi"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"description"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"Book a taxi"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"parameters"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"type"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"object"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"properties"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"time"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">                </span><span class="devsite-syntax-nt">"type"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"string"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">                </span><span class="devsite-syntax-nt">"description"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"time to book the taxi"</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"required"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-s2">"time"</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-p">}</span>
+</code></pre></devsite-code>
+<p><strong>第 1 轮，第 1 步（模型回答）</strong></p>
+<div></div><devsite-code data-copy-event-label=""><div class="devsite-code-buttons-container" role="group" aria-label="操作按钮"><button type="button" class="gc-analytics-event material-icons devsite-icon-code-dark devsite-toggle-dark" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" aria-label="深色代码主题背景" data-title="深色代码主题背景"></button><button type="button" class="gc-analytics-event material-icons devsite-icon-code-light devsite-toggle-light" data-category="Site-Wide Custom Events" data-label="Light Code Toggle" track-type="exampleCode" track-name="lightCodeToggle" aria-label="浅色代码主题背景" data-title="浅色代码主题背景"></button><button type="button" class="gc-analytics-event material-icons devsite-icon-copy" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" aria-label="复制代码示例" data-title="复制代码示例"></button></div><pre class="" translate="no" dir="ltr" is-upgraded="" syntax="JSON"><code translate="no" dir="ltr"><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-nt">"content"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"model"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"parts"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"functionCall"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"check_flight"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"args"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">                </span><span class="devsite-syntax-nt">"flight"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"AA100"</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"thoughtSignature"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"&lt;Signature A&gt;"</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-p">}</span>
+</code></pre></devsite-code>
+<p><strong>第 1 轮，第 2 步（用户回答 - 发送工具输出）</strong> 由于此用户轮次仅包含 <code dir="ltr" translate="no">functionResponse</code>（没有新文本），因此我们仍处于第 1 轮。我们
+必须保留 <code dir="ltr" translate="no">&lt;Signature_A&gt;</code>。</p>
+<div></div><devsite-code data-copy-event-label=""><div class="devsite-code-buttons-container" role="group" aria-label="操作按钮"><button type="button" class="gc-analytics-event material-icons devsite-icon-code-dark devsite-toggle-dark" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" aria-label="深色代码主题背景" data-title="深色代码主题背景"></button><button type="button" class="gc-analytics-event material-icons devsite-icon-code-light devsite-toggle-light" data-category="Site-Wide Custom Events" data-label="Light Code Toggle" track-type="exampleCode" track-name="lightCodeToggle" aria-label="浅色代码主题背景" data-title="浅色代码主题背景"></button><button type="button" class="gc-analytics-event material-icons devsite-icon-copy" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" aria-label="复制代码示例" data-title="复制代码示例"></button></div><pre class="" translate="no" dir="ltr" is-upgraded="" syntax="JSON"><code translate="no" dir="ltr"><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"user"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"parts"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"text"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"Check flight status for AA100 and book a taxi 2 hours before if delayed."</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"model"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"parts"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"functionCall"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"check_flight"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"args"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">                </span><span class="devsite-syntax-nt">"flight"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"AA100"</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"thoughtSignature"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"&lt;Signature A&gt;"</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-c1">//Required and Validated</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"user"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"parts"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"functionResponse"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"check_flight"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"response"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">                </span><span class="devsite-syntax-nt">"status"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"delayed"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">                </span><span class="devsite-syntax-nt">"departure_time"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"12 PM"</span>
+<span class="devsite-syntax-w">                </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-p">}</span>
+</code></pre></devsite-code>
+<p><strong>第 1 轮，第 2 步（模型）</strong> 模型现在根据上一个工具输出决定预订出租车。</p>
+<div></div><devsite-code data-copy-event-label=""><div class="devsite-code-buttons-container" role="group" aria-label="操作按钮"><button type="button" class="gc-analytics-event material-icons devsite-icon-code-dark devsite-toggle-dark" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" aria-label="深色代码主题背景" data-title="深色代码主题背景"></button><button type="button" class="gc-analytics-event material-icons devsite-icon-code-light devsite-toggle-light" data-category="Site-Wide Custom Events" data-label="Light Code Toggle" track-type="exampleCode" track-name="lightCodeToggle" aria-label="浅色代码主题背景" data-title="浅色代码主题背景"></button><button type="button" class="gc-analytics-event material-icons devsite-icon-copy" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" aria-label="复制代码示例" data-title="复制代码示例"></button></div><pre class="" translate="no" dir="ltr" is-upgraded="" syntax="JSON"><code translate="no" dir="ltr"><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"content"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"model"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"parts"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"functionCall"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"book_taxi"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"args"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">                </span><span class="devsite-syntax-nt">"time"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"10 AM"</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"thoughtSignature"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"&lt;Signature B&gt;"</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-p">}</span>
+</code></pre></devsite-code>
+<p><strong>第 1 轮，第 3 步（用户 - 发送工具输出）</strong> 如要发送出租车预订
+确认，我们必须包含此循环中<strong>所有</strong> 函数调用的签名
+(<code dir="ltr" translate="no">&lt;Signature A&gt;</code> + <code dir="ltr" translate="no">&lt;Signature B&gt;</code>)。</p>
+<div></div><devsite-code data-copy-event-label=""><div class="devsite-code-buttons-container" role="group" aria-label="操作按钮"><button type="button" class="gc-analytics-event material-icons devsite-icon-code-dark devsite-toggle-dark" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" aria-label="深色代码主题背景" data-title="深色代码主题背景"></button><button type="button" class="gc-analytics-event material-icons devsite-icon-code-light devsite-toggle-light" data-category="Site-Wide Custom Events" data-label="Light Code Toggle" track-type="exampleCode" track-name="lightCodeToggle" aria-label="浅色代码主题背景" data-title="浅色代码主题背景"></button><button type="button" class="gc-analytics-event material-icons devsite-icon-copy" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" aria-label="复制代码示例" data-title="复制代码示例"></button></div><pre class="" translate="no" dir="ltr" is-upgraded="" syntax="JSON"><code translate="no" dir="ltr"><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"user"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"parts"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"text"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"Check flight status for AA100 and book a taxi 2 hours before if delayed."</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"model"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"parts"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"functionCall"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"check_flight"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"args"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">                </span><span class="devsite-syntax-nt">"flight"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"AA100"</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"thoughtSignature"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"&lt;Signature A&gt;"</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-c1">//Required and Validated</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"user"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"parts"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"functionResponse"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"check_flight"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"response"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">                </span><span class="devsite-syntax-nt">"status"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"delayed"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">                </span><span class="devsite-syntax-nt">"departure_time"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"12 PM"</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"model"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"parts"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"functionCall"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"book_taxi"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"args"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">                </span><span class="devsite-syntax-nt">"time"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"10 AM"</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"thoughtSignature"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"&lt;Signature B&gt;"</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-c1">//Required and Validated</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"user"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"parts"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"functionResponse"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"book_taxi"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"response"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">                </span><span class="devsite-syntax-nt">"booking_status"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"success"</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-p">}</span>
+</code></pre></devsite-code>
+<h3 data-text="并行函数调用示例" id="parallel_function_calling_example" tabindex="-1" role="presentation"><span class="devsite-heading" role="heading" aria-level="3">并行函数调用示例</span><button type="button" class="devsite-heading-link button-flat material-icons" aria-label="复制指向此部分的链接：并行函数调用示例" data-title="复制指向此部分的链接：并行函数调用示例" data-id="parallel_function_calling_example"></button></h3>
+
+<p>我们来了解一个并行函数调用示例，其中用户要求
+<code dir="ltr" translate="no">"Check weather in Paris and London"</code>，以了解模型在何处进行验证。</p>
+
+<div class="devsite-table-wrapper"><table>
+  <thead>
+    <tr>
+      <th><p><strong>轮次</strong></p></th>
+      <th><p><strong>步骤</strong></p></th>
+      <th><p><strong>用户请求</strong></p></th>
+      <th><p><strong>模型回答</strong></p></th>
+      <th><p><strong>FunctionResponse</strong></p></th>
+    </tr>
+  </thead>
+  <tbody><tr>
+    <td><p>1</p></td>
+    <td><p>1</p></td>
+    <td><p>request1="Check the weather in Paris and London"</p></td>
+    <td><p>FC1 ("Paris") + signature</p><p>FC2 ("London")</p></td>
+    <td><p>FR1</p></td>
+  </tr>
+  <tr>
+    <td><p>1</p></td>
+    <td><p>2</p></td>
+    <td><p>request 2 <strong>=</strong> request1 <strong>+</strong> FC1 ("Paris") + signature + FC2 ("London")</p></td>
+    <td><p>text_output</p><p>（无 FC）</p></td>
+    <td><p>无</p></td>
+  </tr>
+</tbody></table></div>
+
+<p>以下代码说明了上表中的顺序。</p>
+
+<p><strong>第 1 轮，第 1 步（用户请求）</strong></p>
+<div></div><devsite-code data-copy-event-label=""><div class="devsite-code-buttons-container" role="group" aria-label="操作按钮"><button type="button" class="gc-analytics-event material-icons devsite-icon-code-dark devsite-toggle-dark" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" aria-label="深色代码主题背景" data-title="深色代码主题背景"></button><button type="button" class="gc-analytics-event material-icons devsite-icon-code-light devsite-toggle-light" data-category="Site-Wide Custom Events" data-label="Light Code Toggle" track-type="exampleCode" track-name="lightCodeToggle" aria-label="浅色代码主题背景" data-title="浅色代码主题背景"></button><button type="button" class="gc-analytics-event material-icons devsite-icon-copy" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" aria-label="复制代码示例" data-title="复制代码示例"></button></div><pre class="" translate="no" dir="ltr" is-upgraded="" syntax="JSON"><code translate="no" dir="ltr"><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-nt">"contents"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"user"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"parts"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"text"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"Check the weather in Paris and London."</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-p">],</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-nt">"tools"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"functionDeclarations"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"get_current_temperature"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"description"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"Gets the current temperature for a given location."</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"parameters"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"type"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"object"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"properties"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"location"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">                </span><span class="devsite-syntax-nt">"type"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"string"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">                </span><span class="devsite-syntax-nt">"description"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"The city name, e.g. San Francisco"</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"required"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-s2">"location"</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-p">}</span>
+</code></pre></devsite-code>
+<p><strong>第 1 轮，第 1 步（模型回答）</strong></p>
+<div></div><devsite-code data-copy-event-label=""><div class="devsite-code-buttons-container" role="group" aria-label="操作按钮"><button type="button" class="gc-analytics-event material-icons devsite-icon-code-dark devsite-toggle-dark" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" aria-label="深色代码主题背景" data-title="深色代码主题背景"></button><button type="button" class="gc-analytics-event material-icons devsite-icon-code-light devsite-toggle-light" data-category="Site-Wide Custom Events" data-label="Light Code Toggle" track-type="exampleCode" track-name="lightCodeToggle" aria-label="浅色代码主题背景" data-title="浅色代码主题背景"></button><button type="button" class="gc-analytics-event material-icons devsite-icon-copy" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" aria-label="复制代码示例" data-title="复制代码示例"></button></div><pre class="" translate="no" dir="ltr" is-upgraded="" syntax="JSON"><code translate="no" dir="ltr"><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-nt">"content"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-nt">"parts"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"functionCall"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"get_current_temperature"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"args"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"location"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"Paris"</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"thoughtSignature"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"&lt;Signature_A&gt;"</span><span class="devsite-syntax-c1">// INCLUDED on First FC</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"functionCall"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"get_current_temperature"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"args"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"location"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"London"</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">}</span><span class="devsite-syntax-c1">// NO signature on subsequent parallel FCs</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-p">}</span>
+</code></pre></devsite-code>
+<p><strong>第 1 轮，第 2 步（用户回答 - 发送工具输出）</strong> 我们必须完全按接收时的原样保留第一部分的
+<code dir="ltr" translate="no">&lt;Signature_A&gt;</code>。</p>
+<div></div><devsite-code data-copy-event-label=""><div class="devsite-code-buttons-container" role="group" aria-label="操作按钮"><button type="button" class="gc-analytics-event material-icons devsite-icon-code-dark devsite-toggle-dark" data-category="Site-Wide Custom Events" data-label="Dark Code Toggle" track-type="exampleCode" track-name="darkCodeToggle" aria-label="深色代码主题背景" data-title="深色代码主题背景"></button><button type="button" class="gc-analytics-event material-icons devsite-icon-code-light devsite-toggle-light" data-category="Site-Wide Custom Events" data-label="Light Code Toggle" track-type="exampleCode" track-name="lightCodeToggle" aria-label="浅色代码主题背景" data-title="浅色代码主题背景"></button><button type="button" class="gc-analytics-event material-icons devsite-icon-copy" data-category="Site-Wide Custom Events" data-label="Click To Copy" track-type="exampleCode" track-name="clickToCopy" aria-label="复制代码示例" data-title="复制代码示例"></button></div><pre class="" translate="no" dir="ltr" is-upgraded="" syntax="JSON"><code translate="no" dir="ltr"><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"user"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-nt">"parts"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"text"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"Check the weather in Paris and London."</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"model"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-nt">"parts"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"functionCall"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"get_current_temperature"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"args"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"city"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"Paris"</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"thought_signature"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"&lt;Signature_A&gt;"</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-c1">// MUST BE INCLUDED</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"functionCall"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"get_current_temperature"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"args"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"city"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"London"</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">}</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-c1">// NO SIGNATURE FIELD</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"user"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-nt">"parts"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"functionResponse"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"get_current_temperature"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"response"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"temp"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"15C"</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"functionResponse"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"get_current_temperature"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"response"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"temp"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"12C"</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-p">]</span>
+</code></pre></devsite-code>
+<h2 data-text="非 functionCall 部分中的签名" id="non-function-call" tabindex="-1">非 <code dir="ltr" translate="no">function<wbr>Call</code> 部分中的签名</h2>
+
+<p>Gemini 也可能会在非函数调用部分的回答的最后一部分中返回 <code dir="ltr" translate="no">thought_signatures</code>。</p>
+
+<ul>
+<li><strong>行为</strong>：模型返回的最后内容部分（<code dir="ltr" translate="no">text, inlineData…</code>）可能包含 <code dir="ltr" translate="no">thought_signature</code>。</li>
+<li><strong>建议</strong>：<strong>建议</strong>返回这些签名，以确保
+模型保持高质量的推理，特别是对于遵循复杂指令
+或模拟代理工作流的情况。</li>
+<li><strong>验证</strong>：API <strong>不</strong> 会严格强制验证。如果您省略它们，不会收到阻塞性错误，但性能可能会下降。</li>
+</ul>
+
+<h3 data-text="文本/上下文推理（无验证）" id="textin-context_reasoning_no_validation" tabindex="-1">文本/上下文推理（无验证）</h3>
+
+<p><strong>第 1 轮，第 1 步（模型回答）</strong></p>
+<div></div><devsite-code data-copy-event-label=""><pre class="" translate="no" dir="ltr" is-upgraded="" syntax="JSON"><code translate="no" dir="ltr"><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"model"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-nt">"parts"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"text"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"I need to calculate the risk. Let me think step-by-step..."</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"thought_signature"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"&lt;Signature_C&gt;"</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-c1">// OPTIONAL (Recommended)</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-p">}</span>
+</code></pre></devsite-code>
+<p><strong>第 2 轮，第 1 步（用户）</strong></p>
+<div></div><devsite-code data-copy-event-label=""><pre class="" translate="no" dir="ltr" is-upgraded="" syntax="JSON"><code translate="no" dir="ltr"><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-p">{</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"user"</span><span class="devsite-syntax-p">,</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-nt">"parts"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[{</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-nt">"text"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"What is the risk?"</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">}]</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"model"</span><span class="devsite-syntax-p">,</span><span class="devsite-syntax-w"> </span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-nt">"parts"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"text"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"I need to calculate the risk. Let me think step-by-step..."</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-c1">// If you omit &lt;Signature_C&gt; here, no error will occur.</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-p">{</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"user"</span><span class="devsite-syntax-p">,</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-nt">"parts"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[{</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-nt">"text"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"Summarize it."</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">}]</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-p">]</span>
+</code></pre></devsite-code>
+<h2 data-text="OpenAI 兼容性的签名" id="openai" tabindex="-1">OpenAI 兼容性的签名</h2>
+
+<p>以下示例展示了如何使用 <a href="https://ai.google.dev/gemini-api/docs/openai?hl=zh-cn">OpenAI 兼容性</a>处理聊天补全 API 的思考签名。</p>
+
+<h3 data-text="顺序函数调用示例" id="sequential_function_calling_example_2" tabindex="-1">顺序函数调用示例</h3>
+
+<p>这是一个多函数调用示例，其中用户提出了一个需要执行多个任务的复杂问题。</p>
+
+<p>我们来了解一个多轮函数调用示例，其中用户要求 <code dir="ltr" translate="no">Check flight status for AA100 and book a taxi if delayed</code>，您可以了解在用户提出需要执行多个任务的复杂问题时会发生什么情况。</p>
+
+<div class="devsite-table-wrapper"><table>
+  <tbody><tr>
+    <td><p><strong>轮次</strong></p></td>
+    <td><p><strong>步骤</strong></p></td>
+    <td><p><strong>用户请求</strong></p></td>
+    <td><p><strong>模型回答</strong></p></td>
+    <td><p><strong>FunctionResponse</strong></p></td>
+  </tr>
+  <tr>
+    <td><p>1</p></td>
+    <td><p>1</p></td>
+    <td><code dir="ltr" translate="no">request1="Check the weather in Paris and London"</code></td>
+    <td><code dir="ltr" translate="no">FC1 ("Paris") + signature<p></p></code><p><code dir="ltr" translate="no">FC2 ("London")</code></p></td>
+    <td><code dir="ltr" translate="no">FR1</code></td>
+  </tr>
+  <tr>
+    <td><p>1</p></td>
+    <td><p>2</p></td>
+    <td><code dir="ltr" translate="no">request 2 <strong>=</strong> request1 <strong>+</strong> FC1 ("Paris") + signature + FC2 ("London")</code></td> 
+    <td><code dir="ltr" translate="no">text_output<p></p></code><p><code dir="ltr" translate="no">(no FCs)</code></p></td>
+    <td><code dir="ltr" translate="no">None</code></td>
+  </tr>
+</tbody></table></div>
+
+<p>以下代码介绍了给定的顺序。</p>
+
+<p><strong>第 1 轮，第 1 步（用户请求）</strong></p>
+<div></div><devsite-code data-copy-event-label=""><pre class="" translate="no" dir="ltr" is-upgraded="" syntax="JSON"><code translate="no" dir="ltr"><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-nt">"model"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"google/gemini-3.1-pro-preview"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-nt">"messages"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"user"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"content"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"Check flight status for AA100 and book a taxi 2 hours before if delayed."</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-p">],</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-nt">"tools"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"type"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"function"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"function"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"check_flight"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"description"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"Gets the current status of a flight"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"parameters"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"type"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"object"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"properties"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"flight"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"type"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"string"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"description"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"The flight number to check."</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"required"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-s2">"flight"</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"type"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"function"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"function"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"book_taxi"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"description"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"Book a taxi"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"parameters"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"type"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"object"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"properties"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"time"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"type"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"string"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"description"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"time to book the taxi"</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"required"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-s2">"time"</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-p">}</span>
+</code></pre></devsite-code>
+<p><strong>第 1 轮，第 1 步（模型回答）</strong></p>
+<div></div><devsite-code data-copy-event-label=""><pre class="" translate="no" dir="ltr" is-upgraded="" syntax="JSON"><code translate="no" dir="ltr"><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"model"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"tool_calls"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"extra_content"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"google"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">                </span><span class="devsite-syntax-nt">"thought_signature"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"&lt;Signature A&gt;"</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"function"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"arguments"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"{\"flight\":\"AA100\"}"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"check_flight"</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"id"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"function-call-1"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"type"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"function"</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">}</span>
+</code></pre></devsite-code>
+<p><strong>第 1 轮，第 2 步（用户回答 - 发送工具输出）</strong></p>
+
+<p>由于此用户轮次仅包含 <code dir="ltr" translate="no">functionResponse</code>（没有新文本），因此我们
+仍处于第 1 轮，并且必须保留 <code dir="ltr" translate="no">&lt;Signature_A&gt;</code>。</p>
+<div></div><devsite-code data-copy-event-label=""><pre class="" translate="no" dir="ltr" is-upgraded="" syntax="JSON"><code translate="no" dir="ltr"><span class="devsite-syntax-nt">"messages"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"user"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"content"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"Check flight status for AA100 and book a taxi 2 hours before if delayed."</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"model"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"tool_calls"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"extra_content"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"google"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">                </span><span class="devsite-syntax-nt">"thought_signature"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"&lt;Signature A&gt;"</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-c1">//Required and Validated</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"function"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"arguments"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"{\"flight\":\"AA100\"}"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"check_flight"</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"id"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"function-call-1"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"type"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"function"</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"tool"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"check_flight"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"tool_call_id"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"function-call-1"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"content"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"{\"status\":\"delayed\",\"departure_time\":\"12 PM\"}"</span><span class="devsite-syntax-w">                 </span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-p">]</span>
+</code></pre></devsite-code>
+<p><strong>第 1 轮，第 2 步（模型）</strong></p>
+
+<p>模型现在根据上一个工具输出决定预订出租车。</p>
+<div></div><devsite-code data-copy-event-label=""><pre class="" translate="no" dir="ltr" is-upgraded="" syntax="JSON"><code translate="no" dir="ltr"><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"model"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-nt">"tool_calls"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-nt">"extra_content"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-nt">"google"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-nt">"thought_signature"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"&lt;Signature B&gt;"</span>
+<span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"function"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"arguments"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"{\"time\":\"10 AM\"}"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"book_taxi"</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"id"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"function-call-2"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"type"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"function"</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">       </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-p">}</span>
+</code></pre></devsite-code>
+<p><strong>第 1 轮，第 3 步（用户 - 发送工具输出）</strong></p>
+
+<p>如要发送出租车预订确认，我们必须包含此循环中所有
+函数调用的签名（<code dir="ltr" translate="no">&lt;Signature A&gt;</code> + <code dir="ltr" translate="no">&lt;Signature B&gt;</code>）。</p>
+<div></div><devsite-code data-copy-event-label=""><pre class="" translate="no" dir="ltr" is-upgraded="" syntax="JSON"><code translate="no" dir="ltr"><span class="devsite-syntax-nt">"messages"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"user"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"content"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"Check flight status for AA100 and book a taxi 2 hours before if delayed."</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"model"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"tool_calls"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"extra_content"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"google"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">                </span><span class="devsite-syntax-nt">"thought_signature"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"&lt;Signature A&gt;"</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-c1">//Required and Validated</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"function"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"arguments"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"{\"flight\":\"AA100\"}"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"check_flight"</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"id"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"function-call-1d6a1a61-6f4f-4029-80ce-61586bd86da5"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"type"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"function"</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"tool"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"check_flight"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"tool_call_id"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"function-call-1d6a1a61-6f4f-4029-80ce-61586bd86da5"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"content"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"{\"status\":\"delayed\",\"departure_time\":\"12 PM\"}"</span><span class="devsite-syntax-w">                 </span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"model"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"tool_calls"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"extra_content"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"google"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">                </span><span class="devsite-syntax-nt">"thought_signature"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"&lt;Signature B&gt;"</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-c1">//Required and Validated</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"function"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"arguments"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"{\"time\":\"10 AM\"}"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"book_taxi"</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"id"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"function-call-65b325ba-9b40-4003-9535-8c7137b35634"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"type"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"function"</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"tool"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"book_taxi"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"tool_call_id"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"function-call-65b325ba-9b40-4003-9535-8c7137b35634"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"content"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"{\"booking_status\":\"success\"}"</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-p">]</span>
+</code></pre></devsite-code>
+<h3 data-text="并行函数调用示例" id="parallel_function_calling_example_2" tabindex="-1">并行函数调用示例</h3>
+
+<p>我们来了解一个并行函数调用示例，其中用户要求
+<code dir="ltr" translate="no">"Check weather in Paris and London"</code>，您可以了解模型在何处进行
+验证。</p>
+
+<div class="devsite-table-wrapper"><table>
+  <tbody><tr>
+    <td><p><strong>轮次</strong></p></td>
+    <td><p><strong>步骤</strong></p></td>
+    <td><p><strong>用户请求</strong></p></td>
+    <td><p><strong>模型回答</strong></p></td>
+    <td><p><strong>FunctionResponse</strong></p></td>
+  </tr>
+  <tr>
+    <td><p>1</p></td>
+    <td><p>1</p></td>
+    <td><code dir="ltr" translate="no">request1="Check the weather in Paris and London"</code></td>
+    <td><code dir="ltr" translate="no">FC1 ("Paris") + signature<p></p></code><p><code dir="ltr" translate="no">FC2 ("London")</code></p></td>
+    <td><code dir="ltr" translate="no">FR1</code></td>
+  </tr>
+  <tr>
+    <td><p>1</p></td>
+    <td><p>2</p></td>
+    <td><code dir="ltr" translate="no">request 2 <strong>=</strong> request1 <strong>+</strong> FC1 ("Paris") + signature + FC2 ("London")</code></td>
+    <td><code dir="ltr" translate="no">text_output<p></p></code><p><code dir="ltr" translate="no">(no FCs)</code></p></td>
+    <td><code dir="ltr" translate="no">None</code></td>
+  </tr>
+</tbody></table></div>
+
+<p>以下代码介绍了给定的顺序。</p>
+
+<p><strong>第 1 轮，第 1 步（用户请求）</strong></p>
+<div></div><devsite-code data-copy-event-label=""><pre class="" translate="no" dir="ltr" is-upgraded="" syntax="JSON"><code translate="no" dir="ltr"><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-nt">"contents"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"user"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"parts"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"text"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"Check the weather in Paris and London."</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-p">],</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-nt">"tools"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"functionDeclarations"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"get_current_temperature"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"description"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"Gets the current temperature for a given location."</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-nt">"parameters"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"type"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"object"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"properties"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"location"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">                </span><span class="devsite-syntax-nt">"type"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"string"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">                </span><span class="devsite-syntax-nt">"description"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"The city name, e.g. San Francisco"</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"required"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-s2">"location"</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-p">}</span>
+</code></pre></devsite-code>
+<p><strong>第 1 轮，第 1 步（模型回答）</strong></p>
+<div></div><devsite-code data-copy-event-label=""><pre class="" translate="no" dir="ltr" is-upgraded="" syntax="JSON"><code translate="no" dir="ltr"><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"assistant"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"tool_calls"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"extra_content"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"google"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">                </span><span class="devsite-syntax-nt">"thought_signature"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"&lt;Signature A&gt;"</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-c1">//Signature returned</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"function"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"arguments"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"{\"location\":\"Paris\"}"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"get_current_temperature"</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"id"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"function-call-f3b9ecb3-d55f-4076-98c8-b13e9d1c0e01"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"type"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"function"</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"function"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"arguments"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"{\"location\":\"London\"}"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"get_current_temperature"</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"id"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"function-call-335673ad-913e-42d1-bbf5-387c8ab80f44"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"type"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"function"</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-c1">// No signature on Parallel FC</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-p">}</span>
+</code></pre></devsite-code>
+<p><strong>第 1 轮，第 2 步（用户回答 - 发送工具输出）</strong></p>
+
+<p>您必须完全按接收时的原样保留第一部分的 <code dir="ltr" translate="no">&lt;Signature_A&gt;</code>。</p>
+<div></div><devsite-code data-copy-event-label=""><pre class="" translate="no" dir="ltr" is-upgraded="" syntax="JSON"><code translate="no" dir="ltr"><span class="devsite-syntax-nt">"messages"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"user"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"content"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"Check the weather in Paris and London."</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"assistant"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-nt">"tool_calls"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">[</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"extra_content"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"google"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">                </span><span class="devsite-syntax-nt">"thought_signature"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"&lt;Signature A&gt;"</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-c1">//Required</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"function"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"arguments"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"{\"location\":\"Paris\"}"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"get_current_temperature"</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"id"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"function-call-f3b9ecb3-d55f-4076-98c8-b13e9d1c0e01"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"type"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"function"</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"function"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-p">{</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-c1">//No Signature</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"arguments"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"{\"location\":\"London\"}"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">              </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"get_current_temperature"</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"id"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"function-call-335673ad-913e-42d1-bbf5-387c8ab80f44"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">            </span><span class="devsite-syntax-nt">"type"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"function"</span>
+<span class="devsite-syntax-w">          </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">        </span><span class="devsite-syntax-p">]</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">},</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-s2">"tool"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"get_current_temperature"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"tool_call_id"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"function-call-f3b9ecb3-d55f-4076-98c8-b13e9d1c0e01"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"content"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"{\"temp\":\"15C\"}"</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">},</span><span class="devsite-syntax-w">    </span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">{</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"role"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-s2">"tool"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"name"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"get_current_temperature"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"tool_call_id"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"function-call-335673ad-913e-42d1-bbf5-387c8ab80f44"</span><span class="devsite-syntax-p">,</span>
+<span class="devsite-syntax-w">      </span><span class="devsite-syntax-nt">"content"</span><span class="devsite-syntax-p">:</span><span class="devsite-syntax-w"> </span><span class="devsite-syntax-s2">"{\"temp\":\"12C\"}"</span>
+<span class="devsite-syntax-w">    </span><span class="devsite-syntax-p">}</span>
+<span class="devsite-syntax-w">  </span><span class="devsite-syntax-p">]</span>
+</code></pre></devsite-code>
+<h2 data-text="常见问题解答" id="faqs" tabindex="-1">常见问题解答</h2>
+
+<ol>
+<li><p><strong>如何将历史记录从其他模型转移到 Gemini 3，并在当前轮次和步骤中包含函数调用部分？我需要提供并非由 API 生成的函数调用
+部分，因此这些部分没有关联的
+思考签名？</strong></p>
+
+<p>虽然强烈建议不要将自定义函数调用块注入到请求中，但在无法避免的情况下（例如，向模型提供有关客户端确定性执行的函数调用和回答的信息，或从不包含思考签名的其他模型转移跟踪记录），您可以在思考签名字段中设置以下虚拟签名 <code dir="ltr" translate="no">"context_engineering_is_the_way_to_go"</code> 或
+<code dir="ltr" translate="no">"skip_thought_signature_validator"</code>，以跳过验证。</p></li>
+<li><p><strong>我正在传回交错的并行函数调用和回答，但 API 返回了 400。为什么？</strong></p>
+
+<p>当 API 返回并行函数调用“FC1 + signature, FC2”时，预期的用户回答为“FC1+ signature, FC2, FR1, FR2”。如果您将它们交错为“FC1 + 签名, FR1, FC2, FR2”，API 将返回 400 错误。</p></li>
+<li><p><strong>在流式传输时，如果模型未返回函数调用，我找不到
+思考签名</strong></p>
+
+<p>在模型回答不包含具有流式传输请求的 FC 期间，模型可能会在包含空文本内容部分的部分中返回思考签名。建议您解析整个请求，直到模型返回 <code dir="ltr" translate="no">finish_reason</code>。</p></li>
+</ol>
+
+<h2 data-text="不同模型的思考签名" id="model-behavior" tabindex="-1">不同模型的思考签名</h2>
+
+<p><a href="https://ai.google.dev/gemini-api/docs/models?hl=zh-cn#gemini-3">Gemini 3 模型</a>和 Gemini 2.5 模型
+在函数调用中对思考签名的处理方式不同：</p>
+
+<ul>
+<li>如果回答中包含函数调用，
+<ul>
+<li>Gemini 3 将始终在第一个函数调用部分中包含签名。
+<strong>必须</strong> 返回该部分。</li>
+<li>Gemini 2.5 将在第一部分（无论类型如何）中包含签名。<strong>可以选择</strong> 返回该部分。</li>
+</ul></li>
+<li>如果回答中不包含函数调用，
+<ul>
+<li>如果模型生成了思考，Gemini 3 将在最后一部分中包含签名。</li>
+<li>Gemini 2.5 不会在任何部分中包含签名。</li>
+</ul></li>
+</ul>
+
+<p>如需了解更多
+比较详情
+，请参阅<a href="https://ai.google.dev/gemini-api/docs/thinking?hl=zh-cn#signatures">思考</a>页面。对于 Gemini 3 Image 模型，请参阅
+<a href="https://ai.google.dev/gemini-api/docs/image-generation?hl=zh-cn#thinking-process">图片生成</a>指南的思考过程部分。</p>
+<link data-page-link="" href="https://ai.google.dev/site-assets/css/style.css?v=4&amp;hl=zh-cn" rel="stylesheet"><link data-page-link="" href="https://fonts.googleapis.com/css2?family=Google+Symbols:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  
+
+  
+
+  
+</div>
+
+  
+    
+    
+      
+    <devsite-thumb-rating position="footer"><div class="devsite-thumb-rating" role="form" aria-labelledby="devsite-thumb-label-footer"><div class="devsite-thumb-label" id="devsite-thumb-label-footer">该内容对您有帮助吗？</div><div class="devsite-thumbs"><button class="devsite-thumb devsite-thumb-up" data-title="有帮助" aria-label="有帮助"><svg class="devsite-thumb-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21,7h-6.31l0.95-4.57l0.03-0.32c0-0.41-0.17-0.79-0.44-1.06L14.17,0c0,0-7.09,6.85-7.17,7H2v13h16 c0.83,0,1.54-0.5,1.84-1.22l3.02-7.05C22.95,11.5,23,11.26,23,11V9C23,7.9,22.1,7,21,7z M7,18H4V9h3V18z M21,11l-3,7H9V8l4.34-4.34 L12,9h9V11z"></path></svg></button><button class="devsite-thumb devsite-thumb-down" data-title="没有帮助" aria-label="没有帮助"><svg class="devsite-thumb-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3,17h6.31l-0.95,4.57l-0.03,0.32c0,0.41,0.17,0.79,0.44,1.06L9.83,24c0,0,7.09-6.85,7.17-7h5V4H6 C5.17,4,4.46,4.5,4.16,5.22l-3.02,7.05C1.05,12.5,1,12.74,1,13v2C1,16.1,1.9,17,3,17z M17,6h3v9h-3V6z M3,13l3-7h9v10l-4.34,4.34 L12,15H3V13z"></path></svg></button></div></div></devsite-thumb-rating>
+  
+       
+         <devsite-feedback position="footer" project-name="Gemini API" product-id="5292923" bucket="documentation" context="" version="t-devsite-webserver-20260407-r00-rc01.476664030472430875" data-label="Send Feedback Button" track-type="feedback" track-name="sendFeedbackLink" track-metadata-position="footer" class="nocontent" data-nosnippet="" project-icon="https://www.gstatic.com/devrel-devsite/prod/va0c14339cfd6d9ab177114d5825fc3f29dc166d5e178822c1d1efe7d037760a4/googledevai/images/touchicon-180-new.png">
+
+  <button>
+  
+    
+    发送反馈
+  
+  </button>
+</devsite-feedback>
+       
+    
+    
+  
+
+  <div class="devsite-floating-action-buttons"></div></article>
+
+
+<devsite-content-footer class="nocontent" data-nosnippet="">
+  <p>如未另行说明，那么本页面中的内容已根据<a href="https://creativecommons.org/licenses/by/4.0/">知识共享署名 4.0 许可</a>获得了许可，并且代码示例已根据 <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0 许可</a>获得了许可。有关详情，请参阅 <a href="https://developers.google.com/site-policies?hl=zh-cn">Google 开发者网站政策</a>。Java 是 Oracle 和/或其关联公司的注册商标。</p>
+  <p>最后更新时间 (UTC)：2026-03-25。</p>
+</devsite-content-footer>
+
+
+<devsite-notification>
+</devsite-notification>
+
+
+  
+<div class="devsite-content-data">
+  
+    
+    
+    <template class="devsite-thumb-rating-feedback">
+      <devsite-feedback position="thumb-rating" project-name="Gemini API" product-id="5292923" bucket="documentation" context="" version="t-devsite-webserver-20260407-r00-rc01.476664030472430875" data-label="Send Feedback Button" track-type="feedback" track-name="sendFeedbackLink" track-metadata-position="thumb-rating" class="nocontent" data-nosnippet="" project-icon="https://www.gstatic.com/devrel-devsite/prod/va0c14339cfd6d9ab177114d5825fc3f29dc166d5e178822c1d1efe7d037760a4/googledevai/images/touchicon-180-new.png">
+
+  <button>
+  
+    需要向我们提供更多信息？
+  
+  </button>
+</devsite-feedback>
+    </template>
+  
+  
+    <template class="devsite-content-data-template">
+      [[["易于理解","easyToUnderstand","thumb-up"],["解决了我的问题","solvedMyProblem","thumb-up"],["其他","otherUp","thumb-up"]],[["没有我需要的信息","missingTheInformationINeed","thumb-down"],["太复杂/步骤太多","tooComplicatedTooManySteps","thumb-down"],["内容需要更新","outOfDate","thumb-down"],["翻译问题","translationIssue","thumb-down"],["示例/代码问题","samplesCodeIssue","thumb-down"],["其他","otherDown","thumb-down"]],["最后更新时间 (UTC)：2026-03-25。"],[],[]]
+    </template>
+  
+</div>
+            
+          </devsite-content>
