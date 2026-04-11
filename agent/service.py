@@ -335,6 +335,8 @@ class GenUIAgentService:
                     show_widget_emitted = True
                 for event in execution.events:
                     yield event
+                    if event.get("type") == "toolcall_delta":
+                        time.sleep(0.03)
                 messages.append(
                     {
                         "role": "tool",
@@ -358,7 +360,7 @@ class GenUIAgentService:
         messages.append({"role": "user", "content": user_text})
         return messages
 
-    def _stream_text_chunks(self, text: str, delay: float = 0.0) -> Generator[str, None, None]:
+    def _stream_text_chunks(self, text: str, delay: float = 0.008) -> Generator[str, None, None]:
         if not text:
             return
         for token in text:

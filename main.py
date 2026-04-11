@@ -113,6 +113,7 @@ def chat_stream():
                             "title": event.get("title"),
                             "width": event.get("width"),
                             "height": event.get("height"),
+                            "loading_messages": event.get("loading_messages"),
                         },
                     )
                     continue

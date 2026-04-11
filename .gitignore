@@ -42,3 +42,5 @@ next-env.d.ts
 
 /sessions
 /logs
+# 忽略所有层级下的 __pycache__ 文件夹
+__pycache__/
