@@ -73,15 +73,15 @@ class GenUIAgentService:
         user_text: str,
     ) -> Generator[dict[str, Any], None, str]:
         config = resolve_config()
-        logger.warning(
+        logger.info(
             "stream_reply start session_id=%s key_source=%s key_present=%s user_text=%s",
             session.id, config.key_source, config.has_key, user_text,
         )
         if not config.has_key:
-            logger.error("fallback active: no GEMINI_API_KEY/GOOGLE_API_KEY found")
+            logger.warning("fallback active: no GEMINI_API_KEY/GOOGLE_API_KEY found")
             return (yield from self._stream_fallback(user_text))
 
-        logger.warning("provider mode active model=%s", config.model)
+        logger.info("provider mode active model=%s", config.model)
         messages = self._build_messages(session, user_text)
         orchestrator = GenerativeUIOrchestrator()
         loop = AgentLoop(

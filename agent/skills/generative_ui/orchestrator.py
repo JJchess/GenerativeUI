@@ -44,7 +44,7 @@ class GenerativeUIOrchestrator:
         )
 
     def get_tool_choice(self) -> str:
-        if self.state.visual_request and not self.state.show_widget_emitted:
+        if self.state.visual_request and not self.state.has_loaded_guidelines:
             return "required"
         return "auto"
 
@@ -57,7 +57,7 @@ class GenerativeUIOrchestrator:
             (self.state.visual_request or self.state.visual_flow_started)
             and not self.state.show_widget_emitted
         ):
-            logger.error("visual request received no tool calls, injecting corrective turn")
+            logger.warning("visual request received no tool calls, injecting corrective turn")
             return Directive(
                 action="retry",
                 inject_messages=[
@@ -83,7 +83,7 @@ class GenerativeUIOrchestrator:
             self.state.has_loaded_guidelines = True
 
         if tool_call.name == "show_widget" and not self.state.has_loaded_guidelines:
-            logger.error("show_widget blocked: visualize_read_me not called yet")
+            logger.warning("show_widget blocked: visualize_read_me not called yet")
             return Directive(
                 action="skip",
                 inject_messages=[
@@ -115,7 +115,7 @@ class GenerativeUIOrchestrator:
 
     def after_tool_execution(self, tool_name: str, result_content: str) -> Directive:
         if tool_name == "show_widget" and result_content == "READ_ME_REQUIRED":
-            logger.error("show_widget rejected: READ_ME_REQUIRED")
+            logger.warning("show_widget rejected: READ_ME_REQUIRED")
             return Directive(
                 action="skip",
                 inject_messages=[
@@ -128,7 +128,7 @@ class GenerativeUIOrchestrator:
             )
 
         if tool_name == "show_widget" and result_content == "INVALID_WIDGET_CODE":
-            logger.error("invalid widget code detected, requesting regeneration")
+            logger.warning("invalid widget code detected, requesting regeneration")
             return Directive(
                 action="skip",
                 inject_messages=[

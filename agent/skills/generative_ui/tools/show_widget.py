@@ -88,23 +88,10 @@ class ShowWidgetTool(AgentTool):
         return values[:4]
 
     def _is_widget_code_valid(self, widget_code: str) -> bool:
-        normalized = widget_code.lower()
-        if len(widget_code) < 120:
+        if len(widget_code) < 50:
             return False
+        normalized = widget_code.lower()
         if any(tag in normalized for tag in ("<!doctype", "<html", "<head", "<body")):
             return False
-        has_ui_root = any(token in normalized for token in ("<div", "<svg", "<canvas"))
-        has_interaction = any(token in normalized for token in ("<button", "addEventListener", "onclick", "oninput"))
-        has_script = "<script" in normalized
-        if not (has_ui_root and has_interaction and has_script):
-            return False
-        first_ui_root_idx = min(
-            i for i in (normalized.find("<div"), normalized.find("<svg"), normalized.find("<canvas")) if i >= 0
-        )
-        script_idx = normalized.find("<script")
-        if script_idx < first_ui_root_idx:
-            return False
-        style_idx = normalized.find("<style")
-        if style_idx >= 0 and script_idx < style_idx:
-            return False
-        return True
+        has_content = any(token in normalized for token in ("<div", "<svg", "<canvas", "<style"))
+        return has_content

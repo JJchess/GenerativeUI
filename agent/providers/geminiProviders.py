@@ -8,7 +8,9 @@ from typing import Any
 
 from google import genai
 
-from .base import LLMProvider, LLMResponse, ToolCallRequest
+from typing import Generator
+
+from .base import LLMProvider, LLMResponse, StreamEvent, ToolCallRequest
 
 logger = logging.getLogger("genui.gemini")
 
@@ -42,6 +44,29 @@ class GeminiProvider(LLMProvider):
             tool_choice=tool_choice,
         )
 
+    def _build_config(
+        self,
+        messages: list[dict[str, Any]],
+        tools: list[dict[str, Any]] | None,
+        max_tokens: int,
+        temperature: float,
+        tool_choice: str | dict[str, Any] | None,
+    ) -> dict[str, Any]:
+        config: dict[str, Any] = {
+            "temperature": temperature,
+            "max_output_tokens": max_tokens,
+        }
+        system_instruction = self._collect_system_instruction(messages)
+        if system_instruction:
+            config["system_instruction"] = system_instruction
+        converted_tools = self._to_gemini_tools(tools or [])
+        if converted_tools:
+            config["tools"] = [{"function_declarations": converted_tools}]
+            tool_config = self._to_gemini_tool_config(tool_choice)
+            if tool_config:
+                config["tool_config"] = tool_config
+        return config
+
     def _chat_sync(
         self,
         messages: list[dict[str, Any]],
@@ -53,23 +78,9 @@ class GeminiProvider(LLMProvider):
     ) -> LLMResponse:
         if not self.api_key:
             return LLMResponse(content=None, finish_reason="error", error="Missing GEMINI_API_KEY")
-
         try:
             client = genai.Client(api_key=self.api_key)
-            config: dict[str, Any] = {
-                "temperature": temperature,
-                "max_output_tokens": max_tokens,
-            }
-            system_instruction = self._collect_system_instruction(messages)
-            if system_instruction:
-                config["system_instruction"] = system_instruction
-            converted_tools = self._to_gemini_tools(tools or [])
-            if converted_tools:
-                config["tools"] = [{"function_declarations": converted_tools}]
-                tool_config = self._to_gemini_tool_config(tool_choice)
-                if tool_config:
-                    config["tool_config"] = tool_config
-
+            config = self._build_config(messages, tools, max_tokens, temperature, tool_choice)
             response = client.models.generate_content(
                 model=model or self.default_model,
                 contents=self._to_gemini_contents(messages),
@@ -77,13 +88,102 @@ class GeminiProvider(LLMProvider):
             )
             body = self._response_to_dict(response)
         except Exception as exc:
-            return LLMResponse(
-                content=str(exc),
-                finish_reason="error",
-                error=str(exc),
+            return LLMResponse(content=str(exc), finish_reason="error", error=str(exc))
+        return self._parse_gemini_response(body, retry_after=None)
+
+    def chat_stream_sync(
+        self,
+        messages: list[dict[str, Any]],
+        tools: list[dict[str, Any]] | None,
+        model: str | None,
+        max_tokens: int,
+        temperature: float,
+        tool_choice: str | dict[str, Any] | None,
+    ) -> Generator[StreamEvent, None, None]:
+        if not self.api_key:
+            yield StreamEvent(
+                type="response",
+                response=LLMResponse(content=None, finish_reason="error", error="Missing GEMINI_API_KEY"),
+            )
+            return
+
+        try:
+            client = genai.Client(api_key=self.api_key)
+            config = self._build_config(messages, tools, max_tokens, temperature, tool_choice)
+            contents = self._to_gemini_contents(messages)
+
+            all_parts: list[dict[str, Any]] = []
+            finish_reason = "stop"
+            usage_raw: dict[str, Any] = {}
+
+            for chunk in client.models.generate_content_stream(
+                model=model or self.default_model,
+                contents=contents,
+                config=config,
+            ):
+                body = self._response_to_dict(chunk)
+                candidates = body.get("candidates") or []
+                if not candidates:
+                    continue
+
+                candidate = candidates[0]
+                parts = (candidate.get("content") or {}).get("parts") or []
+
+                for part in parts:
+                    if isinstance(part, dict) and isinstance(part.get("text"), str) and part["text"]:
+                        yield StreamEvent(type="text_delta", delta=part["text"])
+
+                all_parts.extend(parts)
+                finish_reason = str(candidate.get("finishReason") or finish_reason).lower()
+                usage_raw = body.get("usageMetadata") or body.get("usage_metadata") or usage_raw
+
+            tool_calls = self._extract_tool_calls_from_parts(all_parts)
+            text_content = "\n".join(
+                p["text"] for p in all_parts
+                if isinstance(p, dict) and isinstance(p.get("text"), str) and p["text"].strip()
+            ) or None
+
+            yield StreamEvent(
+                type="response",
+                response=LLMResponse(
+                    content=text_content,
+                    tool_calls=tool_calls,
+                    finish_reason=finish_reason,
+                    usage=self._extract_usage({"usageMetadata": usage_raw}),
+                    provider_specific_fields={"assistant_parts": all_parts},
+                ),
+            )
+        except Exception as exc:
+            yield StreamEvent(
+                type="response",
+                response=LLMResponse(content=str(exc), finish_reason="error", error=str(exc)),
             )
 
-        return self._parse_gemini_response(body, retry_after=None)
+    def _extract_tool_calls_from_parts(self, parts: list[dict[str, Any]]) -> list[ToolCallRequest]:
+        tool_calls: list[ToolCallRequest] = []
+        for part in parts:
+            if not isinstance(part, dict):
+                continue
+            function_call = part.get("functionCall") or part.get("function_call")
+            if not isinstance(function_call, dict):
+                continue
+            function_name = function_call.get("name")
+            if not isinstance(function_name, str) or not function_name:
+                continue
+            args = function_call.get("args")
+            if not isinstance(args, dict):
+                args = {}
+            tool_calls.append(ToolCallRequest(
+                id=str(uuid.uuid4()),
+                name=function_name,
+                arguments=args,
+                provider_specific_fields=self._extract_function_call_provider_fields(function_call),
+            ))
+            logger.info("parsed tool_call name=%s", function_name)
+            if function_name == "show_widget":
+                wc = args.get("widget_code")
+                logger.info("show_widget widget_len=%s", len(wc) if isinstance(wc, str) else 0)
+        return tool_calls
 
     def _to_gemini_contents(self, messages: list[dict[str, Any]]) -> list[dict[str, Any]]:
         contents: list[dict[str, Any]] = []
@@ -213,7 +313,7 @@ class GeminiProvider(LLMProvider):
         finish_reason = str(candidate.get("finishReason", "stop")).lower()
         content_payload = candidate.get("content") or {}
         parts = content_payload.get("parts") or []
-        logger.warning("candidate parts_count=%s", len(parts) if isinstance(parts, list) else 0)
+        logger.info("candidate parts_count=%s", len(parts) if isinstance(parts, list) else 0)
 
         text_chunks: list[str] = []
         tool_calls: list[ToolCallRequest] = []
@@ -225,7 +325,7 @@ class GeminiProvider(LLMProvider):
             if isinstance(part, dict):
                 function_call = part.get("functionCall") or part.get("function_call")
             if isinstance(function_call, dict):
-                logger.warning("function_call keys=%s", ",".join(sorted(function_call.keys())))
+                logger.debug("function_call keys=%s", ",".join(sorted(function_call.keys())))
                 function_name = function_call.get("name")
                 if isinstance(function_name, str) and function_name:
                     args = function_call.get("args")
@@ -239,7 +339,7 @@ class GeminiProvider(LLMProvider):
                             provider_specific_fields=self._extract_function_call_provider_fields(function_call),
                         )
                     )
-                    logger.warning(
+                    logger.info(
                         "parsed tool_call name=%s has_signature=%s",
                         function_name,
                         bool(tool_calls[-1].provider_specific_fields),
@@ -248,7 +348,7 @@ class GeminiProvider(LLMProvider):
                         widget_code = args.get("widget_code")
                         widget_len = len(widget_code) if isinstance(widget_code, str) else 0
                         widget_preview = (widget_code[:180] if isinstance(widget_code, str) else "")
-                        logger.warning(
+                        logger.info(
                             "show_widget args title=%s widget_len=%s preview=%s",
                             str(args.get("title", ""))[:80],
                             widget_len,

@@ -1,7 +1,7 @@
 """Agent control loop: LLM reasoning, tool execution, event streaming.
 
 This module contains the generic agent loop that:
-1. Sends messages to the LLM provider
+1. Streams text from the LLM provider in real-time
 2. Handles tool calls via the ToolRegistry
 3. Delegates flow-control decisions to a SkillOrchestrator
 4. Yields SSE-style events for the HTTP layer
@@ -9,13 +9,13 @@ This module contains the generic agent loop that:
 
 from __future__ import annotations
 
-import asyncio
 import logging
 import time
 import uuid
 from typing import Any, Generator
 
 from agent.core.config import AgentConfig
+from agent.providers.base import LLMResponse
 from agent.providers.geminiProviders import GeminiProvider
 from agent.skills.generative_ui.orchestrator import GenerativeUIOrchestrator
 from agent.tools.registry import ToolRegistry
@@ -53,31 +53,41 @@ class AgentLoop:
         for _ in range(MAX_TURNS):
             tool_choice = self.orchestrator.get_tool_choice()
 
-            response = asyncio.run(
-                provider.chat(
-                    messages=messages,
-                    tools=tool_defs,
-                    model=self.config.model,
-                    temperature=0.3,
-                    max_tokens=4096,
-                    tool_choice=tool_choice,
-                )
-            )
-            logger.warning(
+            turn_text: list[str] = []
+            response: LLMResponse | None = None
+
+            for event in provider.chat_stream_sync(
+                messages=messages,
+                tools=tool_defs,
+                model=self.config.model,
+                max_tokens=4096,
+                temperature=0.3,
+                tool_choice=tool_choice,
+            ):
+                if event.type == "text_delta" and event.delta:
+                    turn_text.append(event.delta)
+                    collected.append(event.delta)
+                    yield {"type": "assistant_delta", "delta": event.delta}
+                elif event.type == "response":
+                    response = event.response
+
+            if response is None:
+                return "".join(collected)
+
+            assistant_content = "".join(turn_text) or response.content or ""
+
+            logger.info(
                 "provider response finish_reason=%s has_tool_calls=%s content_len=%s",
                 response.finish_reason,
                 bool(response.tool_calls),
-                len(response.content or ""),
+                len(assistant_content),
             )
 
             if response.finish_reason == "error":
-                fallback = response.content or response.error or "LLM error"
-                logger.error("provider error -> %s", fallback)
+                logger.error("provider error -> %s", response.content or response.error)
                 safe_text = "模型服务暂时不稳定，请重试。若持续失败，请检查网络或稍后再试。"
-                yield from _emit_text(safe_text, collected)
+                yield from _emit_system_text(safe_text, collected)
                 return "".join(collected)
-
-            assistant_content = response.content or ""
 
             if not response.tool_calls:
                 directive = self.orchestrator.on_no_tool_calls(
@@ -86,12 +96,7 @@ class AgentLoop:
                 if directive.action == "retry":
                     messages.extend(directive.inject_messages)
                     continue
-                if assistant_content:
-                    yield from _emit_text(assistant_content, collected)
                 return "".join(collected)
-
-            if assistant_content:
-                yield from _emit_text(assistant_content, collected)
 
             messages.append({
                 "role": "assistant",
@@ -101,7 +106,7 @@ class AgentLoop:
             })
 
             for tool_call in response.tool_calls:
-                logger.warning("tool call name=%s id=%s", tool_call.name, tool_call.id)
+                logger.info("tool call name=%s id=%s", tool_call.name, tool_call.id)
 
                 directive = self.orchestrator.before_tool_call(tool_call)
                 if directive.action == "skip":
@@ -114,7 +119,7 @@ class AgentLoop:
                 )
 
                 execution = self.tools.execute(tool_call.name, arguments, tool_call_id)
-                logger.warning(
+                logger.info(
                     "tool execution name=%s events=%s content_len=%s",
                     tool_call.name,
                     len(execution.events),
@@ -132,9 +137,9 @@ class AgentLoop:
                     tool_call.name, bool(execution.events)
                 )
 
-                for event in execution.events:
-                    yield event
-                    if event.get("type") == "toolcall_delta":
+                for evt in execution.events:
+                    yield evt
+                    if evt.get("type") == "toolcall_delta":
                         time.sleep(0.03)
 
                 messages.append({
@@ -145,19 +150,16 @@ class AgentLoop:
 
         fallback = self.orchestrator.get_fallback_text()
         if fallback:
-            yield from _emit_text(fallback, collected)
+            yield from _emit_system_text(fallback, collected)
         return "".join(collected)
 
 
-def _emit_text(
+def _emit_system_text(
     text: str,
     collector: list[str],
-    delay: float = 0.008,
 ) -> Generator[dict[str, Any], None, None]:
+    """Emit system-generated text (errors, fallbacks). Not model output."""
     if not text:
         return
-    for token in text:
-        collector.append(token)
-        yield {"type": "assistant_delta", "delta": token}
-        if delay > 0:
-            time.sleep(delay)
+    collector.append(text)
+    yield {"type": "assistant_delta", "delta": text}

@@ -43,6 +43,13 @@ class LLMResponse:
         return len(self.tool_calls) > 0
 
 
+@dataclass
+class StreamEvent:
+    type: str  # "text_delta" | "response"
+    delta: str = ""
+    response: LLMResponse | None = None
+
+
 @dataclass(frozen=True)
 class GenerationSettings:
     temperature: float = 0.7

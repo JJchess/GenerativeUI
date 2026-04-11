@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import logging
+import time
 import uuid
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -18,6 +19,7 @@ class ChatMessage:
     role: Literal["user", "assistant", "system"]
     content: str
     created_at: str
+    blocks: list[dict[str, Any]] | None = None
 
 
 @dataclass
@@ -40,7 +42,7 @@ class SessionStore:
             if loaded is not None:
                 self._cache[loaded.id] = loaded
                 return loaded
-        created = ChatSession(id=session_id or str(uuid.uuid4()))
+        created = ChatSession(id=session_id or _generate_session_id())
         self._cache[created.id] = created
         self._persist(created)
         return created
@@ -90,9 +92,17 @@ class SessionStore:
         summaries.sort(key=lambda s: s.get("updated_at", ""), reverse=True)
         return summaries
 
+    def _find_file(self, session_id: str) -> Path | None:
+        exact = self.sessions_dir / f"{session_id}.json"
+        if exact.exists():
+            return exact
+        for candidate in self.sessions_dir.glob(f"*_{session_id}.json"):
+            return candidate
+        return None
+
     def _load(self, session_id: str) -> ChatSession | None:
-        file_path = self.sessions_dir / f"{session_id}.json"
-        if not file_path.exists():
+        file_path = self._find_file(session_id)
+        if file_path is None:
             return None
         try:
             payload = json.loads(file_path.read_text(encoding="utf-8"))
@@ -103,11 +113,14 @@ class SessionStore:
                 role = str(item.get("role", "user"))
                 if role not in ("user", "assistant", "system"):
                     continue
+                raw_blocks = item.get("blocks")
+                blocks = raw_blocks if isinstance(raw_blocks, list) else None
                 messages.append(ChatMessage(
                     id=str(item.get("id", str(uuid.uuid4()))),
                     role=role,
                     content=str(item.get("content", "")),
                     created_at=str(item.get("created_at", "")),
+                    blocks=blocks,
                 ))
             return ChatSession(id=session_id, messages=messages)
         except Exception as exc:
@@ -118,7 +131,11 @@ class SessionStore:
         payload = {
             "session_id": session.id,
             "messages": [
-                {"id": m.id, "role": m.role, "content": m.content, "created_at": m.created_at}
+                {
+                    "id": m.id, "role": m.role, "content": m.content,
+                    "created_at": m.created_at,
+                    **({"blocks": m.blocks} if m.blocks else {}),
+                }
                 for m in session.messages
             ],
         }
@@ -129,3 +146,8 @@ class SessionStore:
             )
         except Exception as exc:
             logger.error("failed to persist session %s: %s", session.id, exc)
+
+
+def _generate_session_id() -> str:
+    ts = time.strftime("%Y-%m-%d_%H-%M-%S", time.gmtime())
+    return f"{ts}_{uuid.uuid4()}"

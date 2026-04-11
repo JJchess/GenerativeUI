@@ -57,6 +57,7 @@ def get_session(session_id: str):
                     "role": msg.role,
                     "content": msg.content,
                     "created_at": msg.created_at,
+                    **({"blocks": msg.blocks} if msg.blocks else {}),
                 }
                 for msg in session.messages
             ],
@@ -94,6 +95,7 @@ def chat_stream():
             )
             assistant_content = ""
             had_tool_event = False
+            widget_blocks: dict[str, dict] = {}
             for event in agent_service.stream_reply(session=session, user_text=user_text):
                 event_type = event.get("type")
                 if event_type == "assistant_delta":
@@ -103,11 +105,21 @@ def chat_stream():
                     continue
                 if event_type == "toolcall_start":
                     had_tool_event = True
+                    tcid = event.get("tool_call_id")
+                    widget_blocks[tcid] = {
+                        "type": "widget",
+                        "tool_call_id": tcid,
+                        "title": event.get("title", ""),
+                        "widget_code": "",
+                        "width": event.get("width"),
+                        "height": event.get("height"),
+                        "status": "completed",
+                    }
                     yield _sse(
                         "toolcall_start",
                         {
                             "message_id": assistant_msg_id,
-                            "tool_call_id": event.get("tool_call_id"),
+                            "tool_call_id": tcid,
                             "name": event.get("name"),
                             "widget_type": event.get("widget_type"),
                             "title": event.get("title"),
@@ -130,18 +142,26 @@ def chat_stream():
                     continue
                 if event_type == "toolcall_end":
                     had_tool_event = True
+                    tcid = event.get("tool_call_id")
+                    final_code = event.get("widget_code", "")
+                    if tcid in widget_blocks:
+                        widget_blocks[tcid]["widget_code"] = final_code
                     yield _sse(
                         "toolcall_end",
                         {
                             "message_id": assistant_msg_id,
-                            "tool_call_id": event.get("tool_call_id"),
-                            "widget_code": event.get("widget_code", ""),
+                            "tool_call_id": tcid,
+                            "widget_code": final_code,
                         },
                     )
                     continue
 
             if assistant_content.strip() or had_tool_event:
                 persisted_content = assistant_content if assistant_content.strip() else "（已生成可视化组件）"
+                blocks: list[dict] = []
+                if assistant_content.strip():
+                    blocks.append({"type": "text", "text": assistant_content})
+                blocks.extend(widget_blocks.values())
                 agent_service.append_message(
                     session,
                     ChatMessage(
@@ -149,6 +169,7 @@ def chat_stream():
                         role="assistant",
                         content=persisted_content,
                         created_at=assistant_created_at,
+                        blocks=blocks if blocks else None,
                     ),
                 )
             yield _sse(
