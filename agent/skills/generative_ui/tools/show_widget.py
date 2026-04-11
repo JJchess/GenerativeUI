@@ -1,44 +1,11 @@
+"""Tool: render an HTML/SVG widget in chat."""
+
 from __future__ import annotations
 
 import re
-from pathlib import Path
 from typing import Any, Callable, Iterable
 
 from agent.tools.base import AgentTool, ToolExecutionResult
-
-
-class VisualizeReadMeTool(AgentTool):
-    name = "visualize_read_me"
-    description = "Load design guidelines for one or more visualization modules."
-
-    def __init__(self, available_modules: list[str], guideline_file_by_module: dict[str, Path]) -> None:
-        self.available_modules = available_modules
-        self.guideline_file_by_module = guideline_file_by_module
-        self.parameters = {
-            "type": "object",
-            "properties": {
-                "modules": {
-                    "type": "array",
-                    "items": {"type": "string", "enum": self.available_modules},
-                }
-            },
-            "required": ["modules"],
-        }
-
-    def execute(self, arguments: dict[str, Any], tool_call_id: str) -> ToolExecutionResult:
-        modules = arguments.get("modules")
-        modules_list = [m for m in modules if isinstance(m, str)] if isinstance(modules, list) else []
-        modules_list = [m for m in modules_list if m in self.available_modules]
-        chunks: list[str] = []
-        for module in modules_list:
-            path = self.guideline_file_by_module.get(module)
-            if not path or not path.exists():
-                continue
-            text = path.read_text(encoding="utf-8")
-            chunks.append(f"<module name=\"{module}\">\n{text}\n</module>")
-        if not chunks:
-            return ToolExecutionResult(content="No guidelines found for requested modules.")
-        return ToolExecutionResult(content="\n\n".join(chunks))
 
 
 class ShowWidgetTool(AgentTool):
@@ -58,7 +25,12 @@ class ShowWidgetTool(AgentTool):
                 "i_have_seen_read_me": {"type": "boolean"},
                 "widget_type": {"type": "string", "enum": self.available_modules},
                 "title": {"type": "string"},
-                "loading_messages": {"type": "array", "items": {"type": "string"}, "minItems": 1, "maxItems": 4},
+                "loading_messages": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "minItems": 1,
+                    "maxItems": 4,
+                },
                 "widget_code": {"type": "string"},
                 "width": {"type": "number"},
                 "height": {"type": "number"},
@@ -69,8 +41,7 @@ class ShowWidgetTool(AgentTool):
     def execute(self, arguments: dict[str, Any], tool_call_id: str) -> ToolExecutionResult:
         if not bool(arguments.get("i_have_seen_read_me")):
             return ToolExecutionResult(content="READ_ME_REQUIRED", events=[])
-        title = str(arguments.get("title", "generated_widget"))
-        title = self._normalize_title(title)
+        title = self._normalize_title(str(arguments.get("title", "generated_widget")))
         widget_code = str(arguments.get("widget_code", "")).strip()
         widget_type_raw = str(arguments.get("widget_type", "interactive"))
         widget_type = widget_type_raw if widget_type_raw in self.available_modules else "interactive"
@@ -127,7 +98,9 @@ class ShowWidgetTool(AgentTool):
         has_script = "<script" in normalized
         if not (has_ui_root and has_interaction and has_script):
             return False
-        first_ui_root_idx = min(i for i in (normalized.find("<div"), normalized.find("<svg"), normalized.find("<canvas")) if i >= 0)
+        first_ui_root_idx = min(
+            i for i in (normalized.find("<div"), normalized.find("<svg"), normalized.find("<canvas")) if i >= 0
+        )
         script_idx = normalized.find("<script")
         if script_idx < first_ui_root_idx:
             return False
