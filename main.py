@@ -10,6 +10,7 @@ import uuid
 from flask import Flask, Response, jsonify, request, stream_with_context
 from flask_cors import CORS
 
+from agent.core.session import message_public_dict
 from agent.service import ChatMessage, GenUIAgentService
 from logger import reset_log_session_id, set_log_session_id, setup_logger
 
@@ -51,16 +52,7 @@ def get_session(session_id: str):
     return jsonify(
         {
             "session_id": session.id,
-            "messages": [
-                {
-                    "id": msg.id,
-                    "role": msg.role,
-                    "content": msg.content,
-                    "created_at": msg.created_at,
-                    **({"blocks": msg.blocks} if msg.blocks else {}),
-                }
-                for msg in session.messages
-            ],
+            "messages": [message_public_dict(msg) for msg in session.messages],
         }
     )
 
@@ -93,28 +85,18 @@ def chat_stream():
                 "message_start",
                 {"message_id": assistant_msg_id, "role": "assistant", "created_at": assistant_created_at},
             )
-            assistant_content = ""
-            had_tool_event = False
-            widget_blocks: dict[str, dict] = {}
-            for event in agent_service.stream_reply(session=session, user_text=user_text):
+            for event in agent_service.stream_reply(
+                session=session,
+                user_text=user_text,
+                persist_assistant=(assistant_msg_id, assistant_created_at),
+            ):
                 event_type = event.get("type")
                 if event_type == "assistant_delta":
                     delta = str(event.get("delta", ""))
-                    assistant_content += delta
                     yield _sse("assistant_delta", {"message_id": assistant_msg_id, "delta": delta})
                     continue
                 if event_type == "toolcall_start":
-                    had_tool_event = True
                     tcid = event.get("tool_call_id")
-                    widget_blocks[tcid] = {
-                        "type": "widget",
-                        "tool_call_id": tcid,
-                        "title": event.get("title", ""),
-                        "widget_code": "",
-                        "width": event.get("width"),
-                        "height": event.get("height"),
-                        "status": "completed",
-                    }
                     yield _sse(
                         "toolcall_start",
                         {
@@ -130,7 +112,6 @@ def chat_stream():
                     )
                     continue
                 if event_type == "toolcall_delta":
-                    had_tool_event = True
                     yield _sse(
                         "toolcall_delta",
                         {
@@ -141,11 +122,8 @@ def chat_stream():
                     )
                     continue
                 if event_type == "toolcall_end":
-                    had_tool_event = True
                     tcid = event.get("tool_call_id")
                     final_code = event.get("widget_code", "")
-                    if tcid in widget_blocks:
-                        widget_blocks[tcid]["widget_code"] = final_code
                     yield _sse(
                         "toolcall_end",
                         {
@@ -155,23 +133,6 @@ def chat_stream():
                         },
                     )
                     continue
-
-            if assistant_content.strip() or had_tool_event:
-                persisted_content = assistant_content if assistant_content.strip() else "（已生成可视化组件）"
-                blocks: list[dict] = []
-                if assistant_content.strip():
-                    blocks.append({"type": "text", "text": assistant_content})
-                blocks.extend(widget_blocks.values())
-                agent_service.append_message(
-                    session,
-                    ChatMessage(
-                        id=assistant_msg_id,
-                        role="assistant",
-                        content=persisted_content,
-                        created_at=assistant_created_at,
-                        blocks=blocks if blocks else None,
-                    ),
-                )
             yield _sse(
                 "message_end",
                 {"message_id": assistant_msg_id, "session_id": session.id},

@@ -71,7 +71,19 @@ class GenUIAgentService:
         self,
         session: ChatSession,
         user_text: str,
+        *,
+        persist_assistant: tuple[str, str] | None = None,
     ) -> Generator[dict[str, Any], None, str]:
+        """Stream agent events. If ``persist_assistant`` is ``(message_id, created_at)``,
+        the assistant turn (text + widget blocks from tool events) is written to the
+        session store when the stream completes.
+        """
+        persist_state: dict[str, Any] = {
+            "assistant_content": "",
+            "had_tool_event": False,
+            "widget_blocks": {},
+        }
+
         config = resolve_config()
         logger.info(
             "stream_reply start session_id=%s key_source=%s key_present=%s user_text=%s",
@@ -79,7 +91,12 @@ class GenUIAgentService:
         )
         if not config.has_key:
             logger.warning("fallback active: no GEMINI_API_KEY/GOOGLE_API_KEY found")
-            return (yield from self._stream_fallback(user_text))
+            for event in self._stream_fallback(user_text):
+                self._accumulate_persist_state(event, persist_state)
+                yield event
+            if persist_assistant:
+                self._persist_assistant_turn(session, persist_state, *persist_assistant)
+            return
 
         logger.info("provider mode active model=%s", config.model)
         messages = self._build_messages(session, user_text)
@@ -87,9 +104,84 @@ class GenUIAgentService:
         loop = AgentLoop(
             config=config, tool_registry=self.tools, orchestrator=orchestrator,
         )
-        return (yield from loop.stream(messages, user_text))
+        for event in loop.stream(messages, user_text):
+            self._accumulate_persist_state(event, persist_state)
+            yield event
+        if persist_assistant:
+            self._persist_assistant_turn(session, persist_state, *persist_assistant)
+        return
 
     # -- Private helpers --
+
+    @staticmethod
+    def _accumulate_persist_state(event: dict[str, Any], state: dict[str, Any]) -> None:
+        et = event.get("type")
+        if et == "assistant_delta":
+            state["assistant_content"] += str(event.get("delta", ""))
+            return
+        if et == "toolcall_start":
+            state["had_tool_event"] = True
+            tcid = event.get("tool_call_id")
+            if tcid is None:
+                return
+            key = str(tcid)
+            state["widget_blocks"][key] = {
+                "type": "widget",
+                "tool_call_id": key,
+                "title": event.get("title", ""),
+                "widget_code": "",
+                "width": event.get("width"),
+                "height": event.get("height"),
+                "status": "completed",
+            }
+            return
+        if et == "toolcall_delta":
+            state["had_tool_event"] = True
+            tcid = event.get("tool_call_id")
+            key = str(tcid) if tcid is not None else None
+            partial = event.get("widget_code", "")
+            if key and key in state["widget_blocks"]:
+                state["widget_blocks"][key]["widget_code"] = partial
+            return
+        if et == "toolcall_end":
+            state["had_tool_event"] = True
+            tcid = event.get("tool_call_id")
+            key = str(tcid) if tcid is not None else None
+            final_code = event.get("widget_code", "")
+            if key and key in state["widget_blocks"]:
+                state["widget_blocks"][key]["widget_code"] = final_code
+
+    def _persist_assistant_turn(
+        self,
+        session: ChatSession,
+        state: dict[str, Any],
+        message_id: str,
+        created_at: str,
+    ) -> None:
+        text: str = state["assistant_content"]
+        had_tool: bool = state["had_tool_event"]
+        widget_blocks: dict[str, dict] = state["widget_blocks"]
+        if not text.strip() and not had_tool:
+            return
+        persisted_content = text if text.strip() else "（已生成可视化组件）"
+        blocks: list[dict[str, Any]] = []
+        if text.strip():
+            blocks.append({"type": "text", "text": text})
+        blocks.extend(widget_blocks.values())
+        logger.info(
+            "persist assistant mid=%s had_tool=%s widget_blocks=%s blocks_count=%s",
+            message_id, had_tool, len(widget_blocks), len(blocks),
+        )
+        self.append_message(
+            session,
+            ChatMessage(
+                id=message_id,
+                role="assistant",
+                content=persisted_content,
+                created_at=created_at,
+                blocks=blocks if blocks else None,
+            ),
+        )
 
     def _build_messages(self, session: ChatSession, user_text: str) -> list[dict[str, Any]]:
         messages: list[dict[str, Any]] = [

@@ -74,6 +74,14 @@ class AgentLoop:
             if response is None:
                 return "".join(collected)
 
+            streamed = "".join(turn_text)
+            resp_text = (response.content or "").strip()
+            if resp_text and not streamed.strip():
+                delta = response.content or ""
+                turn_text.append(delta)
+                collected.append(delta)
+                yield {"type": "assistant_delta", "delta": delta}
+
             assistant_content = "".join(turn_text) or response.content or ""
 
             logger.info(

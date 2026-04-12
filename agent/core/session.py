@@ -28,6 +28,41 @@ class ChatSession:
     messages: list[ChatMessage] = field(default_factory=list)
 
 
+def message_public_dict(message: ChatMessage) -> dict[str, Any]:
+    """Shape returned by GET /chat/sessions/:id and written to ``{session_id}.json``.
+
+    Assistant turns always include a ``blocks`` array when there is text and/or
+    widget tool output so history reload and export preserve widget HTML.
+    """
+    out: dict[str, Any] = {
+        "id": message.id,
+        "role": message.role,
+        "content": message.content,
+        "created_at": message.created_at,
+    }
+    blocks = message.blocks
+    if message.role == "assistant":
+        if not blocks and message.content.strip():
+            blocks = [{"type": "text", "text": message.content}]
+        if blocks:
+            out["blocks"] = blocks
+    elif blocks:
+        out["blocks"] = blocks
+    return out
+
+
+def preview_text(message: ChatMessage, limit: int = 80) -> str:
+    """Sidebar preview: prefer first non-empty text block, else ``content``."""
+    if message.blocks:
+        for block in message.blocks:
+            if isinstance(block, dict) and block.get("type") == "text":
+                text = str(block.get("text", "")).strip()
+                if text:
+                    return text[:limit]
+    base = str(message.content or "").strip()
+    return base[:limit]
+
+
 class SessionStore:
     def __init__(self, sessions_dir: Path) -> None:
         self.sessions_dir = sessions_dir
@@ -79,7 +114,7 @@ class SessionStore:
             if session.messages:
                 last = session.messages[-1]
                 updated_at = last.created_at
-                preview = last.content[:80]
+                preview = preview_text(last, 80)
             else:
                 updated_at = ""
                 preview = ""
@@ -130,14 +165,7 @@ class SessionStore:
     def _persist(self, session: ChatSession) -> None:
         payload = {
             "session_id": session.id,
-            "messages": [
-                {
-                    "id": m.id, "role": m.role, "content": m.content,
-                    "created_at": m.created_at,
-                    **({"blocks": m.blocks} if m.blocks else {}),
-                }
-                for m in session.messages
-            ],
+            "messages": [message_public_dict(m) for m in session.messages],
         }
         file_path = self.sessions_dir / f"{session.id}.json"
         try:
