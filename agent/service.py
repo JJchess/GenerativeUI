@@ -6,7 +6,7 @@ import logging
 import time
 import uuid
 from pathlib import Path
-from typing import Any, Generator, Iterable, Literal
+from typing import Any, Generator, Literal
 
 from agent.core.agent import AgentLoop
 from agent.core.config import resolve_config
@@ -29,24 +29,23 @@ class GenUIAgentService:
         )
 
         guidelines_dir = agent_dir / "guidelines"
-        available_modules = [
+        # show_widget.widget_type — layout kinds only (not CORE).
+        widget_module_types = [
             "interactive", "chart", "chart_interactive",
             "mockup", "art", "art_interactive", "diagram",
         ]
+        # visualize_read_me: exactly one module per call; CORE is optional fallback when none of the above fit.
+        read_me_module_names = [*widget_module_types, "CORE"]
         guideline_file_by_module: dict[str, Path] = {
-            m: guidelines_dir / f"{m}.md" for m in available_modules
+            m: guidelines_dir / f"{m}.md" for m in read_me_module_names
         }
-        guideline_file_by_module["CORE"] = guidelines_dir / "CORE.md"
 
         self.tools = ToolRegistry()
         self.tools.register(VisualizeReadMeTool(
-            available_modules=available_modules,
+            available_modules=read_me_module_names,
             guideline_file_by_module=guideline_file_by_module,
         ))
-        self.tools.register(ShowWidgetTool(
-            available_modules=available_modules,
-            progressive_payloads=self._progressive_widget_payloads,
-        ))
+        self.tools.register(ShowWidgetTool(available_modules=widget_module_types))
 
         self._skills = load_skills(agent_dir / "skills")
         self._system_prompt = build_system_prompt(self._skills)
@@ -217,9 +216,6 @@ class GenUIAgentService:
                 "height": 520,
                 "loading_messages": orch._default_loading_messages(user_text),
             }
-            for partial in self._progressive_widget_payloads(widget_code):
-                yield {"type": "toolcall_delta", "tool_call_id": tool_call_id, "widget_code": partial}
-                time.sleep(0.03)
             yield {"type": "toolcall_end", "tool_call_id": tool_call_id, "widget_code": widget_code}
         return "".join(collected)
 
@@ -302,18 +298,3 @@ class GenUIAgentService:
   recalc();
 </script>""".strip()
 
-    @staticmethod
-    def _progressive_widget_payloads(code: str, steps: int = 9) -> Iterable[str]:
-        if not code:
-            return []
-        fragments: list[str] = []
-        last = ""
-        for i in range(1, steps + 1):
-            cut = max(24, int(len(code) * i / steps))
-            fragment = code[:cut]
-            if fragment != last:
-                fragments.append(fragment)
-                last = fragment
-        if fragments[-1] != code:
-            fragments.append(code)
-        return fragments

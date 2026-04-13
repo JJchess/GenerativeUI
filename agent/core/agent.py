@@ -9,8 +9,8 @@ This module contains the generic agent loop that:
 
 from __future__ import annotations
 
+import json
 import logging
-import time
 import uuid
 from typing import Any, Generator
 
@@ -22,7 +22,39 @@ from agent.tools.registry import ToolRegistry
 
 logger = logging.getLogger("genui.agent")
 
-MAX_TURNS = 5
+MAX_TURNS = 8
+
+
+def _log_model_response_complete(response: LLMResponse, assistant_text: str) -> None:
+    """Log one JSON blob per model round: full text, tool args, usage, raw Gemini parts."""
+    psf = response.provider_specific_fields if isinstance(response.provider_specific_fields, dict) else None
+    raw_parts = psf.get("assistant_parts") if psf else None
+    payload: dict[str, Any] = {
+        "finish_reason": response.finish_reason,
+        "usage": response.usage,
+        "error": response.error,
+        "text": assistant_text,
+        "text_from_provider": response.content,
+        "tool_calls": [
+            {
+                "id": tc.id,
+                "name": tc.name,
+                "arguments": tc.arguments,
+                "provider_specific_fields": tc.provider_specific_fields,
+            }
+            for tc in response.tool_calls
+        ],
+        "raw_assistant_parts": raw_parts,
+    }
+    try:
+        line = json.dumps(payload, ensure_ascii=False, default=str)
+    except TypeError:
+        line = json.dumps(
+            {k: repr(v)[:50000] for k, v in payload.items()},
+            ensure_ascii=False,
+            default=str,
+        )
+    logger.info("model_output_full json=%s", line)
 
 
 class AgentLoop:
@@ -52,6 +84,7 @@ class AgentLoop:
 
         for _ in range(MAX_TURNS):
             tool_choice = self.orchestrator.get_tool_choice()
+            logger.info("agent turn tool_choice=%s", tool_choice)
 
             turn_text: list[str] = []
             response: LLMResponse | None = None
@@ -60,7 +93,7 @@ class AgentLoop:
                 messages=messages,
                 tools=tool_defs,
                 model=self.config.model,
-                max_tokens=4096,
+                max_tokens=8192,
                 temperature=0.3,
                 tool_choice=tool_choice,
             ):
@@ -84,6 +117,7 @@ class AgentLoop:
 
             assistant_content = "".join(turn_text) or response.content or ""
 
+            _log_model_response_complete(response, assistant_content)
             logger.info(
                 "provider response finish_reason=%s has_tool_calls=%s content_len=%s",
                 response.finish_reason,
@@ -126,7 +160,16 @@ class AgentLoop:
                     tool_call.name, dict(tool_call.arguments), user_text
                 )
 
-                execution = self.tools.execute(tool_call.name, arguments, tool_call_id)
+                attach_read_me_trailer: bool | None = None
+                if tool_call.name == "visualize_read_me":
+                    attach_read_me_trailer = not self.orchestrator.state.read_me_trailer_emitted
+
+                execution = self.tools.execute(
+                    tool_call.name,
+                    arguments,
+                    tool_call_id,
+                    attach_read_me_trailer=attach_read_me_trailer,
+                )
                 logger.info(
                     "tool execution name=%s events=%s content_len=%s",
                     tool_call.name,
@@ -147,14 +190,19 @@ class AgentLoop:
 
                 for evt in execution.events:
                     yield evt
-                    if evt.get("type") == "toolcall_delta":
-                        time.sleep(0.03)
 
                 messages.append({
                     "role": "tool",
                     "name": tool_call.name,
                     "content": execution.content,
                 })
+                if (
+                    tool_call.name == "visualize_read_me"
+                    and execution.content
+                    and "No guidelines found" not in str(execution.content)
+                    and attach_read_me_trailer is True
+                ):
+                    self.orchestrator.state.read_me_trailer_emitted = True
 
         fallback = self.orchestrator.get_fallback_text()
         if fallback:

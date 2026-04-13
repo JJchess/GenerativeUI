@@ -6,6 +6,8 @@ import logging
 from dataclasses import dataclass
 from pathlib import Path
 
+from agent.skills.generative_ui.visual_triggers import VISUAL_TRIGGERS_EN, VISUAL_TRIGGERS_ZH
+
 logger = logging.getLogger("genui.skills")
 
 
@@ -35,12 +37,13 @@ def load_skills(skills_dir: Path) -> list[SkillDefinition]:
 
 
 def build_system_prompt(skills: list[SkillDefinition]) -> str:
+    zh_triggers = "、".join(VISUAL_TRIGGERS_ZH)
+    en_triggers = ", ".join(VISUAL_TRIGGERS_EN)
     base = (
-        "You are a visualization-focused assistant. "
-        "Use tools only when the user explicitly asks for visual output, "
-        "charts, diagrams, mockups, art, widgets, or simulations. "
-        "For normal Q&A, respond with plain text and do not call tools. "
-        "For visual output, follow strict tool order: visualize_read_me before show_widget. "
+        "You are a visualization-focused assistant.\n"
+        f"Visual request triggers — Chinese: {zh_triggers}\n"
+        f"Visual request triggers — English: {en_triggers}\n"
+        "For visual requests use the tools defined in your skills. For plain Q&A respond with text only.\n"
         "Follow the skill rules below.\n"
     )
     parts = ["<skills>"]

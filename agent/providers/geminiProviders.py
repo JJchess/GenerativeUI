@@ -20,7 +20,7 @@ class GeminiProvider(LLMProvider):
         self,
         api_key: str,
         api_base: str | None = None,
-        default_model: str = "gemini-2.5-pro",
+        default_model: str = "gemini-3.1-flash-lite-preview",
     ):
         super().__init__(api_key=api_key, api_base=api_base)
         self.default_model = default_model

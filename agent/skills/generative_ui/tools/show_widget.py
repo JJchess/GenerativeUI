@@ -3,22 +3,21 @@
 from __future__ import annotations
 
 import re
-from typing import Any, Callable, Iterable
+from typing import Any
 
 from agent.tools.base import AgentTool, ToolExecutionResult
 
 
 class ShowWidgetTool(AgentTool):
     name = "show_widget"
-    description = "Render an HTML/SVG widget in chat."
+    description = """Render an HTML/SVG widget in chat.
+PREREQUISITES: visualize_read_me must have been called first; set i_have_seen_read_me=true.
+widget_code must be an HTML fragment (no <!doctype>, <html>, <head>, <body> tags).
+Must contain at least one of: <div>, <svg>, <canvas>, <style>.
+Order within fragment: <style> → markup → <script>."""
 
-    def __init__(
-        self,
-        available_modules: list[str],
-        progressive_payloads: Callable[[str], Iterable[str]],
-    ) -> None:
+    def __init__(self, available_modules: list[str]) -> None:
         self.available_modules = available_modules
-        self.progressive_payloads = progressive_payloads
         self.parameters = {
             "type": "object",
             "properties": {
@@ -51,6 +50,8 @@ class ShowWidgetTool(AgentTool):
         if not self._is_widget_code_valid(widget_code):
             return ToolExecutionResult(content="INVALID_WIDGET_CODE", events=[])
 
+        # Pi-style events: ``toolcall_delta`` is only for streamed partial tool JSON
+        # from the LLM; once ``widget_code`` is complete we emit start + end only.
         events: list[dict[str, Any]] = [
             {
                 "type": "toolcall_start",
@@ -61,11 +62,9 @@ class ShowWidgetTool(AgentTool):
                 "width": width,
                 "height": height,
                 "loading_messages": loading_messages,
-            }
+            },
+            {"type": "toolcall_end", "tool_call_id": tool_call_id, "widget_code": widget_code},
         ]
-        for partial in self.progressive_payloads(widget_code):
-            events.append({"type": "toolcall_delta", "tool_call_id": tool_call_id, "widget_code": partial})
-        events.append({"type": "toolcall_end", "tool_call_id": tool_call_id, "widget_code": widget_code})
         return ToolExecutionResult(content=f'Widget "{title}" rendered ({width}x{height}).', events=events)
 
     def _safe_int(self, value: Any, default: int) -> int:
