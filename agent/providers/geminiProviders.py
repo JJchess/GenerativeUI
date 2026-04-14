@@ -245,6 +245,9 @@ class GeminiProvider(LLMProvider):
 
             gemini_role = "model" if role == "assistant" else "user"
             text = self._stringify_content(msg.get("content"))
+            if gemini_role == "model" and not text and not msg.get("tool_calls"):
+                # Avoid dropping empty assistant turns (consecutive user roles break some models).
+                text = " "
             if text:
                 contents.append({"role": gemini_role, "parts": [{"text": text}]})
 

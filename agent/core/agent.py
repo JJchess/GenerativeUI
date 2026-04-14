@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import uuid
 from typing import Any, Generator
 
@@ -23,6 +24,39 @@ from agent.tools.registry import ToolRegistry
 logger = logging.getLogger("genui.agent")
 
 MAX_TURNS = 8
+
+
+def _filter_redundant_post_widget_read_me(
+    tool_calls: list[Any],
+    *,
+    has_loaded_guidelines: bool,
+) -> list[Any]:
+    """Drop visualize_read_me calls that appear after show_widget in the same model turn.
+
+    Some models emit show_widget first then an extra visualize_read_me; executing the
+    latter only burns tokens after guidelines are already in context.
+    """
+    if not has_loaded_guidelines or not tool_calls:
+        return tool_calls
+    last_show = -1
+    for i, tc in enumerate(tool_calls):
+        if getattr(tc, "name", None) == "show_widget":
+            last_show = i
+    if last_show < 0:
+        return tool_calls
+    out: list[Any] = []
+    trimmed = False
+    for i, tc in enumerate(tool_calls):
+        if getattr(tc, "name", None) == "visualize_read_me" and i > last_show:
+            trimmed = True
+            continue
+        out.append(tc)
+    if trimmed:
+        logger.info(
+            "skipped visualize_read_me after show_widget in same batch (last show_widget index=%s)",
+            last_show,
+        )
+    return out
 
 
 def _log_model_response_complete(response: LLMResponse, assistant_text: str) -> None:
@@ -54,7 +88,11 @@ def _log_model_response_complete(response: LLMResponse, assistant_text: str) -> 
             ensure_ascii=False,
             default=str,
         )
-    logger.info("model_output_full json=%s", line)
+    flag = os.getenv("GENUI_LOG_MODEL_FULL", "").strip().lower()
+    if flag in ("1", "true", "yes", "on"):
+        logger.info("model_output_full json=%s", line)
+    else:
+        logger.debug("model_output_full json=%s", line)
 
 
 class AgentLoop:
@@ -140,14 +178,23 @@ class AgentLoop:
                     continue
                 return "".join(collected)
 
+            calls = _filter_redundant_post_widget_read_me(
+                response.tool_calls,
+                has_loaded_guidelines=self.orchestrator.state.has_loaded_guidelines,
+            )
+            provider_fields = response.provider_specific_fields
+            if len(calls) < len(response.tool_calls) and isinstance(provider_fields, dict):
+                # Drop raw Gemini parts so replay matches the filtered tool_calls list.
+                provider_fields = {k: v for k, v in provider_fields.items() if k != "assistant_parts"}
+
             messages.append({
                 "role": "assistant",
                 "content": assistant_content or None,
-                "tool_calls": [c.to_openai_tool_call() for c in response.tool_calls],
-                "provider_specific_fields": response.provider_specific_fields,
+                "tool_calls": [c.to_openai_tool_call() for c in calls],
+                "provider_specific_fields": provider_fields,
             })
 
-            for tool_call in response.tool_calls:
+            for tool_call in calls:
                 logger.info("tool call name=%s id=%s", tool_call.name, tool_call.id)
 
                 directive = self.orchestrator.before_tool_call(tool_call)
