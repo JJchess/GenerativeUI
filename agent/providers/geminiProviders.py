@@ -88,7 +88,7 @@ class GeminiProvider(LLMProvider):
             )
             body = self._response_to_dict(response)
         except Exception as exc:
-            return LLMResponse(content=str(exc), finish_reason="error", error=str(exc))
+            return LLMResponse(content=None, finish_reason="error", error=str(exc))
         return self._parse_gemini_response(body, retry_after=None)
 
     def chat_stream_sync(
@@ -156,7 +156,7 @@ class GeminiProvider(LLMProvider):
         except Exception as exc:
             yield StreamEvent(
                 type="response",
-                response=LLMResponse(content=str(exc), finish_reason="error", error=str(exc)),
+                response=LLMResponse(content=None, finish_reason="error", error=str(exc)),
             )
 
     def _extract_tool_calls_from_parts(self, parts: list[dict[str, Any]]) -> list[ToolCallRequest]:
@@ -280,9 +280,29 @@ class GeminiProvider(LLMProvider):
             }
             parameters = function_payload.get("parameters")
             if isinstance(parameters, dict):
-                declaration["parameters"] = parameters
+                declaration["parameters"] = self._sanitize_gemini_schema(parameters)
             declarations.append(declaration)
         return declarations
+
+    def _sanitize_gemini_schema(self, value: Any) -> Any:
+        """Remove JSON Schema keys that Gemini function declarations reject."""
+        if isinstance(value, dict):
+            sanitized: dict[str, Any] = {}
+            for key, item in value.items():
+                if key in {
+                    "additionalProperties",
+                    "default",
+                    "$schema",
+                    "$id",
+                    "examples",
+                    "title",
+                }:
+                    continue
+                sanitized[key] = self._sanitize_gemini_schema(item)
+            return sanitized
+        if isinstance(value, list):
+            return [self._sanitize_gemini_schema(item) for item in value]
+        return value
 
     def _to_gemini_tool_config(self, tool_choice: str | dict[str, Any] | None) -> dict[str, Any] | None:
         if tool_choice is None:

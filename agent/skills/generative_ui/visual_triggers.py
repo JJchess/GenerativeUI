@@ -1,30 +1,5 @@
-"""Single source of truth for visual-request substring triggers (ZH + EN)."""
+"""Backward-compatible exports for visual request triggers."""
 
-VISUAL_TRIGGERS_ZH = [
-    "演示",
-    "可视化",
-    "图表",
-    "交互式",
-    "交互",
-    "仿真",
-    "模拟",
-    "电解",
-    "动画",
-    "流程图",
-    "曲线",
-    "画图",
-    "组件",
-    "界面",
-    "展示",
-]
+from agent.skills.generative_ui.constants import VISUAL_TRIGGERS_EN, VISUAL_TRIGGERS_ZH
 
-VISUAL_TRIGGERS_EN = [
-    "visual",
-    "widget",
-    "chart",
-    "diagram",
-    "interactive",
-    "simulation",
-    "dashboard",
-    "graph",
-]
+__all__ = ["VISUAL_TRIGGERS_ZH", "VISUAL_TRIGGERS_EN"]

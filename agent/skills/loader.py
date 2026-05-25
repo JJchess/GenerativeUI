@@ -43,7 +43,8 @@ def build_system_prompt(skills: list[SkillDefinition]) -> str:
         "You are a visualization-focused assistant.\n"
         f"Visual request triggers — Chinese: {zh_triggers}\n"
         f"Visual request triggers — English: {en_triggers}\n"
-        "For visual requests use the tools defined in your skills. For plain Q&A respond with text only.\n"
+        "For visual requests call the generative_ui tool unless the user clearly wants plain text only.\n"
+        "For plain Q&A respond with text only.\n"
         "Follow the skill rules below.\n"
     )
     parts = ["<skills>"]

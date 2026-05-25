@@ -26,37 +26,26 @@ logger = logging.getLogger("genui.agent")
 MAX_TURNS = 8
 
 
-def _filter_redundant_post_widget_read_me(
+def _filter_duplicate_generative_ui_calls(
     tool_calls: list[Any],
-    *,
-    has_loaded_guidelines: bool,
 ) -> list[Any]:
-    """Drop visualize_read_me calls that appear after show_widget in the same model turn.
+    """Keep only the first generative_ui call in a model turn."""
+    if not tool_calls:
+        return tool_calls
 
-    Some models emit show_widget first then an extra visualize_read_me; executing the
-    latter only burns tokens after guidelines are already in context.
-    """
-    if not has_loaded_guidelines or not tool_calls:
-        return tool_calls
-    last_show = -1
-    for i, tc in enumerate(tool_calls):
-        if getattr(tc, "name", None) == "show_widget":
-            last_show = i
-    if last_show < 0:
-        return tool_calls
     out: list[Any] = []
-    trimmed = False
-    for i, tc in enumerate(tool_calls):
-        if getattr(tc, "name", None) == "visualize_read_me" and i > last_show:
-            trimmed = True
-            continue
+    seen_generative_ui = False
+    for tc in tool_calls:
+        if getattr(tc, "name", None) == "generative_ui":
+            if seen_generative_ui:
+                continue
+            seen_generative_ui = True
         out.append(tc)
-    if trimmed:
+    if seen_generative_ui and len(out) != len(tool_calls):
         logger.info(
-            "skipped visualize_read_me after show_widget in same batch (last show_widget index=%s)",
-            last_show,
+            "skipped duplicate generative_ui calls in same batch (kept first only)",
         )
-    return out
+    return out if out else tool_calls
 
 
 def _log_model_response_complete(response: LLMResponse, assistant_text: str) -> None:
@@ -145,6 +134,12 @@ class AgentLoop:
             if response is None:
                 return "".join(collected)
 
+            if response.finish_reason == "error":
+                logger.error("provider error -> %s", response.content or response.error)
+                safe_text = "模型服务暂时不稳定，请重试。若持续失败，请检查网络或稍后再试。"
+                yield from _emit_system_text(safe_text, collected)
+                return "".join(collected)
+
             streamed = "".join(turn_text)
             resp_text = (response.content or "").strip()
             if resp_text and not streamed.strip():
@@ -163,12 +158,6 @@ class AgentLoop:
                 len(assistant_content),
             )
 
-            if response.finish_reason == "error":
-                logger.error("provider error -> %s", response.content or response.error)
-                safe_text = "模型服务暂时不稳定，请重试。若持续失败，请检查网络或稍后再试。"
-                yield from _emit_system_text(safe_text, collected)
-                return "".join(collected)
-
             if not response.tool_calls:
                 directive = self.orchestrator.on_no_tool_calls(
                     assistant_content, response.provider_specific_fields
@@ -178,10 +167,7 @@ class AgentLoop:
                     continue
                 return "".join(collected)
 
-            calls = _filter_redundant_post_widget_read_me(
-                response.tool_calls,
-                has_loaded_guidelines=self.orchestrator.state.has_loaded_guidelines,
-            )
+            calls = _filter_duplicate_generative_ui_calls(response.tool_calls)
             provider_fields = response.provider_specific_fields
             if len(calls) < len(response.tool_calls) and isinstance(provider_fields, dict):
                 # Drop raw Gemini parts so replay matches the filtered tool_calls list.
@@ -206,16 +192,12 @@ class AgentLoop:
                 arguments = self.orchestrator.enrich_tool_arguments(
                     tool_call.name, dict(tool_call.arguments), user_text
                 )
-
-                attach_read_me_trailer: bool | None = None
-                if tool_call.name == "visualize_read_me":
-                    attach_read_me_trailer = not self.orchestrator.state.read_me_trailer_emitted
+                arguments["_conversation_messages"] = messages
 
                 execution = self.tools.execute(
                     tool_call.name,
                     arguments,
                     tool_call_id,
-                    attach_read_me_trailer=attach_read_me_trailer,
                 )
                 logger.info(
                     "tool execution name=%s events=%s content_len=%s",
@@ -243,13 +225,6 @@ class AgentLoop:
                     "name": tool_call.name,
                     "content": execution.content,
                 })
-                if (
-                    tool_call.name == "visualize_read_me"
-                    and execution.content
-                    and "No guidelines found" not in str(execution.content)
-                    and attach_read_me_trailer is True
-                ):
-                    self.orchestrator.state.read_me_trailer_emitted = True
 
         fallback = self.orchestrator.get_fallback_text()
         if fallback:

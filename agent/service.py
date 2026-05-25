@@ -12,8 +12,8 @@ from agent.core.agent import AgentLoop
 from agent.core.config import resolve_config
 from agent.core.session import ChatMessage, ChatSession, SessionStore  # noqa: F401
 from agent.skills.generative_ui.orchestrator import GenerativeUIOrchestrator
-from agent.skills.generative_ui.tools.show_widget import ShowWidgetTool
-from agent.skills.generative_ui.tools.visualize_read_me import VisualizeReadMeTool
+from agent.skills.generative_ui.tool import GenerativeUITool
+from agent.skills.generative_ui.validators import infer_widget_type
 from agent.skills.loader import build_system_prompt, load_skills
 from agent.tools.registry import ToolRegistry
 
@@ -28,24 +28,8 @@ class GenUIAgentService:
             sessions_dir=agent_dir.parent.parent / "frontend" / "sessions"
         )
 
-        guidelines_dir = agent_dir / "guidelines"
-        # show_widget.widget_type — layout kinds only (not CORE).
-        widget_module_types = [
-            "interactive", "chart", "chart_interactive",
-            "mockup", "art", "art_interactive", "diagram",
-        ]
-        # visualize_read_me: exactly one module per call; CORE is optional fallback when none of the above fit.
-        read_me_module_names = [*widget_module_types, "CORE"]
-        guideline_file_by_module: dict[str, Path] = {
-            m: guidelines_dir / f"{m}.md" for m in read_me_module_names
-        }
-
         self.tools = ToolRegistry()
-        self.tools.register(VisualizeReadMeTool(
-            available_modules=read_me_module_names,
-            guideline_file_by_module=guideline_file_by_module,
-        ))
-        self.tools.register(ShowWidgetTool(available_modules=widget_module_types))
+        self.tools.register(GenerativeUITool())
 
         self._skills = load_skills(agent_dir / "skills")
         self._system_prompt = build_system_prompt(self._skills)
@@ -209,27 +193,21 @@ class GenUIAgentService:
             yield {
                 "type": "toolcall_start",
                 "tool_call_id": tool_call_id,
-                "name": "show_widget",
+                "name": "generative_ui",
                 "widget_type": widget_type,
                 "title": "compound_interest_demo",
                 "width": 780,
                 "height": 520,
-                "loading_messages": orch._default_loading_messages(user_text),
+                "loading_messages": ["Preparing interactive layout", "Binding controls", "Rendering interactive widget"],
             }
             yield {"type": "toolcall_end", "tool_call_id": tool_call_id, "widget_code": widget_code}
         return "".join(collected)
 
     @staticmethod
     def _infer_widget_type(user_text: str) -> Literal["interactive", "chart", "mockup", "art", "diagram"]:
-        normalized = user_text.lower()
-        if any(t in normalized for t in ["chart", "graph", "plot", "histogram", "timeseries"]):
-            return "chart"
-        if any(t in normalized for t in ["diagram", "architecture", "flow", "workflow"]):
-            return "diagram"
-        if any(t in normalized for t in ["mockup", "form", "layout", "ui"]):
-            return "mockup"
-        if any(t in normalized for t in ["art", "illustration", "draw", "creative"]):
-            return "art"
+        widget_type = infer_widget_type(user_text)
+        if widget_type in {"interactive", "chart", "mockup", "art", "diagram"}:
+            return widget_type
         return "interactive"
 
     @staticmethod
@@ -237,7 +215,7 @@ class GenUIAgentService:
         if include_widget:
             reply = (
                 f"我将为\u201c{user_text}\u201d生成一个可交互可视化。"
-                "你会先看到说明文本流，然后看到 show_widget 的增量渲染事件。"
+                "你会先看到说明文本流，然后看到 generative_ui 生成的组件。"
             )
         else:
             reply = (
@@ -297,4 +275,3 @@ class GenUIAgentService:
   yearsEl.addEventListener('input', recalc);
   recalc();
 </script>""".strip()
-

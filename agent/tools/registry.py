@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from typing import Any
 
-from agent.skills.generative_ui.tools.visualize_read_me import VisualizeReadMeTool
 from agent.tools.base import AgentTool, ToolExecutionResult
 
 
@@ -27,7 +26,4 @@ class ToolRegistry:
         tool = self._tools.get(name)
         if tool is None:
             return ToolExecutionResult(content=f"Tool call ignored: unknown tool name '{name}'.")
-        if name == "visualize_read_me" and isinstance(tool, VisualizeReadMeTool):
-            at = True if attach_read_me_trailer is None else attach_read_me_trailer
-            return tool.execute(arguments, tool_call_id, attach_output_trailer=at)
         return tool.execute(arguments, tool_call_id)
