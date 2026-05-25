@@ -13,6 +13,7 @@ from agent.providers.geminiProviders import GeminiProvider
 from agent.tools.base import AgentTool, ToolExecutionResult
 
 from .prompts import (
+    build_planning_prompt,
     build_primary_prompt,
     build_repair_prompt,
     build_validation_repair_prompt,
@@ -148,10 +149,22 @@ class GenerativeUITool(AgentTool):
         debug_trace_id: str,
     ) -> Dict[str, Any]:
         widget_type = infer_widget_type(query)
+
+        plan = self._run_planning_stage(
+            query=query,
+            widget_type=widget_type,
+            recent_context=recent_context,
+            api_key=api_key,
+            model=model,
+            debug_trace_enabled=debug_trace_enabled,
+            debug_trace_id=debug_trace_id,
+        )
+
         primary_prompt = build_primary_prompt(
             query=query,
             widget_type=widget_type,
             recent_context=recent_context,
+            plan=plan,
         )
         raw = self._ask_with_debug_trace(
             stage="build",
@@ -213,6 +226,55 @@ class GenerativeUITool(AgentTool):
 
         joined_errors = "; ".join(errors) if errors else "unknown validation errors"
         raise ValueError(f"widget payload is invalid after repair: {joined_errors}")
+
+    def _run_planning_stage(
+        self,
+        *,
+        query: str,
+        widget_type: str,
+        recent_context: str,
+        api_key: str,
+        model: str,
+        debug_trace_enabled: bool,
+        debug_trace_id: str,
+    ) -> str:
+        prompt = build_planning_prompt(
+            query=query,
+            widget_type=widget_type,
+            recent_context=recent_context,
+        )
+        try:
+            raw = self._ask_with_debug_trace(
+                stage="plan",
+                prompt=prompt,
+                query=query,
+                widget_type=widget_type,
+                temperature=0.6,
+                api_key=api_key,
+                model=model,
+                debug_trace_enabled=debug_trace_enabled,
+                debug_trace_id=debug_trace_id,
+            )
+        except Exception:
+            return ""
+
+        text = (raw or "").strip()
+        if text.startswith("```"):
+            import re as _re
+
+            text = _re.sub(r"^```[a-zA-Z]*\n?", "", text).rstrip("`").strip()
+
+        start = text.find("{")
+        end = text.rfind("}")
+        if start >= 0 and end > start:
+            candidate = text[start : end + 1]
+            try:
+                parsed = json.loads(candidate)
+                if isinstance(parsed, dict) and parsed:
+                    return json.dumps(parsed, ensure_ascii=False, indent=2)
+            except Exception:
+                return candidate
+        return text
 
     def _ask_with_debug_trace(
         self,

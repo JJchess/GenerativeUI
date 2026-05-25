@@ -104,12 +104,62 @@ _STRUCTURAL_EXAMPLE = """
 """.strip()
 
 
-def build_primary_prompt(
+def build_planning_prompt(
     *,
     query: str,
     widget_type: str,
     recent_context: str,
 ) -> str:
+    return f"""
+You are the design-planning step for an interactive UI widget generator. You do NOT write code in this step. You produce a short JSON plan that the next step will implement.
+
+Current request:
+{query}
+
+Suggested widget type:
+{widget_type}
+
+Relevant recent conversation:
+{recent_context}
+
+Think about what would make this a GOOD demonstration — not just a static picture. For conceptual or technical topics (algorithms, architectures, physical systems, math), the user almost always wants to manipulate something and SEE the consequence. A static labelled diagram with a click-to-show-text panel is a failure mode — avoid it.
+
+Decide:
+1. The ONE core mechanism or insight worth showing. (Not a tour of every component — one thing the user will actually grok after using this.)
+2. What state the user can change (sliders, play/pause, step, text input, dropdown, drag). At least one control that produces a visible change in the main visualization.
+3. How the visualization evolves when that state changes — describe the BEFORE and AFTER visually.
+4. What the initial (non-empty, meaningful) state looks like on first render. Never start blank-waiting-for-click.
+5. Layout: how the controls, the main visualization, and any secondary readouts fit inside roughly 780 x 520 px without overflow or scroll.
+
+Return ONE JSON object only, no prose, no markdown fences. Schema:
+
+{{
+  "core_insight": "<one sentence — what the user should understand>",
+  "controls": [
+    {{"kind": "slider|button|toggle|input|step|dropdown", "label": "<short>", "affects": "<what changes visually>"}}
+  ],
+  "visual_evolution": "<2-3 sentences describing how the main visual changes as controls move>",
+  "initial_state": "<what is on screen at first paint, with concrete values>",
+  "layout": "<one sentence — how regions are arranged inside 780x520>",
+  "anti_patterns_to_avoid": ["<specific bad ideas for this particular request>"]
+}}
+
+Keep every string under ~30 words. Prefer concrete (\"slider 1-8 heads, attention matrix recolors\") over vague (\"interactive controls\").
+""".strip()
+
+
+def build_primary_prompt(
+    *,
+    query: str,
+    widget_type: str,
+    recent_context: str,
+    plan: str = "",
+) -> str:
+    plan_section = (
+        f"\nDesign plan to implement (from the planning step — follow it; do not redesign):\n{plan}\n"
+        if plan.strip()
+        else ""
+    )
     return f"""
 You are generating a self-contained interactive UI widget for the current discussion.
 
@@ -123,7 +173,7 @@ Suggested widget type:
 
 Relevant recent conversation:
 {recent_context}
-
+{plan_section}
 Visualization skill guidance:
 {_guideline_bundle(widget_type)}
 
