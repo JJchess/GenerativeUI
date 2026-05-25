@@ -27,7 +27,6 @@ from .validators import (
     normalize_widget_type,
     parse_split_response,
     payload_validation_errors,
-    safe_int,
     safe_loading_messages,
 )
 
@@ -103,8 +102,6 @@ class GenerativeUITool(AgentTool):
         title = normalize_title(str(result.get("title") or "generated_widget"))
         widget_type = normalize_widget_type(str(result.get("widget_type") or "interactive"))
         loading_messages = safe_loading_messages(result.get("loading_messages"), resolved_query)
-        width = safe_int(result.get("width"), 780)
-        height = safe_int(result.get("height"), 520)
         assistant_text = str(result.get("assistant_text") or "").strip()
 
         events = [
@@ -114,8 +111,6 @@ class GenerativeUITool(AgentTool):
                 "name": self.name,
                 "widget_type": widget_type,
                 "title": title,
-                "width": width,
-                "height": height,
                 "loading_messages": loading_messages,
             },
             {

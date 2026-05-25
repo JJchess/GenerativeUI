@@ -56,17 +56,18 @@ def _guideline_bundle(widget_type: str) -> str:
 _STRUCTURAL_EXAMPLE = """
 ## Structural example (NaCl electrolysis)
 
-{"title": "nacl_electrolysis", "widget_type": "interactive", "loading_messages": ["Preparing simulation", "Rendering ions"], "width": 780, "height": 520, "assistant_text": "An interactive NaCl electrolysis simulation with start/stop control."}
+{"title": "nacl_electrolysis", "widget_type": "interactive", "loading_messages": ["Preparing simulation", "Rendering ions"], "assistant_text": "An interactive NaCl electrolysis simulation with start/stop control."}
 <widget_code>
 <style>
-  :root { --bg: #0f1117; --accent: #4fc3f7; --text: #e0e0e0; }
-  canvas { display: block; margin: 0 auto; background: var(--bg); }
+  .wrap { width: 100%; }
+  canvas { display: block; width: 100%; max-width: 740px; height: auto; margin: 0 auto;
+           background: var(--color-background-secondary); border-radius: var(--border-radius-md); }
   #controls { text-align: center; margin-top: 8px; }
-  button { background: var(--accent); color: #000; border: none;
-           padding: 6px 18px; border-radius: 4px; cursor: pointer; font-size: 14px; }
 </style>
-<canvas id="c" width="740" height="440"></canvas>
-<div id="controls"><button id="btn">Start</button></div>
+<div class="wrap">
+  <canvas id="c" width="740" height="440"></canvas>
+  <div id="controls"><button id="btn">Start</button></div>
+</div>
 <script>
   const canvas = document.getElementById('c');
   const ctx = canvas.getContext('2d');
@@ -188,8 +189,6 @@ Part 1 - a single JSON object on one or more lines (no widget_code field):
   "title": "<short title, SAME language as the request>",
   "widget_type": "{widget_type}",
   "loading_messages": ["<msg in request's language>", "..."],
-  "width": 780,
-  "height": 520,
   "assistant_text": "<one short sentence in the request's language>"
 }}
 
@@ -211,6 +210,15 @@ Rules:
 - Put explanations in assistant_text, not inside the widget body.
 - No markdown fences around the JSON.
 - No text outside these two parts.
+
+Layout — width is fluid, height is content-driven (THIS IS LOAD-BEARING, READ CAREFULLY):
+- The host container has a fixed width that you do NOT know. Design the widget to be FLUID horizontally.
+- NEVER hardcode pixel widths on layout containers. Forbidden patterns: `width: 800px`, `width: 600px`, `min-width: 700px`, `grid-template-columns: 180px 1fr 240px` (fixed pixel tracks force overflow on narrow hosts).
+- Use `width: 100%`, `max-width: <Npx>`, fractional units (`1fr`), or `minmax(0, 1fr)` for grid tracks. For multi-column layouts prefer `grid-template-columns: repeat(auto-fit, minmax(<Npx>, 1fr))` or all-`1fr` tracks.
+- Canvas and images have intrinsic pixel dimensions for drawing — that is fine on the element itself, but ALWAYS wrap them with `style="width:100%; max-width:<Npx>; height:auto; display:block"` so they shrink with the host.
+- Height: do NOT set a fixed pixel height on any outer/root wrapper. The frame grows to fit your content. Inner regions (a heatmap cell, a canvas) may have pixel heights, but the root container must let height be `auto`.
+- Do NOT use `overflow: hidden` on the outermost wrapper — it hides content when your size guess is wrong.
+- Verify mentally: would your widget still look right if the host were 600px wide? 900px wide? If not, redesign with fluid units.
 """.strip()
 
 
@@ -239,8 +247,8 @@ Relevant guidance:
 
 Return the fixed response in EXACTLY the same two-part format:
 
-Part 1 - metadata JSON (no widget_code field):
-{{"title": "...", "widget_type": "{widget_type}", "loading_messages": [...], "width": 780, "height": 520, "assistant_text": "..."}}
+Part 1 - metadata JSON (no widget_code field, no width/height):
+{{"title": "...", "widget_type": "{widget_type}", "loading_messages": [...], "assistant_text": "..."}}
 
 Part 2 - raw widget HTML/CSS/JS:
 <widget_code>
@@ -298,13 +306,11 @@ Visualization skill guidance:
 
 Return the fixed response in EXACTLY the same two-part format:
 
-Part 1 - metadata JSON (no widget_code field):
+Part 1 - metadata JSON (no widget_code field, no width/height):
 {{
   "title": "<short title, SAME language as the request>",
   "widget_type": "{widget_type}",
   "loading_messages": ["<msg in request's language>", "..."],
-  "width": 780,
-  "height": 520,
   "assistant_text": "<one short sentence in the request's language>"
 }}
 
