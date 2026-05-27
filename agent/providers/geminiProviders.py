@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import time
 import uuid
 from typing import Any
 
@@ -14,13 +15,39 @@ from .base import LLMProvider, LLMResponse, StreamEvent, ToolCallRequest
 
 logger = logging.getLogger("genui.gemini")
 
+_MAX_TRANSIENT_RETRIES = 3
+_RETRY_BASE_DELAY = 0.6
+
+_TRANSIENT_ERROR_MARKERS = (
+    "unexpected_eof",
+    "eof occurred in violation of protocol",
+    "ssl",
+    "connection reset",
+    "connection aborted",
+    "connection error",
+    "broken pipe",
+    "timed out",
+    "timeout",
+    "temporarily unavailable",
+    "503",
+    "502",
+    "504",
+    "remotedisconnected",
+    "server disconnected",
+)
+
+
+def _is_transient_error(exc: Exception) -> bool:
+    text = f"{type(exc).__name__}: {exc}".lower()
+    return any(marker in text for marker in _TRANSIENT_ERROR_MARKERS)
+
 
 class GeminiProvider(LLMProvider):
     def __init__(
         self,
         api_key: str,
         api_base: str | None = None,
-        default_model: str = "gemini-3.1-flash-lite-preview",
+        default_model: str = "gemini-3.5-flash",
     ):
         super().__init__(api_key=api_key, api_base=api_base)
         self.default_model = default_model
@@ -78,18 +105,30 @@ class GeminiProvider(LLMProvider):
     ) -> LLMResponse:
         if not self.api_key:
             return LLMResponse(content=None, finish_reason="error", error="Missing GEMINI_API_KEY")
-        try:
-            client = genai.Client(api_key=self.api_key)
-            config = self._build_config(messages, tools, max_tokens, temperature, tool_choice)
-            response = client.models.generate_content(
-                model=model or self.default_model,
-                contents=self._to_gemini_contents(messages),
-                config=config,
-            )
-            body = self._response_to_dict(response)
-        except Exception as exc:
-            return LLMResponse(content=None, finish_reason="error", error=str(exc))
-        return self._parse_gemini_response(body, retry_after=None)
+        last_exc: Exception | None = None
+        for attempt in range(_MAX_TRANSIENT_RETRIES):
+            try:
+                client = genai.Client(api_key=self.api_key)
+                config = self._build_config(messages, tools, max_tokens, temperature, tool_choice)
+                response = client.models.generate_content(
+                    model=model or self.default_model,
+                    contents=self._to_gemini_contents(messages),
+                    config=config,
+                )
+                body = self._response_to_dict(response)
+                return self._parse_gemini_response(body, retry_after=None)
+            except Exception as exc:
+                last_exc = exc
+                if attempt < _MAX_TRANSIENT_RETRIES - 1 and _is_transient_error(exc):
+                    delay = _RETRY_BASE_DELAY * (2 ** attempt)
+                    logger.warning(
+                        "transient provider error (attempt %d/%d), retrying in %.1fs: %s",
+                        attempt + 1, _MAX_TRANSIENT_RETRIES, delay, exc,
+                    )
+                    time.sleep(delay)
+                    continue
+                break
+        return LLMResponse(content=None, finish_reason="error", error=str(last_exc))
 
     def chat_stream_sync(
         self,
@@ -107,57 +146,80 @@ class GeminiProvider(LLMProvider):
             )
             return
 
-        try:
-            client = genai.Client(api_key=self.api_key)
-            config = self._build_config(messages, tools, max_tokens, temperature, tool_choice)
-            contents = self._to_gemini_contents(messages)
+        last_exc: Exception | None = None
+        for attempt in range(_MAX_TRANSIENT_RETRIES):
+            emitted_any = False
+            try:
+                client = genai.Client(api_key=self.api_key)
+                config = self._build_config(messages, tools, max_tokens, temperature, tool_choice)
+                contents = self._to_gemini_contents(messages)
 
-            all_parts: list[dict[str, Any]] = []
-            finish_reason = "stop"
-            usage_raw: dict[str, Any] = {}
+                all_parts: list[dict[str, Any]] = []
+                finish_reason = "stop"
+                usage_raw: dict[str, Any] = {}
 
-            for chunk in client.models.generate_content_stream(
-                model=model or self.default_model,
-                contents=contents,
-                config=config,
-            ):
-                body = self._response_to_dict(chunk)
-                candidates = body.get("candidates") or []
-                if not candidates:
+                for chunk in client.models.generate_content_stream(
+                    model=model or self.default_model,
+                    contents=contents,
+                    config=config,
+                ):
+                    body = self._response_to_dict(chunk)
+                    candidates = body.get("candidates") or []
+                    if not candidates:
+                        continue
+
+                    candidate = candidates[0]
+                    parts = (candidate.get("content") or {}).get("parts") or []
+
+                    for part in parts:
+                        if isinstance(part, dict) and isinstance(part.get("text"), str) and part["text"]:
+                            emitted_any = True
+                            yield StreamEvent(type="text_delta", delta=part["text"])
+
+                    all_parts.extend(parts)
+                    finish_reason = str(candidate.get("finishReason") or finish_reason).lower()
+                    usage_raw = body.get("usageMetadata") or body.get("usage_metadata") or usage_raw
+
+                tool_calls = self._extract_tool_calls_from_parts(all_parts)
+                text_content = "\n".join(
+                    p["text"] for p in all_parts
+                    if isinstance(p, dict) and isinstance(p.get("text"), str) and p["text"].strip()
+                ) or None
+
+                yield StreamEvent(
+                    type="response",
+                    response=LLMResponse(
+                        content=text_content,
+                        tool_calls=tool_calls,
+                        finish_reason=finish_reason,
+                        usage=self._extract_usage({"usageMetadata": usage_raw}),
+                        provider_specific_fields={"assistant_parts": all_parts},
+                    ),
+                )
+                return
+            except Exception as exc:
+                last_exc = exc
+                # Only safe to retry if nothing has streamed to the client yet —
+                # otherwise a retry would duplicate partial output.
+                can_retry = (
+                    not emitted_any
+                    and attempt < _MAX_TRANSIENT_RETRIES - 1
+                    and _is_transient_error(exc)
+                )
+                if can_retry:
+                    delay = _RETRY_BASE_DELAY * (2 ** attempt)
+                    logger.warning(
+                        "transient stream error (attempt %d/%d), retrying in %.1fs: %s",
+                        attempt + 1, _MAX_TRANSIENT_RETRIES, delay, exc,
+                    )
+                    time.sleep(delay)
                     continue
+                break
 
-                candidate = candidates[0]
-                parts = (candidate.get("content") or {}).get("parts") or []
-
-                for part in parts:
-                    if isinstance(part, dict) and isinstance(part.get("text"), str) and part["text"]:
-                        yield StreamEvent(type="text_delta", delta=part["text"])
-
-                all_parts.extend(parts)
-                finish_reason = str(candidate.get("finishReason") or finish_reason).lower()
-                usage_raw = body.get("usageMetadata") or body.get("usage_metadata") or usage_raw
-
-            tool_calls = self._extract_tool_calls_from_parts(all_parts)
-            text_content = "\n".join(
-                p["text"] for p in all_parts
-                if isinstance(p, dict) and isinstance(p.get("text"), str) and p["text"].strip()
-            ) or None
-
-            yield StreamEvent(
-                type="response",
-                response=LLMResponse(
-                    content=text_content,
-                    tool_calls=tool_calls,
-                    finish_reason=finish_reason,
-                    usage=self._extract_usage({"usageMetadata": usage_raw}),
-                    provider_specific_fields={"assistant_parts": all_parts},
-                ),
-            )
-        except Exception as exc:
-            yield StreamEvent(
-                type="response",
-                response=LLMResponse(content=None, finish_reason="error", error=str(exc)),
-            )
+        yield StreamEvent(
+            type="response",
+            response=LLMResponse(content=None, finish_reason="error", error=str(last_exc)),
+        )
 
     def _extract_tool_calls_from_parts(self, parts: list[dict[str, Any]]) -> list[ToolCallRequest]:
         tool_calls: list[ToolCallRequest] = []

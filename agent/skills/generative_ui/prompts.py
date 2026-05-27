@@ -112,7 +112,7 @@ def build_planning_prompt(
     recent_context: str,
 ) -> str:
     return f"""
-You are the design-planning step for an interactive UI widget generator. You do NOT write code in this step. You produce a short JSON plan that the next step will implement.
+You are the design-planning step for an interactive UI widget generator. You do NOT write final HTML/CSS/JS here. You produce a STRUCTURAL CONTRACT as JSON — a precise blueprint that the next step implements verbatim. The contract pins down the three things that most often go wrong (layout, state, interaction) while leaving styling and drawing details to the implementer.
 
 Current request:
 {query}
@@ -123,29 +123,39 @@ Suggested widget type:
 Relevant recent conversation:
 {recent_context}
 
-Think about what would make this a GOOD demonstration — not just a static picture. For conceptual or technical topics (algorithms, architectures, physical systems, math), the user almost always wants to manipulate something and SEE the consequence. A static labelled diagram with a click-to-show-text panel is a failure mode — avoid it.
+Think about what makes this a GOOD demonstration — not a static picture. For conceptual/technical topics (algorithms, architectures, physical systems, math), the user wants to manipulate something and SEE the consequence. A static labelled diagram with a click-to-show-text panel is a failure mode — avoid it.
 
-Decide:
-1. The ONE core mechanism or insight worth showing. (Not a tour of every component — one thing the user will actually grok after using this.)
-2. What state the user can change (sliders, play/pause, step, text input, dropdown, drag). At least one control that produces a visible change in the main visualization.
-3. How the visualization evolves when that state changes — describe the BEFORE and AFTER visually.
-4. What the initial (non-empty, meaningful) state looks like on first render. Never start blank-waiting-for-click.
-5. Layout: how the controls, the main visualization, and any secondary readouts fit inside roughly 780 x 520 px without overflow or scroll.
+CLARITY BEATS RICHNESS. The single most important thing is that the core concept reads crisply and unambiguously. A clean diagram that shows ONE idea sharply is far better than a busy widget with many controls where the main visual is muddy. Do NOT add extra controls, modes, or parameters (extra kernels, free-form editing, multiple toggles) if they make the central visualization harder to read. When in doubt, cut.
 
-Return ONE JSON object only, no prose, no markdown fences. Schema:
+Rendering medium — choose deliberately, state it in the contract:
+- Geometric / structural concepts (boundaries, lines, vectors, regions, graphs, flows, hierarchies) → DECLARATIVE SVG with named elements (`<line>`, `<path>`, `<circle>`). Crisp vector strokes. Compute lines/curves ANALYTICALLY and set element coordinates — NEVER draw a boundary by sampling a pixel grid and dotting cells; that looks blurry and noisy.
+- Use `<canvas>` ONLY for genuinely pixel/particle-heavy content: many moving particles, continuous fields, fluid/heat simulation, dense per-pixel shading. If the core visual is lines and shapes, canvas is the wrong tool.
+- Note: canvas does NOT reliably resolve `var(--color-*)` for fillStyle/strokeStyle — another reason to prefer SVG for anything color-coded.
+
+Design rules the contract MUST respect:
+- Width is fluid (host-driven, unknown). Layout uses 100% / 1fr / minmax(0,1fr) — never fixed pixel widths on regions. Height grows with content.
+- At least one control must produce a VISIBLE change in the main visualization.
+- The initial render is non-empty and meaningful — never "click to start".
+- There is ONE update entry point: every state change calls a single update() that re-derives the view from current state. For SVG this means updating the named elements' attributes; for canvas it means a redraw. Either way, no scattered ad-hoc mutations spread across handlers.
+
+Return ONE JSON object only — no prose, no markdown fences. Schema:
 
 {{
-  "core_insight": "<one sentence — what the user should understand>",
-  "controls": [
-    {{"kind": "slider|button|toggle|input|step|dropdown", "label": "<short>", "affects": "<what changes visually>"}}
+  "core_insight": "<one sentence — what the user should understand after using this>",
+  "render_medium": "svg | canvas",
+  "render_medium_reason": "<short — why this medium fits the core visual>",
+  "layout_skeleton": "<region tree, top-to-bottom, with the fluid sizing for each region, e.g. 'controls bar (100%) / main svg viz (100%, aspect-ratio kept) / readout row (2x 1fr)'>",
+  "state_model": [
+    {{"name": "<jsVarName>", "type": "int|float|bool|string|array", "range_or_values": "<e.g. 0..7, true/false, ['我','爱','你']>", "initial": "<concrete initial value>"}}
   ],
-  "visual_evolution": "<2-3 sentences describing how the main visual changes as controls move>",
-  "initial_state": "<what is on screen at first paint, with concrete values>",
-  "layout": "<one sentence — how regions are arranged inside 780x520>",
-  "anti_patterns_to_avoid": ["<specific bad ideas for this particular request>"]
+  "interactions": [
+    {{"trigger": "<element + event, e.g. 'range#heads input'>", "effect": "<which state changes and what updates visually>"}}
+  ],
+  "render_contract": "<one sentence: what update() re-derives from state, and (for SVG) which named elements it sets, or (for canvas) what it redraws>",
+  "initial_paint": "<what is on screen at first render, with concrete values from state_model initials>"
 }}
 
-Keep every string under ~30 words. Prefer concrete (\"slider 1-8 heads, attention matrix recolors\") over vague (\"interactive controls\").
+Keep every string tight and concrete. Prefer \"range#k (1..8) -> recompute neighbors, recolor decision regions\" over \"interactive slider\". The state_model names you choose ARE the variable names the implementer will use.
 """.strip()
 
 
@@ -157,7 +167,14 @@ def build_primary_prompt(
     plan: str = "",
 ) -> str:
     plan_section = (
-        f"\nDesign plan to implement (from the planning step — follow it; do not redesign):\n{plan}\n"
+        "\nStructural contract to implement (from the planning step — implement it faithfully, "
+        "do not redesign). Use the exact state_model variable names, wire every interaction's "
+        "trigger to a real event handler, and route all updates through the single update() the "
+        "render_contract describes. Honor render_medium: if it says svg, build the visual from "
+        "named SVG elements and compute lines/curves analytically (never sample a pixel grid to "
+        "draw a boundary); if it says canvas, reserve it for particle/field-style content. "
+        "Keep the core visual crisp — prefer clarity over extra controls:\n"
+        f"{plan}\n"
         if plan.strip()
         else ""
     )
