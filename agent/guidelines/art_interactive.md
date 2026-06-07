@@ -1,3 +1,6 @@
+<!-- GENERATED from fragments/ + directions.py by bundler.py — DO NOT EDIT.
+     Regenerate: python -m agent.skills.generative_ui.bundler -->
+
 # Imagine — Visual Creation Suite
 
 ## Modules
@@ -145,7 +148,6 @@ Pick the closest module use case and adapt. When nothing fits cleanly:
 - All craft rules and the technical contract still apply
 - Use `sendPrompt()` for any action that benefits from assistant reasoning
 
-
 **Complexity budget — hard limits (diagrams):**
 - Box subtitles: ≤5 words. Detail goes in click-through (`sendPrompt`) or the prose below — not the box.
 - Colors: ≤2 ramps per diagram. If colors encode meaning (states, tiers), add a 1-line legend. Otherwise use one neutral ramp.
@@ -227,7 +229,6 @@ Before placing text in a box, check: does (text width + 2×padding) fit the cont
 
 **No rotated text**. `<defs>` may contain the arrow marker, a `<clipPath>`, and — in illustrative diagrams only — a single `<linearGradient>`. Nothing else: no filters, no patterns, no extra markers.
 
-
 ## Art and illustration
 *"Draw me a sunset" / "Create a geometric pattern"*
 
@@ -239,7 +240,6 @@ Use `imagine_svg`. Same technical rules (viewBox, safe area) but here the aesthe
 - Organic forms with `<path>` curves, `<ellipse>`, `<circle>`; geometric patterns with `<g transform="rotate()">` for radial symmetry
 - Texture via repetition (parallel lines, dots, hatching) not raster effects
 - Add one signature detail — a glow, a texture pass, an unexpected color note — that makes the piece feel authored rather than generated
-
 
 ## UI components
 
@@ -330,7 +330,6 @@ Use `imagine_html`. Wrap the entire thing in a single raised card. All content i
   </div>
 </div>
 ```
-
 
 ## Color palette
 

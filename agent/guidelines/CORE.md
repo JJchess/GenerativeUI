@@ -1,3 +1,6 @@
+<!-- GENERATED from fragments/ + directions.py by bundler.py — DO NOT EDIT.
+     Regenerate: python -m agent.skills.generative_ui.bundler -->
+
 # Imagine — Visual Creation Suite
 
 ## Modules

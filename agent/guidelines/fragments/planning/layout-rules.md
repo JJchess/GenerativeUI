@@ -1,0 +1,3 @@
+- The title (if any) gets its own row; controls form their own full-width wrap row below it. Never put title + controls side-by-side in one flex row — the title gets crushed into vertical wrapping.
+- Side-by-side columns (stage | sidebar): the skeleton must state the stage's aspect ratio, require `align-items: start` on the container, and BALANCE the columns — if the sidebar's stacked cards would run much taller than the stage, move the tallest card below the stage at 100% width.
+- No region scrolls internally. Ranked/score lists cap at the top 6-8 entries shown in full.

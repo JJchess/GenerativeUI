@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from agent.skills.generative_ui.bundler import compose_bundle
 from agent.skills.generative_ui.prompts import EXAMPLE_WIDGET_CODE
 from agent.tools.base import AgentTool, ToolExecutionResult
 
@@ -47,10 +48,12 @@ class VisualizeReadMeTool(AgentTool):
     def __init__(
         self,
         available_modules: list[str],
-        guideline_file_by_module: dict[str, Path],
+        guideline_file_by_module: dict[str, Path] | None = None,
     ) -> None:
         self.available_modules = available_modules
-        self.guideline_file_by_module = guideline_file_by_module
+        # Optional file override (e.g. tests / external deployments shipping their own
+        # docs). Default path composes from fragments via bundler — single source.
+        self.guideline_file_by_module = guideline_file_by_module or {}
         self.parameters = {
             "type": "object",
             "properties": {
@@ -64,6 +67,15 @@ class VisualizeReadMeTool(AgentTool):
             "required": ["modules"],
         }
 
+    def _module_text(self, module: str) -> str:
+        path = self.guideline_file_by_module.get(module)
+        if path and path.exists():
+            return path.read_text(encoding="utf-8")
+        try:
+            return compose_bundle(module)
+        except Exception:
+            return ""
+
     def execute(
         self,
         arguments: dict[str, Any],
@@ -76,10 +88,9 @@ class VisualizeReadMeTool(AgentTool):
         modules_list = [m for m in modules_list if m in self.available_modules][:1]
         chunks: list[str] = []
         for module in modules_list:
-            path = self.guideline_file_by_module.get(module)
-            if not path or not path.exists():
+            text = self._module_text(module)
+            if not text:
                 continue
-            text = path.read_text(encoding="utf-8")
             chunks.append(f'<module name="{module}">\n{text}\n</module>')
         if not chunks:
             return ToolExecutionResult(content="No guidelines found for requested modules.")

@@ -1,3 +1,6 @@
+<!-- GENERATED from fragments/ + directions.py by bundler.py — DO NOT EDIT.
+     Regenerate: python -m agent.skills.generative_ui.bundler -->
+
 # Imagine — Visual Creation Suite
 
 ## Modules
@@ -145,7 +148,6 @@ Pick the closest module use case and adapt. When nothing fits cleanly:
 - All craft rules and the technical contract still apply
 - Use `sendPrompt()` for any action that benefits from assistant reasoning
 
-
 ## UI components
 
 ### Aesthetic
@@ -234,7 +236,6 @@ Use `imagine_html`. Wrap the entire thing in a single raised card. All content i
 </div>
 ```
 
-
 ## Color palette
 
 9 color ramps, each with 7 stops from lightest to darkest. 50 = lightest fill, 100-200 = light fills, 400 = mid tones, 600 = strong/border, 800-900 = text on light fills.
@@ -266,8 +267,6 @@ Use `imagine_html`. Wrap the entire thing in a single raised card. All content i
 - Apply `c-{ramp}` to a `<g>` wrapping shape+text, or directly to a `<rect>`/`<circle>`/`<ellipse>`. Never to `<path>` — paths don't get ramp fill. For colored connector strokes use inline `stroke="#..."` (any mid-ramp hex works in both modes). Dark mode is automatic for ramp classes. Available: c-gray, c-blue, c-red, c-amber, c-green, c-teal, c-purple, c-coral, c-pink.
 
 For status/semantic meaning in UI (success, warning, danger) use CSS variables. For categorical coloring in both diagrams and UI, use these ramps.
-
-
 
 ## Charts (Chart.js)
 ```html

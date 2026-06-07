@@ -1,3 +1,6 @@
+<!-- GENERATED from fragments/ + directions.py by bundler.py — DO NOT EDIT.
+     Regenerate: python -m agent.skills.generative_ui.bundler -->
+
 # Imagine — Visual Creation Suite
 
 ## Modules
@@ -145,7 +148,6 @@ Pick the closest module use case and adapt. When nothing fits cleanly:
 - All craft rules and the technical contract still apply
 - Use `sendPrompt()` for any action that benefits from assistant reasoning
 
-
 **Complexity budget — hard limits (diagrams):**
 - Box subtitles: ≤5 words. Detail goes in click-through (`sendPrompt`) or the prose below — not the box.
 - Colors: ≤2 ramps per diagram. If colors encode meaning (states, tiers), add a 1-line legend. Otherwise use one neutral ramp.
@@ -226,7 +228,6 @@ Before placing text in a box, check: does (text width + 2×padding) fit the cont
 **Physical-color scenes (sky, water, grass, skin, materials):** Use ALL hardcoded hex — never mix with `c-*` theme classes. The scene should not invert in dark mode. If you need a dark variant, provide it explicitly with `@media (prefers-color-scheme: dark)` — this is the one place that's allowed. Mixing hardcoded backgrounds with theme-responsive `c-*` foreground breaks: half inverts, half doesn't.
 
 **No rotated text**. `<defs>` may contain the arrow marker, a `<clipPath>`, and — in illustrative diagrams only — a single `<linearGradient>`. Nothing else: no filters, no patterns, no extra markers.
-
 
 ## Art and illustration
 *"Draw me a sunset" / "Create a geometric pattern"*

@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from functools import lru_cache
-from pathlib import Path
 from typing import Any, Dict, List
 
+from .bundler import compose_bundle, example_widget_code, planning_layout_rules
 from .constants import CORE_GUIDANCE, MODULE_GUIDANCE
+from .directions import render_direction_menu
 
 
 def recent_conversation_context(history: List[Dict[str, Any]]) -> str:
@@ -22,99 +22,26 @@ def recent_conversation_context(history: List[Dict[str, Any]]) -> str:
     return "\n".join(lines) if lines else "(none)"
 
 
-_GUIDELINES_DIR = Path(__file__).resolve().parents[2] / "guidelines"
-
-
-@lru_cache(maxsize=None)
-def _read_guideline_file(name: str) -> str:
-    path = _GUIDELINES_DIR / f"{name}.md"
-    try:
-        return path.read_text(encoding="utf-8").strip()
-    except Exception:
-        return ""
-
-
 def _guideline_bundle(widget_type: str) -> str:
-    # Each module file is self-contained — it already embeds the full CORE design
-    # system plus its module-specific guidance. So we load exactly ONE document by
-    # need; CORE.md is only the fallback when no module matches the widget_type.
-    # (Loading CORE + module together would inject the core design system twice.)
-    module = _read_guideline_file(widget_type)
-    if module:
-        return f'<module name="{widget_type}">\n{module}\n</module>'
-
-    core = _read_guideline_file("CORE")
-    if core:
-        return f'<module name="CORE">\n{core}\n</module>'
+    # Bundles are composed from orthogonal fragments (see bundler.py): shared design
+    # core + the module-specific fragments for this widget_type. Unknown types get
+    # the bare core. The constants fallback only fires if fragment files are missing.
+    try:
+        bundle = compose_bundle(widget_type)
+    except Exception:
+        bundle = ""
+    if bundle:
+        return f'<module name="{widget_type}">\n{bundle}\n</module>'
 
     fallback = MODULE_GUIDANCE.get(widget_type) or CORE_GUIDANCE
     return f'<module name="{widget_type}">\n{fallback}\n</module>'
 
 
-# Shared high-craft example. It demonstrates a fully-committed aesthetic direction
-# (lab-dark): self-contained panel, gridline + glow signature details, mono tabular
-# readouts, restyled controls with hover/active states, fluid width, single update().
-EXAMPLE_WIDGET_CODE = """
-<style>
-  .lab { background: #0D1322; border-radius: 16px; padding: 20px; color: #E2E8F0; font-family: var(--font-sans); }
-  .lab canvas { display: block; width: 100%; max-width: 680px; height: auto; margin: 0 auto;
-                background: linear-gradient(180deg, #0D1322, #121C32); border-radius: 12px; }
-  .row { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
-  .lab label { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #94A3B8; }
-  .lab input[type=range] { flex: 1; height: 4px; background: #243049; border-radius: 2px; }
-  .lab input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px;
-    border-radius: 50%; background: #22D3EE; box-shadow: 0 0 8px rgba(34,211,238,.6); cursor: pointer; }
-  .val { font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace; font-variant-numeric: tabular-nums;
-         font-size: 14px; color: #22D3EE; min-width: 48px; text-align: right; }
-  .lab button { background: #1B2538; color: #E2E8F0; border: 1px solid rgba(148,163,184,.25);
-                border-radius: 8px; padding: 6px 18px; font-size: 14px; cursor: pointer;
-                transition: background .15s, transform .1s; }
-  .lab button:hover { background: #243049; }
-  .lab button:active { transform: scale(.97); }
-</style>
-<div class="lab">
-  <canvas id="stage" width="680" height="320"></canvas>
-  <div class="row">
-    <label for="damp">Damping</label>
-    <input type="range" id="damp" min="0" max="0.2" step="0.01" value="0.05">
-    <span class="val" id="dampVal">0.05</span>
-    <button id="reset">Reset</button>
-  </div>
-</div>
-<script>
-  const ctx = document.getElementById('stage').getContext('2d');
-  let damp = 0.05, theta = Math.PI / 3, omega = 0;
-  const L = 220, ox = 340, oy = 30;
-  document.getElementById('damp').addEventListener('input', (e) => {
-    damp = parseFloat(e.target.value);
-    document.getElementById('dampVal').textContent = damp.toFixed(2);
-  });
-  document.getElementById('reset').addEventListener('click', () => { theta = Math.PI / 3; omega = 0; });
-  function step(dt) {
-    omega += (-9.8 / 2.4 * Math.sin(theta) - damp * omega) * dt;
-    theta += omega * dt;
-  }
-  function draw() {
-    ctx.clearRect(0, 0, 680, 320);
-    ctx.strokeStyle = 'rgba(148,163,184,.08)';
-    ctx.lineWidth = 1;
-    for (let x = 40; x < 680; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, 320); ctx.stroke(); }
-    const bx = ox + L * Math.sin(theta), by = oy + L * Math.cos(theta);
-    ctx.strokeStyle = '#94A3B8'; ctx.lineWidth = 1.5;
-    ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(bx, by); ctx.stroke();
-    ctx.shadowColor = '#22D3EE'; ctx.shadowBlur = 14;
-    ctx.fillStyle = '#22D3EE';
-    ctx.beginPath(); ctx.arc(bx, by, 12, 0, Math.PI * 2); ctx.fill();
-    ctx.shadowBlur = 0;
-  }
-  let last = performance.now();
-  (function loop(now) {
-    step(Math.min((now - last) / 1000, 0.03)); last = now;
-    draw();
-    requestAnimationFrame(loop);
-  })(performance.now());
-</script>
-""".strip()
+# Shared high-craft example (fragments/examples/lab-dark-pendulum.html). It demonstrates
+# a fully-committed aesthetic direction (lab-dark): self-contained panel, gridline + glow
+# signature details, mono tabular readouts, restyled controls (incl. slider track + thumb),
+# hover/active states, fluid width, single update().
+EXAMPLE_WIDGET_CODE = example_widget_code()
 
 
 _STRUCTURAL_EXAMPLE = f"""
@@ -157,20 +84,12 @@ Rendering medium — choose deliberately, state it in the contract:
 - Note: canvas does NOT reliably resolve `var(--color-*)` for fillStyle/strokeStyle — another reason to prefer SVG for anything color-coded.
 
 Aesthetic direction — pick ONE deliberately (the implementation step receives the full specs; this is the menu):
-- lab-dark: dark precision stage, cyan/magenta glow, mono readouts — physics/chem/algorithm sims, particles, waves
-- paper-editorial: warm paper, serif display, terracotta/moss — poetry, literature, history, language, philosophy
-- studio-pop: white + bold geometric color blocks, hard offset shadows — art, design, music, playful or kid-facing topics
-- terminal-data: charcoal, mono tabular numerals, green/red deltas — finance, metrics, performance dashboards
-- soft-organic: cream + sage/clay blob shapes, breathing motion — biology, nature, health, food, emotions
-- blueprint: pale grid + indigo ink, dashed construction lines — mechanics, architecture, how-things-work cutaways
-- host-calm: app-native quiet, host CSS variables — data records, forms, business UI mockups
+{render_direction_menu()}
 Match the SUBJECT's mood, not habit. Variety is a goal: widgets on different topics must not share a direction. If the user names a style ("cyberpunk", "watercolor"), answer custom:<name> and define the palette yourself.
 
 Design rules the contract MUST respect:
 - Width is fluid (host-driven, unknown). Layout uses 100% / 1fr / minmax(0,1fr) — never fixed pixel widths on regions. Height grows with content.
-- The title (if any) gets its own row; controls form their own full-width wrap row below it. Never put title + controls side-by-side in one flex row — the title gets crushed into vertical wrapping.
-- Side-by-side columns (stage | sidebar): the skeleton must state the stage's aspect ratio, require `align-items: start` on the container, and BALANCE the columns — if the sidebar's stacked cards would run much taller than the stage, move the tallest card below the stage at 100% width.
-- No region scrolls internally. Ranked/score lists cap at the top 6-8 entries shown in full.
+{planning_layout_rules()}
 - At least one control must produce a VISIBLE change in the main visualization.
 - The initial render is non-empty and meaningful — never "click to start".
 - There is ONE update entry point: every state change calls a single update() that re-derives the view from current state. For SVG this means updating the named elements' attributes; for canvas it means a redraw. Either way, no scattered ad-hoc mutations spread across handlers.

@@ -9,7 +9,7 @@
 
 1. **`agent/skills/generative_ui/SKILL.md`** → 并进全局 system（至少：先 `visualize_read_me` 再 `show_widget`、`widget_code` 规则）。
 ！！！部分可能要重写，比如skill的description，模型如何知道他和是要调用这个skill，本地测试时默认都要调用这个skill所以这部分写的不是很好
-2. **`agent/guidelines/<模块>.md` 顶层文件** → 与代码同部署路径；`visualize_read_me` 只读这些文件。
+2. **`agent/guidelines/fragments/` + `agent/skills/generative_ui/directions.py`** → 规范的唯一真相源，按正交维度拆分（core 哲学/工艺/布局/技术契约、aesthetic direction 库、各模块技术指南、planning 阶段措辞、few-shot 示例）。`bundler.py` 在运行时按 `_MODULE_PLAN` 组合成完整文档；`visualize_read_me` 与 `prompts._guideline_bundle` 都走组合器。顶层 `agent/guidelines/<模块>.md` 是 **生成产物**（供人工查阅/外部按文件消费），改 fragments 后用 `python -m agent.skills.generative_ui.bundler` 重新生成，**不要直接编辑**。一致性测试：`python -m tests.test_guidelines_bundler`。
 3. **两个 tool 定义** → 与 `VisualizeReadMeTool` / `ShowWidgetTool` 的 `to_definition()` **同名、同 JSON Schema**（实现见 `agent/skills/generative_ui/tools/*.py`）。
 4. **编排** →  **`GenerativeUIOrchestrator`** + **`AgentLoop`**（`orchestrator.py`、`agent/core/agent.py`）。（感觉有点过度设计）
 

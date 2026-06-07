@@ -1,3 +1,6 @@
+<!-- GENERATED from fragments/ + directions.py by bundler.py — DO NOT EDIT.
+     Regenerate: python -m agent.skills.generative_ui.bundler -->
+
 # Imagine — Visual Creation Suite
 
 ## Modules
@@ -145,7 +148,6 @@ Pick the closest module use case and adapt. When nothing fits cleanly:
 - All craft rules and the technical contract still apply
 - Use `sendPrompt()` for any action that benefits from assistant reasoning
 
-
 ## UI components
 
 ### Aesthetic
@@ -235,7 +237,6 @@ Use `imagine_html`. Wrap the entire thing in a single raised card. All content i
   </div>
 </div>
 ```
-
 
 ## Color palette
 
