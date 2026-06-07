@@ -1,6 +1,6 @@
 # GenUI `generative_ui` 
 
-本仓库是 **一个可视化子 Skill**（两工具 + 编排 + 规范文件）。当前 LLM 实现是 **Gemini** 模型为gemini-3-flash-preview；不要轻易更换模型除非你测好了（gemini-3.1-flash-lite-preview很炸裂）。
+本仓库是 **一个可视化子 Skill**（两工具 + 编排 + 规范文件）。当前 LLM 实现是 **Gemini** 模型为gemini-3.5-flash；不要轻易更换模型除非你测好了（gemini-3.1-flash-lite-preview很炸裂）。
 ！！！思考模型比如gemini-3.1-pro-preview等可能需要单独准备provider（而且消耗的时间会长很多）
 
 ---

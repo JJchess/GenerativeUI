@@ -35,72 +35,96 @@ def _read_guideline_file(name: str) -> str:
 
 
 def _guideline_bundle(widget_type: str) -> str:
-    parts: List[str] = []
+    # Each module file is self-contained — it already embeds the full CORE design
+    # system plus its module-specific guidance. So we load exactly ONE document by
+    # need; CORE.md is only the fallback when no module matches the widget_type.
+    # (Loading CORE + module together would inject the core design system twice.)
+    module = _read_guideline_file(widget_type)
+    if module:
+        return f'<module name="{widget_type}">\n{module}\n</module>'
 
     core = _read_guideline_file("CORE")
     if core:
-        parts.append(f'<module name="CORE">\n{core}\n</module>')
-    else:
-        parts.append(f'<module name="CORE">\n{CORE_GUIDANCE}\n</module>')
+        return f'<module name="CORE">\n{core}\n</module>'
 
-    module = _read_guideline_file(widget_type)
-    if module:
-        parts.append(f'<module name="{widget_type}">\n{module}\n</module>')
-    else:
-        fallback = MODULE_GUIDANCE.get(widget_type, MODULE_GUIDANCE["interactive"])
-        parts.append(f'<module name="{widget_type}">\n{fallback}\n</module>')
-
-    return "\n\n".join(parts)
+    fallback = MODULE_GUIDANCE.get(widget_type) or CORE_GUIDANCE
+    return f'<module name="{widget_type}">\n{fallback}\n</module>'
 
 
-_STRUCTURAL_EXAMPLE = """
-## Structural example (NaCl electrolysis)
-
-{"title": "nacl_electrolysis", "widget_type": "interactive", "loading_messages": ["Preparing simulation", "Rendering ions"], "assistant_text": "An interactive NaCl electrolysis simulation with start/stop control."}
-<widget_code>
+# Shared high-craft example. It demonstrates a fully-committed aesthetic direction
+# (lab-dark): self-contained panel, gridline + glow signature details, mono tabular
+# readouts, restyled controls with hover/active states, fluid width, single update().
+EXAMPLE_WIDGET_CODE = """
 <style>
-  .wrap { width: 100%; }
-  canvas { display: block; width: 100%; max-width: 740px; height: auto; margin: 0 auto;
-           background: var(--color-background-secondary); border-radius: var(--border-radius-md); }
-  #controls { text-align: center; margin-top: 8px; }
+  .lab { background: #0D1322; border-radius: 16px; padding: 20px; color: #E2E8F0; font-family: var(--font-sans); }
+  .lab canvas { display: block; width: 100%; max-width: 680px; height: auto; margin: 0 auto;
+                background: linear-gradient(180deg, #0D1322, #121C32); border-radius: 12px; }
+  .row { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+  .lab label { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #94A3B8; }
+  .lab input[type=range] { flex: 1; height: 4px; background: #243049; border-radius: 2px; }
+  .lab input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px;
+    border-radius: 50%; background: #22D3EE; box-shadow: 0 0 8px rgba(34,211,238,.6); cursor: pointer; }
+  .val { font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace; font-variant-numeric: tabular-nums;
+         font-size: 14px; color: #22D3EE; min-width: 48px; text-align: right; }
+  .lab button { background: #1B2538; color: #E2E8F0; border: 1px solid rgba(148,163,184,.25);
+                border-radius: 8px; padding: 6px 18px; font-size: 14px; cursor: pointer;
+                transition: background .15s, transform .1s; }
+  .lab button:hover { background: #243049; }
+  .lab button:active { transform: scale(.97); }
 </style>
-<div class="wrap">
-  <canvas id="c" width="740" height="440"></canvas>
-  <div id="controls"><button id="btn">Start</button></div>
+<div class="lab">
+  <canvas id="stage" width="680" height="320"></canvas>
+  <div class="row">
+    <label for="damp">Damping</label>
+    <input type="range" id="damp" min="0" max="0.2" step="0.01" value="0.05">
+    <span class="val" id="dampVal">0.05</span>
+    <button id="reset">Reset</button>
+  </div>
 </div>
 <script>
-  const canvas = document.getElementById('c');
-  const ctx = canvas.getContext('2d');
-  let running = false;
-  document.getElementById('btn').addEventListener('click', () => {
-    running = !running;
-    document.getElementById('btn').textContent = running ? 'Stop' : 'Start';
-    if (running) requestAnimationFrame(draw);
+  const ctx = document.getElementById('stage').getContext('2d');
+  let damp = 0.05, theta = Math.PI / 3, omega = 0;
+  const L = 220, ox = 340, oy = 30;
+  document.getElementById('damp').addEventListener('input', (e) => {
+    damp = parseFloat(e.target.value);
+    document.getElementById('dampVal').textContent = damp.toFixed(2);
   });
-  let t = 0;
-  function draw() {
-    ctx.clearRect(0, 0, 740, 440);
-    ctx.fillStyle = '#4fc3f7';
-    ctx.fillRect(60, 80, 20, 280);
-    ctx.fillRect(660, 80, 20, 280);
-    t += 0.05;
-    for (let i = 0; i < 20; i++) {
-      const x = 100 + (i % 10) * 54 + Math.sin(t + i) * 10;
-      const y = 150 + Math.floor(i / 10) * 120 + Math.cos(t + i * 0.7) * 15;
-      ctx.beginPath();
-      ctx.arc(x, y, 8, 0, Math.PI * 2);
-      ctx.fillStyle = i % 2 === 0 ? '#ef5350' : '#42a5f5';
-      ctx.fill();
-      ctx.fillStyle = '#fff';
-      ctx.font = '9px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(i % 2 === 0 ? 'Na+' : 'Cl-', x, y);
-    }
-    if (running) requestAnimationFrame(draw);
+  document.getElementById('reset').addEventListener('click', () => { theta = Math.PI / 3; omega = 0; });
+  function step(dt) {
+    omega += (-9.8 / 2.4 * Math.sin(theta) - damp * omega) * dt;
+    theta += omega * dt;
   }
-  draw();
+  function draw() {
+    ctx.clearRect(0, 0, 680, 320);
+    ctx.strokeStyle = 'rgba(148,163,184,.08)';
+    ctx.lineWidth = 1;
+    for (let x = 40; x < 680; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, 320); ctx.stroke(); }
+    const bx = ox + L * Math.sin(theta), by = oy + L * Math.cos(theta);
+    ctx.strokeStyle = '#94A3B8'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(bx, by); ctx.stroke();
+    ctx.shadowColor = '#22D3EE'; ctx.shadowBlur = 14;
+    ctx.fillStyle = '#22D3EE';
+    ctx.beginPath(); ctx.arc(bx, by, 12, 0, Math.PI * 2); ctx.fill();
+    ctx.shadowBlur = 0;
+  }
+  let last = performance.now();
+  (function loop(now) {
+    step(Math.min((now - last) / 1000, 0.03)); last = now;
+    draw();
+    requestAnimationFrame(loop);
+  })(performance.now());
 </script>
+""".strip()
+
+
+_STRUCTURAL_EXAMPLE = f"""
+## Structural example (damped pendulum, aesthetic_direction: lab-dark)
+
+Notice how the direction is committed fully — panel surface, gridline + glow signature, mono tabular readout, restyled controls with hover/active states. Your widget should commit to ITS direction just as completely, with different colors/type/motion when the subject calls for a different mood.
+
+{{"title": "damped_pendulum_lab", "widget_type": "interactive", "loading_messages": ["Calibrating pendulum", "Lighting the lab"], "assistant_text": "An interactive damped pendulum — drag the slider to change damping."}}
+<widget_code>
+{EXAMPLE_WIDGET_CODE}
 </widget_code>
 """.strip()
 
@@ -112,7 +136,7 @@ def build_planning_prompt(
     recent_context: str,
 ) -> str:
     return f"""
-You are the design-planning step for an interactive UI widget generator. You do NOT write final HTML/CSS/JS here. You produce a STRUCTURAL CONTRACT as JSON — a precise blueprint that the next step implements verbatim. The contract pins down the three things that most often go wrong (layout, state, interaction) while leaving styling and drawing details to the implementer.
+You are the design-planning step for an interactive UI widget generator. You do NOT write final HTML/CSS/JS here. You produce a STRUCTURAL CONTRACT as JSON — a precise blueprint that the next step implements verbatim. The contract pins down the four things that most often go wrong (layout, state, interaction, aesthetic direction) while leaving drawing details to the implementer.
 
 Current request:
 {query}
@@ -132,6 +156,16 @@ Rendering medium — choose deliberately, state it in the contract:
 - Use `<canvas>` ONLY for genuinely pixel/particle-heavy content: many moving particles, continuous fields, fluid/heat simulation, dense per-pixel shading. If the core visual is lines and shapes, canvas is the wrong tool.
 - Note: canvas does NOT reliably resolve `var(--color-*)` for fillStyle/strokeStyle — another reason to prefer SVG for anything color-coded.
 
+Aesthetic direction — pick ONE deliberately (the implementation step receives the full specs; this is the menu):
+- lab-dark: dark precision stage, cyan/magenta glow, mono readouts — physics/chem/algorithm sims, particles, waves
+- paper-editorial: warm paper, serif display, terracotta/moss — poetry, literature, history, language, philosophy
+- studio-pop: white + bold geometric color blocks, hard offset shadows — art, design, music, playful or kid-facing topics
+- terminal-data: charcoal, mono tabular numerals, green/red deltas — finance, metrics, performance dashboards
+- soft-organic: cream + sage/clay blob shapes, breathing motion — biology, nature, health, food, emotions
+- blueprint: pale grid + indigo ink, dashed construction lines — mechanics, architecture, how-things-work cutaways
+- host-calm: app-native quiet, host CSS variables — data records, forms, business UI mockups
+Match the SUBJECT's mood, not habit. Variety is a goal: widgets on different topics must not share a direction. If the user names a style ("cyberpunk", "watercolor"), answer custom:<name> and define the palette yourself.
+
 Design rules the contract MUST respect:
 - Width is fluid (host-driven, unknown). Layout uses 100% / 1fr / minmax(0,1fr) — never fixed pixel widths on regions. Height grows with content.
 - At least one control must produce a VISIBLE change in the main visualization.
@@ -144,6 +178,10 @@ Return ONE JSON object only — no prose, no markdown fences. Schema:
   "core_insight": "<one sentence — what the user should understand after using this>",
   "render_medium": "svg | canvas",
   "render_medium_reason": "<short — why this medium fits the core visual>",
+  "aesthetic_direction": "<lab-dark | paper-editorial | studio-pop | terminal-data | soft-organic | blueprint | host-calm | custom:<short-name>>",
+  "direction_reason": "<one short clause — why this direction fits this subject>",
+  "palette": ["<surface hex>", "<ink hex>", "<accent1 hex>", "<accent2 hex, optional>"],
+  "signature_detail": "<ONE memorable visual idea, e.g. 'glowing bob with fading motion trail', 'oversized serif drop cap', 'dashed dimension arrows with end ticks'>",
   "layout_skeleton": "<region tree, top-to-bottom, with the fluid sizing for each region, e.g. 'controls bar (100%) / main svg viz (100%, aspect-ratio kept) / readout row (2x 1fr)'>",
   "state_model": [
     {{"name": "<jsVarName>", "type": "int|float|bool|string|array", "range_or_values": "<e.g. 0..7, true/false, ['我','爱','你']>", "initial": "<concrete initial value>"}}
@@ -173,7 +211,9 @@ def build_primary_prompt(
         "render_contract describes. Honor render_medium: if it says svg, build the visual from "
         "named SVG elements and compute lines/curves analytically (never sample a pixel grid to "
         "draw a boundary); if it says canvas, reserve it for particle/field-style content. "
-        "Keep the core visual crisp — prefer clarity over extra controls:\n"
+        "Honor the design brief: commit fully to aesthetic_direction using its palette and the "
+        "signature_detail — the skill guidance below carries the full direction specs (surface, "
+        "ink, type, motion). Keep the core visual crisp — prefer clarity over extra controls:\n"
         f"{plan}\n"
         if plan.strip()
         else ""
@@ -236,6 +276,8 @@ Layout — width is fluid, height is content-driven (THIS IS LOAD-BEARING, READ 
 - Height: do NOT set a fixed pixel height on any outer/root wrapper. The frame grows to fit your content. Inner regions (a heatmap cell, a canvas) may have pixel heights, but the root container must let height be `auto`.
 - Do NOT use `overflow: hidden` on the outermost wrapper — it hides content when your size guess is wrong.
 - Verify mentally: would your widget still look right if the host were 600px wide? 900px wide? If not, redesign with fluid units.
+
+Before emitting, run the beauty check from the skill guidance: direction committed fully, one signature detail present, every interactive element has hover/active feedback with a transition, exactly one dominant element, readable in both light and dark host modes, all displayed numbers rounded.
 """.strip()
 
 

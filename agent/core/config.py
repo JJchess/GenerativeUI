@@ -23,7 +23,7 @@ class AgentConfig:
 
 def resolve_config() -> AgentConfig:
     api_key, key_source = _resolve_api_key()
-    model = os.getenv("GEMINI_MODEL", "gemini-3-flash-preview")
+    model = os.getenv("GEMINI_MODEL", "gemini-3.5-flash")
     return AgentConfig(api_key=api_key, key_source=key_source, model=model)
 
 

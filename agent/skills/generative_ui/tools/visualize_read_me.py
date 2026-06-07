@@ -5,10 +5,11 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from agent.skills.generative_ui.prompts import EXAMPLE_WIDGET_CODE
 from agent.tools.base import AgentTool, ToolExecutionResult
 
 # Appended to successful payloads: parameter shape + structural few-shot (not duplicated in SKILL).
-_READ_ME_OUTPUT_TRAILER = """
+_READ_ME_OUTPUT_TRAILER = f"""
 
 ---
 ## Required next action
@@ -17,40 +18,21 @@ Call show_widget now with i_have_seen_read_me=true and a complete widget_code fr
 
 ## show_widget arguments shape
 ```json
-{
+{{
   "i_have_seen_read_me": true,
   "title": "descriptive_name",
   "widget_type": "interactive",
   "width": 780,
   "height": 520,
   "loading_messages": ["Step one", "Step two"],
-  "widget_code": "<style>:root{--bg:#0f1117;--accent:#4fc3f7}</style><canvas id='c'></canvas><script>...</script>"
-}
+  "widget_code": "<style>.lab{{background:#0D1322;border-radius:16px;padding:20px}}</style><div class='lab'>...</div><script>...</script>"
+}}
 ```
 
-## widget_code structural example (NaCl electrolysis)
-<style>
-  :root { --bg: #0f1117; --accent: #4fc3f7; --text: #e0e0e0; }
-  body { margin: 0; background: var(--bg); }
-  canvas { display: block; margin: 0 auto; }
-  #controls { text-align: center; margin-top: 8px; }
-  button { background: var(--accent); color: #000; border: none;
-           padding: 6px 18px; border-radius: 4px; cursor: pointer; }
-</style>
-<canvas id="c" width="740" height="440"></canvas>
-<div id="controls"><button id="btn">Start</button></div>
-<script>
-  const canvas = document.getElementById('c');
-  const ctx = canvas.getContext('2d');
-  let running = false;
-  document.getElementById('btn').onclick = () => { running = !running; };
-  function draw(t) {
-    ctx.clearRect(0, 0, 740, 440);
-    // draw electrodes, ions, bubbles here
-    if (running) requestAnimationFrame(draw);
-  }
-  requestAnimationFrame(draw);
-</script>
+## widget_code structural example (damped pendulum, aesthetic direction: lab-dark)
+The direction is committed fully — self-contained panel, gridline + glow signature, mono tabular readout, restyled controls with hover/active states. Commit to YOUR chosen direction just as completely; a different subject mood means different colors, type, and motion (see the direction library in the guidelines).
+
+{EXAMPLE_WIDGET_CODE}
 """
 
 

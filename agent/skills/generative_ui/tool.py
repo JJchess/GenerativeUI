@@ -166,7 +166,7 @@ class GenerativeUITool(AgentTool):
             prompt=primary_prompt,
             query=query,
             widget_type=widget_type,
-            temperature=0.3,
+            temperature=0.65,
             api_key=api_key,
             model=model,
             debug_trace_enabled=debug_trace_enabled,

@@ -97,7 +97,26 @@ def payload_validation_errors(
             errors.append("widget_code should place <style> before the main markup when possible.")
         if script_idx >= 0 and first_content_idx >= 0 and script_idx < first_content_idx:
             errors.append("widget_code should place <script> after the main markup.")
+        errors.extend(_aesthetic_quality_errors(widget_type, normalized))
 
+    return errors
+
+
+_MOTION_TOKENS = ("transition", "animation", "@keyframes", "requestanimationframe", "setinterval")
+
+_INTERACTIVE_WIDGET_TYPES = ("interactive", "chart_interactive", "art_interactive")
+
+
+def _aesthetic_quality_errors(widget_type: str, normalized_code: str) -> List[str]:
+    errors: List[str] = []
+    if "#4fc3f7" in normalized_code:
+        errors.append(
+            "widget_code uses the stock example color #4fc3f7 — pick colors from the chosen aesthetic direction instead of copying the example palette."
+        )
+    if widget_type in _INTERACTIVE_WIDGET_TYPES and not any(token in normalized_code for token in _MOTION_TOKENS):
+        errors.append(
+            "interactive widget_code has no motion or interaction feedback (no transition/animation/requestAnimationFrame) — add hover/active transitions on controls and make state changes visibly animate."
+        )
     return errors
 
 

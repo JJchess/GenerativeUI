@@ -82,6 +82,11 @@ class GeminiProvider(LLMProvider):
         config: dict[str, Any] = {
             "temperature": temperature,
             "max_output_tokens": max_tokens,
+            # gemini-3.x flash are thinking models: by default they spend output
+            # tokens on internal reasoning, which starves (and truncates) long
+            # widget_code generation. We run our own planning stage, so disable
+            # thinking here to give the full token budget to the actual output.
+            "thinking_config": {"thinking_budget": 0},
         }
         system_instruction = self._collect_system_instruction(messages)
         if system_instruction:
