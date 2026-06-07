@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+import re
 from typing import Any, Dict, List
 
-from .bundler import compose_bundle, example_widget_code, planning_layout_rules
+from .bundler import compose_bundle, example_widget_code, planning_layout_rules, resolve_example_direction
 from .constants import CORE_GUIDANCE, MODULE_GUIDANCE
 from .directions import render_direction_menu
 
@@ -37,21 +38,77 @@ def _guideline_bundle(widget_type: str) -> str:
     return f'<module name="{widget_type}">\n{fallback}\n</module>'
 
 
-# Shared high-craft example (fragments/examples/lab-dark-pendulum.html). It demonstrates
-# a fully-committed aesthetic direction (lab-dark): self-contained panel, gridline + glow
-# signature details, mono tabular readouts, restyled controls (incl. slider track + thumb),
-# hover/active states, fluid width, single update().
+# Default example (lab-dark) — kept as a module-level constant for the read_me trailer.
 EXAMPLE_WIDGET_CODE = example_widget_code()
 
+# Per-direction example metadata: (title, loading_messages, assistant_text, committed details).
+_EXAMPLE_META: Dict[str, tuple] = {
+    "lab-dark": (
+        "damped_pendulum_lab",
+        ["Calibrating pendulum", "Lighting the lab"],
+        "An interactive damped pendulum — drag the slider to change damping.",
+        "panel surface, gridline + glow signature, mono tabular readout, restyled controls with hover/active states",
+    ),
+    "paper-editorial": (
+        "poem_stanza_card",
+        ["Setting the type", "Inking the page"],
+        "A stanza-by-stanza reading card for The Road Not Taken.",
+        "warm paper panel, oversized quote mark, serif display, hairline rules, 450ms crossfades, terracotta fill-on-hover button",
+    ),
+    "studio-pop": (
+        "color_mix_studio",
+        ["Stretching the canvas", "Squeezing the tubes"],
+        "Pick two colors and watch them blend.",
+        "thick borders, hard offset shadows with hover lift, circular badge, 700-weight oversized hex display",
+    ),
+    "terminal-data": (
+        "kpi_pulse_board",
+        ["Connecting feeds", "Crunching deltas"],
+        "A service KPI board — toggle the period to compare.",
+        "charcoal panel, tabular-nums count-up, sparklines, dotted dividers, semantic delta chips",
+    ),
+    "soft-organic": (
+        "breathing_circle",
+        ["Planting the seed", "Finding the rhythm"],
+        "A guided 4-4-6 breathing exercise.",
+        "blob radii, layered translucent halos, slow ease-in-out breathing motion, pill button, reduced-motion gate",
+    ),
+    "blueprint": (
+        "lever_balance_blueprint",
+        ["Drafting the schematic", "Calibrating forces"],
+        "Slide the fulcrum to balance the lever.",
+        "grid paper surface, dashed construction lines, dimension lines with end ticks, amber fulcrum, mono labels",
+    ),
+    "host-calm": (
+        "account_overview_card",
+        ["Laying out cards", "Wiring filters"],
+        "An account overview with filterable projects.",
+        "host CSS variables only, metric cards, hairline-bordered list with hover rows, chip filter with active state",
+    ),
+}
 
-_STRUCTURAL_EXAMPLE = f"""
-## Structural example (damped pendulum, aesthetic_direction: lab-dark)
+_PLAN_DIRECTION_RE = re.compile(r'"aesthetic_direction"\s*:\s*"([a-z-]+)')
 
-Notice how the direction is committed fully — panel surface, gridline + glow signature, mono tabular readout, restyled controls with hover/active states. Your widget should commit to ITS direction just as completely, with different colors/type/motion when the subject calls for a different mood.
 
-{{"title": "damped_pendulum_lab", "widget_type": "interactive", "loading_messages": ["Calibrating pendulum", "Lighting the lab"], "assistant_text": "An interactive damped pendulum — drag the slider to change damping."}}
+def _structural_example(plan: str) -> str:
+    match = _PLAN_DIRECTION_RE.search(plan or "")
+    direction = resolve_example_direction(match.group(1) if match else None)
+    title, loading, assistant_text, committed = _EXAMPLE_META[direction]
+    code = example_widget_code(direction)
+    import json as _json
+
+    meta_line = _json.dumps(
+        {"title": title, "widget_type": "interactive", "loading_messages": loading, "assistant_text": assistant_text},
+        ensure_ascii=False,
+    )
+    return f"""
+## Structural example ({title}, aesthetic_direction: {direction})
+
+Notice how the direction is committed fully — {committed}. Commit to YOUR chosen direction just as completely. If your direction differs from this example, do NOT copy its palette or surfaces — implement your direction's spec and Kit instead; a different direction must look completely different.
+
+{meta_line}
 <widget_code>
-{EXAMPLE_WIDGET_CODE}
+{code}
 </widget_code>
 """.strip()
 
@@ -157,7 +214,7 @@ Relevant recent conversation:
 Visualization skill guidance:
 {_guideline_bundle(widget_type)}
 
-{_STRUCTURAL_EXAMPLE}
+{_structural_example(plan)}
 
 ---
 

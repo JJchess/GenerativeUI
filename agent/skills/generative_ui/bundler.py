@@ -65,6 +65,7 @@ def compose_core() -> str:
         render_directions_block(),
         _read_fragment("core/20-direction-rules"),
         _read_fragment("core/30-craft"),
+        _read_fragment("core/35-patterns"),
         _read_fragment("core/40-technical"),
     )
     return "\n\n".join(part.strip() for part in parts)
@@ -84,9 +85,35 @@ def planning_layout_rules() -> str:
     return _read_fragment("planning/layout-rules")
 
 
+# One high-craft example per aesthetic direction. The build prompt injects the example
+# matching the plan's chosen direction — the strongest commitment signal we can send.
+_EXAMPLE_FILES: dict[str, str] = {
+    "lab-dark": "lab-dark-pendulum",
+    "paper-editorial": "paper-editorial-poem",
+    "studio-pop": "studio-pop-mixer",
+    "terminal-data": "terminal-data-kpis",
+    "soft-organic": "soft-organic-breathing",
+    "blueprint": "blueprint-lever",
+    "host-calm": "host-calm-record",
+}
+
+_DEFAULT_EXAMPLE_DIRECTION = "lab-dark"
+
+
+def example_directions() -> tuple[str, ...]:
+    return tuple(_EXAMPLE_FILES)
+
+
+def resolve_example_direction(direction: str | None) -> str:
+    if direction in _EXAMPLE_FILES:
+        return direction
+    return _DEFAULT_EXAMPLE_DIRECTION
+
+
 @lru_cache(maxsize=None)
-def example_widget_code() -> str:
-    path = _FRAGMENTS_DIR / "examples" / "lab-dark-pendulum.html"
+def example_widget_code(direction: str | None = None) -> str:
+    name = _EXAMPLE_FILES[resolve_example_direction(direction)]
+    path = _FRAGMENTS_DIR / "examples" / f"{name}.html"
     return path.read_text(encoding="utf-8").strip()
 
 

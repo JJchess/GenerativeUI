@@ -15,8 +15,10 @@ from agent.skills.generative_ui.bundler import (  # noqa: E402
     available_modules,
     compose_bundle,
     compose_core,
+    example_directions,
     example_widget_code,
     planning_layout_rules,
+    resolve_example_direction,
 )
 from agent.skills.generative_ui.constants import WIDGET_TYPES  # noqa: E402
 from agent.skills.generative_ui.directions import DIRECTIONS, render_direction_menu  # noqa: E402
@@ -31,7 +33,7 @@ def test_modules_match_widget_types():
 def test_core_structure_ordered():
     core = compose_core()
     sections = ["## Design philosophy", "## Aesthetic directions", "### Direction rules",
-                "## Craft rules", "## Technical contract", "## When nothing fits"]
+                "## Craft rules", "## Pattern library", "## Technical contract", "## When nothing fits"]
     positions = [core.find(s) for s in sections]
     assert all(p >= 0 for p in positions), [s for s, p in zip(sections, positions) if p < 0]
     assert positions == sorted(positions), "core sections out of order"
@@ -84,6 +86,39 @@ def test_example_passes_validators():
     code = example_widget_code()
     payload = {"title": "t", "widget_type": "interactive", "assistant_text": "x", "widget_code": code}
     assert payload_validation_errors(payload) == []
+
+
+def test_every_direction_has_kit_line():
+    for key, d in DIRECTIONS.items():
+        assert "- Kit:" in d.spec_block, key
+
+
+def test_example_library_complete_and_valid():
+    assert set(example_directions()) == set(DIRECTIONS)
+    seen = set()
+    for key in example_directions():
+        code = example_widget_code(key)
+        assert code not in seen, f"duplicate example for {key}"
+        seen.add(code)
+        payload = {"title": "t", "widget_type": "interactive", "assistant_text": "x", "widget_code": code}
+        assert payload_validation_errors(payload) == [], (key, payload_validation_errors(payload))
+        assert "<!--" not in code and "/*" not in code, f"{key} example contains comments"
+
+
+def test_example_direction_fallback():
+    assert resolve_example_direction("custom:neon-noir") == "lab-dark"
+    assert resolve_example_direction(None) == "lab-dark"
+    assert resolve_example_direction("blueprint") == "blueprint"
+
+
+def test_build_prompt_injects_matched_example():
+    plan = '{"aesthetic_direction": "paper-editorial", "palette": ["#FAF6EE"]}'
+    prompt = build_primary_prompt(query="explain this poem", widget_type="interactive", recent_context="", plan=plan)
+    assert "poem_stanza_card" in prompt
+    assert "The Road Not Taken" in prompt
+    assert "damped_pendulum_lab" not in prompt
+    default_prompt = build_primary_prompt(query="q", widget_type="interactive", recent_context="", plan="")
+    assert "damped_pendulum_lab" in default_prompt
 
 
 def _main() -> int:
