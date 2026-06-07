@@ -30,15 +30,22 @@ _GENERATED_HEADER = (
 # Ordered module fragment plans. The shared core is always prepended.
 _MODULE_PLAN: dict[str, tuple[str, ...]] = {
     "CORE": (),
-    "interactive": ("modules/ui-a", "modules/ui-physics", "modules/ui-b", "modules/palette"),
+    "interactive": (
+        "modules/ui-a",
+        "modules/ui-physics",
+        "modules/ui-b",
+        "modules/palette",
+        "modules/scenery-recipes",
+    ),
     "mockup": ("modules/ui-a", "modules/ui-b", "modules/palette"),
     "chart": ("modules/ui-a", "modules/ui-b", "modules/palette", "modules/chartjs"),
     "chart_interactive": ("modules/ui-a", "modules/ui-b", "modules/palette", "modules/chartjs"),
-    "art": ("modules/budget", "modules/svg-core", "modules/art"),
+    "art": ("modules/budget", "modules/svg-core", "modules/art", "modules/scenery-recipes"),
     "art_interactive": (
         "modules/budget",
         "modules/svg-core",
         "modules/art",
+        "modules/scenery-recipes",
         "modules/ui-a",
         "modules/ui-physics",
         "modules/ui-b",
@@ -94,6 +101,7 @@ _EXAMPLE_FILES: dict[str, str] = {
     "terminal-data": "terminal-data-kpis",
     "soft-organic": "soft-organic-breathing",
     "blueprint": "blueprint-lever",
+    "ink-wash": "ink-wash-nocturne",
     "host-calm": "host-calm-record",
 }
 

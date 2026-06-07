@@ -79,6 +79,12 @@ _EXAMPLE_META: Dict[str, tuple] = {
         "Slide the fulcrum to balance the lever.",
         "grid paper surface, dashed construction lines, dimension lines with end ticks, amber fulcrum, mono labels",
     ),
+    "ink-wash": (
+        "ink_wash_nocturne",
+        ["研墨铺纸", "落笔成山"],
+        "一幅程序生成的水墨夜景——点击「另作一幅」换一幅构图。",
+        "procedurally GENERATED scenery (noise ridgelines with atmospheric perspective, mist bands, paper grain) instead of hand-placed shapes, seal stamp, tracked serif verse, slow ink-reveal transition",
+    ),
     "host-calm": (
         "account_overview_card",
         ["Laying out cards", "Wiring filters"],
@@ -157,11 +163,12 @@ Return ONE JSON object only — no prose, no markdown fences. Schema:
   "core_insight": "<one sentence — what the user should understand after using this>",
   "render_medium": "svg | canvas",
   "render_medium_reason": "<short — why this medium fits the core visual>",
-  "aesthetic_direction": "<lab-dark | paper-editorial | studio-pop | terminal-data | soft-organic | blueprint | host-calm | custom:<short-name>>",
+  "aesthetic_direction": "<lab-dark | paper-editorial | studio-pop | terminal-data | soft-organic | blueprint | ink-wash | host-calm | custom:<short-name>>",
   "direction_reason": "<one short clause — why this direction fits this subject>",
   "palette": ["<surface hex>", "<ink hex>", "<accent1 hex>", "<accent2 hex, optional>"],
   "signature_detail": "<ONE memorable visual idea, e.g. 'glowing bob with fading motion trail', 'oversized serif drop cap', 'dashed dimension arrows with end ticks'>",
-  "layout_skeleton": "<region tree, top-to-bottom, with fluid sizing AND column balance, e.g. 'title row (100%) / controls wrap row (100%) / main grid align-items:start: stage svg 4:3 (minmax(0,1fr)) | sidebar (280px, 2 cards, shorter than stage) / explainer row (100%)'>",
+  "layout_pattern": "<stage+readout-row | balanced-split | stepper | bento | editorial-column — simulations and anything with a main viz default to stage+readout-row (FULL-WIDTH stage); pick balanced-split ONLY if the sidebar is at most 2 short cards whose combined height stays under the stage height>",
+  "layout_skeleton": "<region tree implementing layout_pattern, top-to-bottom, with fluid sizing AND column balance, e.g. 'title row (100%) / controls wrap row (100%) / stage canvas 16:9 (100%) / readout row (3x 1fr)'>",
   "state_model": [
     {{"name": "<jsVarName>", "type": "int|float|bool|string|array", "range_or_values": "<e.g. 0..7, true/false, ['我','爱','你']>", "initial": "<concrete initial value>"}}
   ],
@@ -169,7 +176,7 @@ Return ONE JSON object only — no prose, no markdown fences. Schema:
     {{"trigger": "<element + event, e.g. 'range#heads input'>", "effect": "<which state changes and what updates visually>"}}
   ],
   "render_contract": "<one sentence: what update() re-derives from state, and (for SVG) which named elements it sets, or (for canvas) what it redraws>",
-  "initial_paint": "<what is on screen at first render, with concrete values from state_model initials>"
+  "initial_paint": "<what is on screen at first render, with concrete values from state_model initials. Must be MID-ACTION: the system one step in (first iteration applied, simulation a moment after launch) — never a zeroed dashboard or an empty stage waiting for a click>"
 }}
 
 Keep every string tight and concrete. Prefer \"range#k (1..8) -> recompute neighbors, recolor decision regions\" over \"interactive slider\". The state_model names you choose ARE the variable names the implementer will use.
@@ -256,7 +263,7 @@ Layout — width is fluid, height is content-driven (THIS IS LOAD-BEARING, READ 
 - Do NOT use `overflow: hidden` on the outermost wrapper — it hides content when your size guess is wrong.
 - Verify mentally: would your widget still look right if the host were 600px wide? 900px wide? If not, redesign with fluid units.
 
-Before emitting, run the beauty check from the skill guidance: direction committed fully, one signature detail present, every interactive element has hover/active feedback with a transition, exactly one dominant element, readable in both light and dark host modes, all displayed numbers rounded.
+Before emitting, run the beauty check from the skill guidance: direction committed fully, one signature detail present, every interactive element has hover/active feedback with a transition, exactly one dominant element, readable in both light and dark host modes, all displayed numbers rounded — and ZERO machine tells: no self-introducing headline, no bilingual double labels, no instruction pills, no status text boxed as a metric, no identical-card filler row.
 """.strip()
 
 

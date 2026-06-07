@@ -40,7 +40,7 @@ def test_core_structure_ordered():
 
 
 def test_directions_complete():
-    assert len(DIRECTIONS) == 7
+    assert len(DIRECTIONS) == 8
     core = compose_core()
     for d in DIRECTIONS.values():
         assert d.spec_block in core, d.key
@@ -78,8 +78,40 @@ def test_layout_rules_in_both_stages():
 def test_planning_menu_generated():
     plan = build_planning_prompt(query="q", widget_type="interactive", recent_context="")
     assert render_direction_menu() in plan
-    for field in ["aesthetic_direction", "direction_reason", "palette", "signature_detail"]:
+    for field in ["aesthetic_direction", "direction_reason", "palette", "signature_detail", "layout_pattern"]:
         assert f'"{field}"' in plan, field
+    assert "stage+readout-row" in plan and "DOMINANT" in plan
+
+
+def test_machine_tells_kill_list():
+    core = compose_core()
+    for needle in ["Machine-made tells", "self-introducing headline", "Bilingual double labels",
+                   "Instruction pills", "Status text boxed as a metric", "identical-card row",
+                   "The visualization is the interface", "Chrome budget", "mid-action"]:
+        assert needle in core, needle
+    plan = build_planning_prompt(query="q", widget_type="interactive", recent_context="")
+    assert "NO in-widget headline" in plan and "MID-ACTION" in plan
+
+
+def test_machine_tell_validators():
+    base = {"title": "t", "widget_type": "interactive", "assistant_text": "x"}
+    headline = dict(base, widget_code="<style>.a{transition:all .2s}</style><div><h1>K-Means 聚类演示</h1>content body here</div>")
+    errs = payload_validation_errors(headline)
+    assert any("<h1>" in e for e in errs), errs
+    pill = dict(base, widget_code="<style>.a{transition:all .2s}</style><div>提示: 在画布上点击可以移动质心位置</div>")
+    errs = payload_validation_errors(pill)
+    assert any("instruction pill" in e for e in errs), errs
+    clean = dict(base, widget_code="<style>.a{transition:all .2s}</style><div>a clean widget with real content</div>")
+    assert payload_validation_errors(clean) == []
+
+
+def test_scenery_recipes_reach_imagery_paths():
+    for wt in ["interactive", "art", "art_interactive"]:
+        assert "## Algorithmic scenery recipes" in compose_bundle(wt), wt
+    for wt in ["mockup", "chart", "diagram"]:
+        assert "## Algorithmic scenery recipes" not in compose_bundle(wt), wt
+    assert "ink-wash" in compose_core()
+    assert "Layered ridgelines" in compose_bundle("interactive")
 
 
 def test_example_passes_validators():

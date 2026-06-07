@@ -106,6 +106,8 @@ _MOTION_TOKENS = ("transition", "animation", "@keyframes", "requestanimationfram
 
 _INTERACTIVE_WIDGET_TYPES = ("interactive", "chart_interactive", "art_interactive")
 
+_INSTRUCTION_PILL_RE = re.compile(r"(提示\s*[:：]|小贴士\s*[:：]|tips?\s*:)", re.IGNORECASE)
+
 
 def _aesthetic_quality_errors(widget_type: str, normalized_code: str) -> List[str]:
     errors: List[str] = []
@@ -116,6 +118,14 @@ def _aesthetic_quality_errors(widget_type: str, normalized_code: str) -> List[st
     if widget_type in _INTERACTIVE_WIDGET_TYPES and not any(token in normalized_code for token in _MOTION_TOKENS):
         errors.append(
             "interactive widget_code has no motion or interaction feedback (no transition/animation/requestAnimationFrame) — add hover/active transitions on controls and make state changes visibly animate."
+        )
+    if "<h1" in normalized_code:
+        errors.append(
+            "widget_code contains an <h1> self-introducing headline — the chat message already introduces the widget. Remove the title block (and its explainer subtitle); content captions may use a small in-style label instead."
+        )
+    if _INSTRUCTION_PILL_RE.search(normalized_code):
+        errors.append(
+            "widget_code contains an instruction pill ('提示:'/'Tip:') — express affordances through design (cursor styles, hover preview) instead of a sticker explaining the UI."
         )
     return errors
 

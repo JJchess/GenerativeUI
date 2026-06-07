@@ -1,27 +1,27 @@
 <style>
-  .desk { background: #15171C; border-radius: 12px; padding: 20px; color: #D1D5DB;
+  .desk { background: #17141F; border-radius: 12px; padding: 20px; color: #D6D2DE;
           font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace; }
   .bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
          gap: 10px; margin-bottom: 16px; }
-  .ttl { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #6B7280; }
-  .seg button { background: transparent; border: 1px solid rgba(148,163,184,.3); color: #9CA3AF;
+  .ttl { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #847CA3; }
+  .seg button { background: transparent; border: 1px solid rgba(168,155,190,.3); color: #A89BBE;
         font: inherit; font-size: 11px; letter-spacing: .08em; padding: 4px 14px; cursor: pointer;
         transition: border-color .15s, color .15s; }
   .seg button:first-child { border-radius: 4px 0 0 4px; }
   .seg button:last-child { border-radius: 0 4px 4px 0; margin-left: -1px; }
-  .seg button:hover { color: #D1D5DB; }
-  .seg button.on { color: #60A5FA; border-color: #60A5FA; position: relative; }
+  .seg button:hover { color: #D6D2DE; }
+  .seg button.on { color: #A78BFA; border-color: #A78BFA; position: relative; }
   .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
-  .kpi { background: #1B1E25; border-radius: 8px; padding: 14px 14px 10px; }
-  .lbl { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #6B7280; }
+  .kpi { background: #1F1A2D; border-radius: 8px; padding: 14px 14px 10px; }
+  .lbl { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #847CA3; }
   .num { font-size: 26px; font-variant-numeric: tabular-nums; color: #F9FAFB; margin: 6px 0 2px; }
   .dlt { font-size: 12px; font-variant-numeric: tabular-nums; }
   .up { color: #34D399; }
   .dn { color: #F87171; }
   .spark { display: block; width: 100%; height: 28px; margin-top: 8px;
-           border-top: 1px dotted rgba(148,163,184,.25); }
-  .foot { margin-top: 14px; padding-top: 10px; border-top: 1px dotted rgba(148,163,184,.2);
-          font-size: 11px; color: #6B7280; letter-spacing: .06em; }
+           border-top: 1px dotted rgba(168,155,190,.25); }
+  .foot { margin-top: 14px; padding-top: 10px; border-top: 1px dotted rgba(168,155,190,.2);
+          font-size: 11px; color: #847CA3; letter-spacing: .06em; }
 </style>
 <div class="desk">
   <div class="bar">
@@ -55,7 +55,7 @@
         `<div class="num" id="n${i}">${fmt(m.l, shown[i])}</div>` +
         `<div class="dlt ${good}">${m.d >= 0 ? '&#9650;' : '&#9660;'} ${m.d >= 0 ? '+' : ''}${m.d}${m.l.includes('%') ? ' pp' : '%'}</div>` +
         `<svg class="spark" viewBox="0 0 100 46" preserveAspectRatio="none">` +
-        `<polyline points="${pts}" fill="none" stroke="#60A5FA" stroke-width="1.5"/></svg></div>`;
+        `<polyline points="${pts}" fill="none" stroke="#A78BFA" stroke-width="1.5"/></svg></div>`;
     }).join('');
     DATA[period].forEach((m, i) => countUp(i, shown[i], m.v, m.l));
     shown = DATA[period].map(m => m.v);

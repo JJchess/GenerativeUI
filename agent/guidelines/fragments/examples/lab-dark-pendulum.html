@@ -1,18 +1,18 @@
 <style>
-  .lab { background: #0D1322; border-radius: 16px; padding: 20px; color: #E2E8F0; font-family: var(--font-sans); }
+  .lab { background: #131028; border-radius: 16px; padding: 20px; color: #E8E0F0; font-family: var(--font-sans); }
   .lab canvas { display: block; width: 100%; max-width: 680px; height: auto; margin: 0 auto;
-                background: linear-gradient(180deg, #0D1322, #121C32); border-radius: 12px; }
+                background: linear-gradient(180deg, #131028, #1A1438); border-radius: 12px; }
   .row { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
-  .lab label { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #94A3B8; }
-  .lab input[type=range] { flex: 1; height: 4px; background: #243049; border-radius: 2px; }
+  .lab label { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #A89BBE; }
+  .lab input[type=range] { -webkit-appearance: none; appearance: none; flex: 1; height: 4px; background: #2E2553; border-radius: 2px; }
   .lab input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px;
     border-radius: 50%; background: #22D3EE; box-shadow: 0 0 8px rgba(34,211,238,.6); cursor: pointer; }
   .val { font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace; font-variant-numeric: tabular-nums;
          font-size: 14px; color: #22D3EE; min-width: 48px; text-align: right; }
-  .lab button { background: #1B2538; color: #E2E8F0; border: 1px solid rgba(148,163,184,.25);
+  .lab button { background: #241D40; color: #E8E0F0; border: 1px solid rgba(168,155,190,.25);
                 border-radius: 8px; padding: 6px 18px; font-size: 14px; cursor: pointer;
                 transition: background .15s, transform .1s; }
-  .lab button:hover { background: #243049; }
+  .lab button:hover { background: #2E2553; }
   .lab button:active { transform: scale(.97); }
 </style>
 <div class="lab">
@@ -39,11 +39,11 @@
   }
   function draw() {
     ctx.clearRect(0, 0, 680, 320);
-    ctx.strokeStyle = 'rgba(148,163,184,.08)';
+    ctx.strokeStyle = 'rgba(168,155,190,.10)';
     ctx.lineWidth = 1;
     for (let x = 40; x < 680; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, 320); ctx.stroke(); }
     const bx = ox + L * Math.sin(theta), by = oy + L * Math.cos(theta);
-    ctx.strokeStyle = '#94A3B8'; ctx.lineWidth = 1.5;
+    ctx.strokeStyle = '#A89BBE'; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(bx, by); ctx.stroke();
     ctx.shadowColor = '#22D3EE'; ctx.shadowBlur = 14;
     ctx.fillStyle = '#22D3EE';

@@ -26,7 +26,7 @@ Call show_widget now with i_have_seen_read_me=true and a complete widget_code fr
   "width": 780,
   "height": 520,
   "loading_messages": ["Step one", "Step two"],
-  "widget_code": "<style>.lab{{background:#0D1322;border-radius:16px;padding:20px}}</style><div class='lab'>...</div><script>...</script>"
+  "widget_code": "<style>.lab{{background:#131028;border-radius:16px;padding:20px}}</style><div class='lab'>...</div><script>...</script>"
 }}
 ```
 

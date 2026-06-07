@@ -26,12 +26,12 @@ DIRECTIONS: dict[str, Direction] = {
         key="lab-dark",
         menu_line="dark precision stage, cyan/magenta glow, mono readouts — physics/chem/algorithm sims, particles, waves",
         spec_block="""**`lab-dark` — precision instrument.** Physics/chemistry/algorithm simulations; particles, fields, waves; anything animated on a stage.
-- Surface: root panel `#0D1322`, `border-radius: 16px`, `padding: 20px`; faint gridlines `rgba(148,163,184,.08)`
-- Ink: `#E2E8F0` primary, `#94A3B8` muted · Accents (max 2): cyan `#22D3EE`, magenta `#F472B6`, amber `#FBBF24`
+- Surface: root panel `#131028` (deep violet — harmonizes with the host's dark cosmos), `border-radius: 16px`, `padding: 20px`; faint gridlines `rgba(168,155,190,.10)`
+- Ink: `#E8E0F0` primary, `#A89BBE` muted · Accents (max 2): cyan `#22D3EE`, magenta `#F472B6`, amber `#FBBF24`
 - Type: mono readouts (`ui-monospace, 'Cascadia Mono', Consolas, monospace`) with `font-variant-numeric: tabular-nums`; sans labels
 - Motion: state 120ms linear; layout 350ms `cubic-bezier(.22,1,.36,1)`
 - Signature: glow on live elements (`box-shadow: 0 0 12px rgba(34,211,238,.45)` or canvas shadowBlur), hairline tick rulers along axes
-- Kit: button `background:#1B2538; border:1px solid rgba(148,163,184,.25); border-radius:8px`, hover `#243049`, active `scale(.97)` · slider track `#243049` + thumb `#22D3EE` with glow · inner stage `#111B30`, radius 12 · label 12px uppercase `letter-spacing:.08em` `#94A3B8`""",
+- Kit: button `background:#241D40; border:1px solid rgba(168,155,190,.25); border-radius:8px`, hover `#2E2553`, active `scale(.97)` · slider track `#2E2553` + thumb `#22D3EE` with glow · inner stage `#0F0C20`, radius 12 · label 12px uppercase `letter-spacing:.08em` `#A89BBE`""",
     ),
     "paper-editorial": Direction(
         key="paper-editorial",
@@ -49,7 +49,7 @@ DIRECTIONS: dict[str, Direction] = {
         menu_line="white + bold geometric color blocks, hard offset shadows — art, design, music, playful or kid-facing topics",
         spec_block="""**`studio-pop` — gallery poster.** Art, design, music, creative showcases, playful or kid-facing topics.
 - Surface: `#FFFFFF` (dark `#18181B`) with large geometric color blocks
-- Accents (pick 2): electric blue `#2563EB`, lemon `#FDE047`, hot coral `#FB7185`, mint `#5EEAD4`
+- Accents (pick 2): electric violet `#7C3AED`, lemon `#FDE047`, hot coral `#FB7185`, mint `#5EEAD4`
 - Type: sans 700 display, `letter-spacing: -0.02em`, oversized numerals
 - Motion: snappy 160ms ease-out; hover lifts the element
 - Signature: 2–3px solid borders, hard offset shadows (`box-shadow: 4px 4px 0 #18181B`), circular badges
@@ -59,12 +59,12 @@ DIRECTIONS: dict[str, Direction] = {
         key="terminal-data",
         menu_line="charcoal, mono tabular numerals, green/red deltas — finance, metrics, performance dashboards",
         spec_block="""**`terminal-data` — trading desk.** Finance, metrics, performance, engineering dashboards, logs.
-- Surface: panel `#15171C`; or light variant `#F8FAFC` with ink `#0F172A`
-- Ink: `#D1D5DB` · positive `#34D399`, negative `#F87171`, neutral accent `#60A5FA`
+- Surface: panel `#17141F` (violet-charcoal — harmonizes with the host's dark cosmos); or light variant `#F8F6FB` with ink `#1A1A2E`
+- Ink: `#D6D2DE` · positive `#34D399`, negative `#F87171`, neutral accent `#A78BFA`
 - Type: mono numerals, `font-variant-numeric: tabular-nums`; 11–12px uppercase labels with `letter-spacing: .08em`
 - Motion: numbers count up 400ms; bars grow 400ms ease-out; zero decorative motion
-- Signature: 1px dotted gridlines `rgba(148,163,184,.25)`, sparklines, ▲/▼ deltas in semantic color
-- Kit: button `1px solid rgba(148,163,184,.3)`, mono 12px uppercase, hover `border-color:#60A5FA` · delta chip: `▲ +4.2%` in `#34D399` / `▼ -1.8%` in `#F87171`, mono · row dividers `1px dotted rgba(148,163,184,.2)` · metric card `#1B1E25`, radius 8""",
+- Signature: 1px dotted gridlines `rgba(168,155,190,.25)`, sparklines, ▲/▼ deltas in semantic color
+- Kit: button `1px solid rgba(168,155,190,.3)`, mono 12px uppercase, hover `border-color:#A78BFA` · delta chip: `▲ +4.2%` in `#34D399` / `▼ -1.8%` in `#F87171`, mono · row dividers `1px dotted rgba(168,155,190,.2)` · metric card `#1F1A2D`, radius 8""",
     ),
     "soft-organic": Direction(
         key="soft-organic",
@@ -86,6 +86,17 @@ DIRECTIONS: dict[str, Direction] = {
 - Motion: 200ms linear; parts slide along axes (transform only)
 - Signature: dashed construction lines (`stroke-dasharray: 6 4`), measurement arrows with end ticks, corner crop marks
 - Kit: grid surface `background-image: linear-gradient(rgba(30,77,140,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(30,77,140,.07) 1px, transparent 1px); background-size: 24px 24px` · button `1px solid #1E4D8C; color:#1E4D8C`, mono, `border-radius:2px`, hover `rgba(30,77,140,.08)` · callout box: 1px dashed border · active part: `#D97706` fill/stroke""",
+    ),
+    "ink-wash": Direction(
+        key="ink-wash",
+        menu_line="raw paper + layered ink ridgelines, seal-red accent — classical Chinese subjects: poetry, landscape, calligraphy, tea",
+        spec_block="""**`ink-wash` — 水墨 scroll.** Classical Chinese subjects: poetry imagery, landscape, calligraphy, tea, traditional culture.
+- Surface: raw paper `#F5F1E8` (a physical scene — do NOT invert with the host theme); ink is `#2A2D30` at layered opacities (far `.18` / mid `.30` / near `.52`)
+- Accents (tiny doses only): seal vermilion `#9E2B22`, moon gold `#E5C158`
+- Type: serif (`Georgia, 'Times New Roman', 'Noto Serif SC', serif`); hanzi tracked out (`letter-spacing: .3em`); short titles may run vertical (`writing-mode: vertical-rl`)
+- Motion: slow ink reveals — opacity 600–900ms ease; nothing bounces, nothing glows
+- Signature: layered noise ridgelines with atmospheric perspective (farther = paler + smoother), one red seal stamp, generous 留白 — the empty space IS the composition
+- Kit: panel radius 6px · button `1px solid #2A2D30`, serif, tracked, hover inverts to ink bg with paper text · seal: `writing-mode:vertical-rl` on `#9E2B22`, slight rotate · mist: translucent paper-colored horizontal bands between ridge layers · scenery is GENERATED, not hand-placed — use the algorithmic scenery recipes""",
     ),
     "host-calm": Direction(
         key="host-calm",

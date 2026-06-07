@@ -1,8 +1,8 @@
 ## Pattern library
 
 ### Named layout patterns — pick one deliberately, reference it by name in plans
-- **stage + readout row**: full-width stage (canvas/SVG with stated aspect ratio), a 2–4 metric row above or below, controls in a wrap row under the title. The default for simulations.
-- **balanced split**: stage `minmax(0,1fr)` with stated aspect | sidebar 260–300px with ≤2 stacked cards, `align-items: start`. Only when the sidebar genuinely stays shorter than the stage — otherwise move its tallest card below the stage at full width.
+- **stage + readout row**: full-width stage (canvas/SVG with stated aspect ratio), controls in a wrap row above it, a 2–4 metric row below. The DEFAULT for simulations and anything with a main visualization — the stage is the dominant element and gets the full width.
+- **balanced split**: stage `minmax(0,1fr)` with stated aspect | sidebar 260–300px, `align-items: start`. Allowed ONLY when the sidebar holds at most 2 short cards whose combined height stays under the stage height. 3+ sidebar cards next to a small stage is a known failure — switch to stage + readout row and let extra cards flow below the stage at full width.
 - **stepper**: one panel per stage, dot/pill progress (● ○ ○), Prev/Next buttons, Next wraps from the last stage to the first. For cycles and multi-stage explanations.
 - **bento**: a 2–3 row grid of mixed-size tiles — one dominant 2× tile plus small tiles, `gap: 12-16px`, every tile same radius. For overviews and dashboards with heterogeneous content.
 - **editorial column**: single centered column `max-width: 62ch`, generous vertical rhythm, no cards. For text-led content (paper-editorial's natural habitat).
