@@ -168,6 +168,9 @@ Match the SUBJECT's mood, not habit. Variety is a goal: widgets on different top
 
 Design rules the contract MUST respect:
 - Width is fluid (host-driven, unknown). Layout uses 100% / 1fr / minmax(0,1fr) — never fixed pixel widths on regions. Height grows with content.
+- The title (if any) gets its own row; controls form their own full-width wrap row below it. Never put title + controls side-by-side in one flex row — the title gets crushed into vertical wrapping.
+- Side-by-side columns (stage | sidebar): the skeleton must state the stage's aspect ratio, require `align-items: start` on the container, and BALANCE the columns — if the sidebar's stacked cards would run much taller than the stage, move the tallest card below the stage at 100% width.
+- No region scrolls internally. Ranked/score lists cap at the top 6-8 entries shown in full.
 - At least one control must produce a VISIBLE change in the main visualization.
 - The initial render is non-empty and meaningful — never "click to start".
 - There is ONE update entry point: every state change calls a single update() that re-derives the view from current state. For SVG this means updating the named elements' attributes; for canvas it means a redraw. Either way, no scattered ad-hoc mutations spread across handlers.
@@ -182,7 +185,7 @@ Return ONE JSON object only — no prose, no markdown fences. Schema:
   "direction_reason": "<one short clause — why this direction fits this subject>",
   "palette": ["<surface hex>", "<ink hex>", "<accent1 hex>", "<accent2 hex, optional>"],
   "signature_detail": "<ONE memorable visual idea, e.g. 'glowing bob with fading motion trail', 'oversized serif drop cap', 'dashed dimension arrows with end ticks'>",
-  "layout_skeleton": "<region tree, top-to-bottom, with the fluid sizing for each region, e.g. 'controls bar (100%) / main svg viz (100%, aspect-ratio kept) / readout row (2x 1fr)'>",
+  "layout_skeleton": "<region tree, top-to-bottom, with fluid sizing AND column balance, e.g. 'title row (100%) / controls wrap row (100%) / main grid align-items:start: stage svg 4:3 (minmax(0,1fr)) | sidebar (280px, 2 cards, shorter than stage) / explainer row (100%)'>",
   "state_model": [
     {{"name": "<jsVarName>", "type": "int|float|bool|string|array", "range_or_values": "<e.g. 0..7, true/false, ['我','爱','你']>", "initial": "<concrete initial value>"}}
   ],
